@@ -21,7 +21,14 @@
                         <h4>Next departure in</h4>
                     </div>
                     <div class="item item-floating-label calm-border text-center">
-                      <h1><timer interval="1000" countdown="estDeparture">{{minutes}}m:{{seconds}}s</timer></h1>
+                        <div ng-if="estDeparture === 'LEAVING NOW'">
+                            <h1>{{estDeparture}}</h1>
+                        </div>
+                        <div ng-if="estDeparture > 0">
+                            <h1>
+                                <timer interval="1000" countdown="estDeparture">{{minutes}}m:{{seconds}}s</timer>
+                            </h1>
+                        </div>
                     </div>
                 </div>
             </div>
