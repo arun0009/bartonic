@@ -11,14 +11,12 @@ var QuickLookupCtrl = function ($scope, $filter, $state, $ionicPlatform, QuickLo
 
     this.showEstimatedDeparture = function () {
         var destination = this.destination;
-        QuickLookupService.departureTimeDeferredRequest(this.origin).$promise.then(function (response) {
-            console.log(angular.toJson(response.root.station.etd));
-            var estDepartureDetails =  $filter('filter')(response.root.station.etd, { abbreviation: destination });
-            console.log(estDepartureDetails[0].estimate[0].minutes);
-            $scope.estDeparture = parseInt(estDepartureDetails[0].estimate[0].minutes) * 60;
-        }), function (err) {
-            console.error("Exception occurred in retrieving estimated departure : " + err.message);
-        };
+        QuickLookupService.departureTimeDeferredRequest(this.origin).promise.then(null, null, function (response) {
+            var estDepartureDetails = $filter('filter')(response.root.station.etd, {abbreviation: destination});
+            console.log("estimated minutes for departure: " + estDepartureDetails[0].estimate[0].minutes);
+            $scope.estDeparture = isNaN(estDepartureDetails[0].estimate[0].minutes) ? estDepartureDetails[0].estimate[0].minutes : parseInt(estDepartureDetails[0].estimate[0].minutes) * 60;
+            $scope.$broadcast('timer-set-countdown', $scope.estDeparture);
+        });
     }
 }
 angular.module('bartionic.quicklookup').controller('QuickLookupCtrl', QuickLookupCtrl);

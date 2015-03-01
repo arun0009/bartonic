@@ -7,6 +7,10 @@ angular.module('bartionic', ['ionic', 'ngCordova', 'xml', 'timer', 'emguo.poller
         $urlRouterProvider.otherwise('/tab/myroutes');
 
     })
+    .config(function (pollerConfig) {
+        pollerConfig.stopOnStateChange = true; // If you use $stateProvider from ui-router.
+        pollerConfig.stopOnRouteChange = true; // If you use $routeProvider from ngRoute.
+    })
     .config(function ($stateProvider) {
         $stateProvider.state('tab', {
             url: "/tab",

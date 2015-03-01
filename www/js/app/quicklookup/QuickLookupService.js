@@ -1,5 +1,5 @@
 angular.module('bartionic.quicklookup')
-    .factory('QuickLookupService', function ($resource, ENV) {
+    .factory('QuickLookupService', function ($resource, poller, ENV) {
         var stationsDeferredResponse = {};
         var departureTimeDeferredResponse = {};
         return {
@@ -31,7 +31,12 @@ angular.module('bartionic.quicklookup')
 
         function getRealTimeDeparture(origin) {
             var realTimeDepartureEndpoint = ENV.bartBaseURL + '/etd.aspx?cmd=etd&orig=' + origin + '&key=' + ENV.bartApiKey;
-            var realTimeDepartureResource = $resource(realTimeDepartureEndpoint, {}, {query: {method: 'GET', isArray: false}});
-            return realTimeDepartureResource.query();
+            var realTimeDepartureResource = $resource(realTimeDepartureEndpoint, {}, {myQuery: {method: 'GET', isArray: false}});
+            // Get poller.
+            var realTimeDeparturePoller = poller.get(realTimeDepartureResource, {
+                action: 'myQuery',
+                delay: 30000
+            });
+            return realTimeDeparturePoller;
         }
     });
