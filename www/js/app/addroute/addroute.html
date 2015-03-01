@@ -1,0 +1,25 @@
+<ion-view>
+    <ion-content>
+        <form>
+            <div ng-init="addroute.getStations()">
+                <label class="item item-input item-select">
+                    <div class="input-label">
+                        Origin
+                    </div>
+                    <select ng-model="addroute.origin" ng-options="station.abbr as station.name for station in stations.station"></select>
+                </label>
+                <label class="item item-input item-select">
+                    <div class="input-label">
+                        Destination
+                    </div>
+                    <select ng-model="addroute.destination" ng-options="station.abbr as station.name for station in stations.station"></select>
+                </label>
+                 <ion-checkbox ng-model="addroute.reverseDirection">Add Return Route</ion-checkbox>
+                <button type="submit" class="button button-full button-positive">Add Route(s)</button>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>
+
+
+

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>Bart Ionic</title>
+
+    <link href="lib/ionic/css/ionic.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.min.js"></script>
+    <script src="lib/ionic/js/angular/angular-resource.min.js"></script>
+    <script src="lib/x2js/xml2json.min.js"></script>
+    <script src="lib/angular-xml/angular-xml.js"></script>
+    <script src="lib/angular-timer/angular-timer.js"></script>
+    <script src="lib/angular-poller/angular-poller.min.js"></script>
+    <script src="lib/ngCordova/ng-cordova.js"></script>
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+
+    <!-- your app's js -->
+    <script src="js/app/app.js"></script>
+    <script src="js/config/config.js"></script>
+
+    <!-- include:js(js/app/**/*.js) -->
+    <script src="js/app/myroutes/MyRoutesRouter.js"></script>
+    <script src="js/app/myroutes/MyRoutesCtrl.js"></script>
+    <script src="js/app/myroutes/MyRoutesService.js"></script>
+
+    <script src="js/app/addroute/AddRouteRouter.js"></script>
+    <script src="js/app/addroute/AddRouteCtrl.js"></script>
+    <script src="js/app/addroute/AddRouteService.js"></script>
+
+    <script src="js/app/quicklookup/QuickLookupRouter.js"></script>
+    <script src="js/app/quicklookup/QuickLookupCtrl.js"></script>
+    <script src="js/app/quicklookup/QuickLookupService.js"></script>
+
+    <script src="js/app/map/MapRouter.js"></script>
+
+</head>
+
+<body ng-app="bartionic">
+<ion-nav-bar class="bar-stable">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+</ion-nav-bar>
+<ion-nav-view></ion-nav-view>
+</body>
+
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "bartionic",
+  "constants": {
+    "ENV": {
+      "bartBaseURL": "http://api.bart.gov/api"
+    }
+
+  }
+}

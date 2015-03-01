@@ -1,0 +1,33 @@
+<ion-view>
+    <ion-content>
+        <form ng-submit="quicklookup.showEstimatedDeparture()">
+            <div ng-init="quicklookup.getStations()">
+                <label class="item item-input item-select">
+                    <div class="input-label">
+                        Origin
+                    </div>
+                    <select ng-model="quicklookup.origin" ng-options="station.abbr as station.name for station in stations.station"></select>
+                </label>
+                <label class="item item-input item-select">
+                    <div class="input-label">
+                        Destination
+                    </div>
+                    <select ng-model="quicklookup.destination" ng-options="station.abbr as station.name for station in stations.station"></select>
+                </label>
+                <button type="submit" class="button button-full button-positive">Quick Lookup</button>
+
+                <div class="list text-center padding" ng-if="estDeparture">
+                    <div class="text-center">
+                        <h4>Next departure in</h4>
+                    </div>
+                    <div class="item item-floating-label calm-border text-center">
+                      <h1><timer interval="1000" countdown="estDeparture">{{minutes}}m:{{seconds}}s</timer></h1>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>
+
+
+
