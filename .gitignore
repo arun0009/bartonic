@@ -6,3 +6,6 @@ platforms/
 plugins/
 bower_components/
 hooks/
+*.iml
+*.ipr
+*.iws
