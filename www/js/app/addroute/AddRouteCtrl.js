@@ -1,7 +1,7 @@
-var AddRouteCtrl = function ($scope, $state, $ionicPlatform, AddRouteService) {
+var AddRouteCtrl = function ($scope, $state, $ionicPlatform, StationsLookupService) {
 
     this.getStations = function () {
-        AddRouteService.stationsDeferredRequest().$promise.then(function (response) {
+        StationsLookupService.stationsDeferredRequest().$promise.then(function (response) {
             console.log(angular.toJson(response.root.stations));
            $scope.stations = response.root.stations;
         }), function (err) {

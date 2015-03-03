@@ -4,7 +4,7 @@
             <div ng-init="myroutes.loadFavoriteRouteSchedule()">
                 <div class="list text-center padding" ng-if="estDeparture">
                     <div class="text-center">
-                        <h4>Next departure in</h4>
+                        <h4>Next departure {{origin}} - {{destination}} in </h4>
                     </div>
                     <div class="item item-floating-label calm-border text-center">
                         <div ng-if="estDeparture === 'LEAVING NOW'">

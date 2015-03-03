@@ -1,4 +1,5 @@
-angular.module('bartionic', ['ionic', 'ngCordova', 'xml', 'timer', 'emguo.poller', 'bartionic.myroutes', 'bartionic.addroute', 'bartionic.quicklookup', 'bartionic.map'])
+angular.module('bartionic', ['ionic', 'ngCordova', 'xml', 'timer', 'emguo.poller', 'bartionic.myroutes', 'bartionic.addroute', 'bartionic.quicklookup',
+                'bartionic.map'])
     .config(function ($stateProvider, $urlRouterProvider, $httpProvider, ENV) {
         $httpProvider.interceptors.push('xmlHttpInterceptor');
         $httpProvider.defaults.useXDomain = true;

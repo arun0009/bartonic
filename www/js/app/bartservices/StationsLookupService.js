@@ -1,5 +1,5 @@
-angular.module('bartionic.addroute')
-    .factory('AddRouteService', function ($resource, ENV) {
+angular.module('bartionic')
+    .factory('StationsLookupService', function ($resource, ENV) {
         var stationsDeferredResponse = {};
         return {
             stationsDeferredRequest: function () {
@@ -14,7 +14,6 @@ angular.module('bartionic.addroute')
 
         function getStations() {
             var stationsEndpoint = ENV.bartBaseURL + '/stn.aspx?cmd=stns&key=' + ENV.bartApiKey;
-            console.log(stationsEndpoint);
             var stationsResource = $resource(stationsEndpoint, {}, {query: {method: 'GET', isArray: false}});
             return stationsResource.query();
         }

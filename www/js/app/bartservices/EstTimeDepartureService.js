@@ -1,17 +1,7 @@
-angular.module('bartionic.quicklookup')
-    .factory('QuickLookupService', function ($resource, poller, ENV) {
-        var stationsDeferredResponse = {};
+angular.module('bartionic')
+    .factory('EstTimeDepartureService', function ($resource, poller, ScheduledDepartureDetailsService, ENV) {
         var departureTimeDeferredResponse = {};
         return {
-            stationsDeferredRequest: function () {
-                stationsDeferredResponse = getStations();
-                return stationsDeferredResponse;
-            },
-
-            getStationsDeferredResponse: function () {
-                return stationsDeferredResponse;
-            },
-
             departureTimeDeferredRequest : function (origin){
                 departureTimeDeferredResponse = getRealTimeDeparture(origin);
                 return departureTimeDeferredResponse;
@@ -23,13 +13,8 @@ angular.module('bartionic.quicklookup')
 
         }
 
-        function getStations() {
-            var stationsEndpoint = ENV.bartBaseURL + '/stn.aspx?cmd=stns&key=' + ENV.bartApiKey;
-            var stationsResource = $resource(stationsEndpoint, {}, {query: {method: 'GET', isArray: false}});
-            return stationsResource.query();
-        }
-
         function getRealTimeDeparture(origin) {
+            console.log("origin is : " + origin);
             var realTimeDepartureEndpoint = ENV.bartBaseURL + '/etd.aspx?cmd=etd&orig=' + origin + '&key=' + ENV.bartApiKey;
             var realTimeDepartureResource = $resource(realTimeDepartureEndpoint, {}, {myQuery: {method: 'GET', isArray: false}});
             // Get poller.
@@ -39,4 +24,6 @@ angular.module('bartionic.quicklookup')
             });
             return realTimeDeparturePoller;
         }
+
+
     });
