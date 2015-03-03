@@ -6,13 +6,17 @@
                     <div class="input-label">
                         Origin
                     </div>
-                    <select ng-model="quicklookup.origin" ng-options="station.abbr as station.name for station in stations.station"></select>
+                    <select ng-model="quicklookup.origin" ng-options="station.abbr as station.name for station in stations.station">
+                        <option value="" selected disabled>Select Origin</option>
+                    </select>
                 </label>
                 <label class="item item-input item-select">
                     <div class="input-label">
                         Destination
                     </div>
-                    <select ng-model="quicklookup.destination" ng-options="station.abbr as station.name for station in stations.station"></select>
+                    <select ng-model="quicklookup.destination" ng-options="station.abbr as station.name for station in stations.station">
+                        <option value="" selected disabled>Select Destination</option>
+                    </select>
                 </label>
                 <button type="submit" class="button button-full button-positive">Quick Lookup</button>
 
