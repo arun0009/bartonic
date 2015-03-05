@@ -15,6 +15,11 @@ var AddRouteCtrl = function ($scope, $state, $ionicPlatform, StationsLookupServi
         favoriteRoutes.push({origin: this.origin, destination: this.destination});
         window.localStorage.setItem('favoriteRoutes', JSON.stringify(favoriteRoutes));
         console.log(JSON.stringify(favoriteRoutes));
+        $state.go("tab.myroutes", {}, {reload: true});
+    }
+
+    this.cancelAddRoute = function () {
+        $scope.go("tab.myroutes");
     }
 }
 angular.module('bartionic.addroute').controller('AddRouteCtrl', AddRouteCtrl);

@@ -14,7 +14,7 @@ angular.module('bartionic')
 
         function getStations() {
             var stationsEndpoint = ENV.bartBaseURL + '/stn.aspx?cmd=stns&key=' + ENV.bartApiKey;
-            var stationsResource = $resource(stationsEndpoint, {}, {query: {method: 'GET', isArray: false}});
+            var stationsResource = $resource(stationsEndpoint, {}, {query: {method: 'GET', isArray: false, cache: true}});
             return stationsResource.query();
         }
     });

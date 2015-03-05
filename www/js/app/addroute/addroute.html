@@ -19,7 +19,10 @@
                     </select>
                 </label>
                  <ion-checkbox ng-model="addroute.reverseDirection">Add Return Route</ion-checkbox>
-                <button type="submit" class="button button-full button-positive">Add Route(s)</button>
+                <div class="button-bar padding">
+                    <button class="button" ng-click="addroute.cancelAddRoute()">Cancel</button>
+                    <button type="submit" class="button button-positive">Add to My Routes</button>
+                </div>
             </div>
         </form>
     </ion-content>
