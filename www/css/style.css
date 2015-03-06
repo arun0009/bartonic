@@ -1,1 +1,6 @@
-/* Empty. Add your own CSS if you like */
+body {
+    cursor: url('http://ionicframework.com/img/finger.png'), auto;
+}
+.col {
+    background-color:#eeeeee;
+}

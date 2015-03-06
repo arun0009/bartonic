@@ -1,23 +1,30 @@
 <ion-view>
-    <ion-content>
+    <ion-content has-header="true" padding="true">
         <form>
             <div ng-init="myroutes.loadFavoriteRouteSchedule()">
-                <div class="list text-center padding" ng-if="estDeparture">
-                    <div class="text-center">
-                        <h4>Next departure {{origin}} - {{destination}} in </h4>
-                    </div>
-                    <div class="item item-floating-label calm-border text-center">
-                        <div ng-if="estDeparture === 'LEAVING NOW'">
-                            <h1>{{estDeparture}}</h1>
+                <div ng-if="estDeparture">
+                    <div class="row">
+                        <div class="col col-80">
+                            {{originName}}
                         </div>
-                        <div ng-if="estDeparture > 0">
-                            <h1>
+                        <div class="col">
+                            <span ng-if="estDeparture === 'LEAVING_NOW'">
+                                Leaving
+                            </span>
+                            <span ng-if="estDeparture > 0">
                                 <timer interval="1000" countdown="estDeparture">{{minutes}}m:{{seconds}}s</timer>
-                            </h1>
+                           </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-80">
+                            to {{destinationName}}
+                        </div>
+                        <div class="col">
+                            {{routeFare | currency:$:2}}
                         </div>
                     </div>
                 </div>
-
             </div>
         </form>
     </ion-content>

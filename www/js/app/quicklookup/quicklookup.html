@@ -20,20 +20,30 @@
                 </label>
                 <button type="submit" class="button button-full button-positive">Quick Lookup</button>
 
-                <div class="list text-center padding" ng-if="estDeparture">
-                    <div class="text-center">
-                        <h4>Next departure in</h4>
-                    </div>
-                    <div class="item item-floating-label calm-border text-center">
-                        <div ng-if="estDeparture === 'LEAVING NOW'">
-                            <h1>{{estDeparture}}</h1>
+
+                <div class="item calm-border" ng-if="estDeparture">
+                    <div class="row">
+                        <div class="col col-80">
+                            <b>Next departure in</b>
                         </div>
-                        <div ng-if="estDeparture > 0">
-                            <h1>
-                                <timer interval="1000" countdown="estDeparture">{{minutes}}m:{{seconds}}s</timer>
-                            </h1>
+                        <div class="col">
+                            <span ng-if="estDeparture === 'LEAVING_NOW'">
+                                <b>Leaving</b>
+                            </span>
+                            <span ng-if="estDeparture > 0">
+                                <b><timer interval="1000" countdown="estDeparture">{{minutes}}m:{{seconds}}s</timer></b>
+                           </span>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col col-80">
+                            <b>Fare</b>
+                        </div>
+                        <div class="col">
+                            <b>{{routeFare | currency:$:2}}</b>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </form>

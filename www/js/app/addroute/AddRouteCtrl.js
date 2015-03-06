@@ -10,9 +10,8 @@ var AddRouteCtrl = function ($scope, $state, $ionicPlatform, StationsLookupServi
     }
 
     this.addRouteToFavorites = function () {
-        console.log('about to add routes to favorites');
         var favoriteRoutes =  JSON.parse(window.localStorage.getItem('favoriteRoutes')) || [];
-        favoriteRoutes.push({origin: this.origin, destination: this.destination});
+        favoriteRoutes.push({originAbbr: this.origin.abbr, originName: this.origin.name, destinationAbbr: this.destination.abbr, destinationName: this.destination.name});
         window.localStorage.setItem('favoriteRoutes', JSON.stringify(favoriteRoutes));
         console.log(JSON.stringify(favoriteRoutes));
         $state.go("tab.myroutes", {}, {reload: true});

@@ -14,6 +14,7 @@ var QuickLookupCtrl = function ($scope, $filter, $state, $ionicPlatform, Station
         var destination = this.destination;
         ScheduledDepartureDetailsService.scheduledDepartureDetailsDeferredRequest(origin, destination).$promise.then(function (scheduledDepartureDetails) {
             var trainHeadStation;
+            $scope.routeFare = scheduledDepartureDetails.root.schedule.request.trip[0]._fare;
             if (angular.isArray(scheduledDepartureDetails.root.schedule.request.trip[0].leg)) {
                 trainHeadStation = scheduledDepartureDetails.root.schedule.request.trip[0].leg[0]._trainHeadStation;
             } else {
@@ -24,7 +25,7 @@ var QuickLookupCtrl = function ($scope, $filter, $state, $ionicPlatform, Station
                 var estDepartureDetails = $filter('filter')(response.root.station.etd, {abbreviation: trainHeadStation});
                 if (estDepartureDetails != null && estDepartureDetails.length > 0) {
                     console.log("estimated minutes for departure: " + estDepartureDetails[0].estimate[0].minutes);
-                    $scope.estDeparture = isNaN(estDepartureDetails[0].estimate[0].minutes) ? 'LEAVING NOW' : parseInt(estDepartureDetails[0].estimate[0].minutes) * 60;
+                    $scope.estDeparture = isNaN(estDepartureDetails[0].estimate[0].minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails[0].estimate[0].minutes) * 60;
                     console.log("scope set to " + $scope.estDeparture);
                 }
                 $scope.$broadcast('timer-set-countdown', $scope.estDeparture);
