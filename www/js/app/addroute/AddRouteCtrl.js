@@ -2,7 +2,6 @@ var AddRouteCtrl = function ($scope, $state, $ionicPlatform, StationsLookupServi
 
     this.getStations = function () {
         StationsLookupService.stationsDeferredRequest().$promise.then(function (response) {
-            console.log(angular.toJson(response.root.stations));
            $scope.stations = response.root.stations;
         }), function (err) {
             console.error("Exception occurred in retrieving stations: " + err.message);

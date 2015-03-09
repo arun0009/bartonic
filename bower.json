@@ -5,13 +5,15 @@
     "Arun Gopalpuri <arun0009@gmail.com>"
   ],
   "dependencies": {
-     "ngCordova"      : "0.1.12-alpha",
-     "angular-xml"    : "2.0.1",
-     "angular-timer"  : "1.2.1",
-     "angular-poller" : "0.3.2"
+    "ngCordova": "0.1.12-alpha",
+    "angular-xml": "2.0.1",
+    "angular-timer": "1.2.1",
+    "angular-poller": "0.3.2"
   },
   "install": {
     "path": "www/lib"
+  },
+  "devDependencies": {
+    "ionic": "driftyco/ionic-bower#1.0.0-beta.14"
   }
 }
-
