@@ -6,7 +6,7 @@
                 <div ng-repeat="myRoute in myRoutes track by $index">
                     <div class="row">
                         <div class="col col-80">
-                            {{::myRoute.originName}}
+                            {{myRoute.originName}}
                         </div>
                         <div class="col">
                             <span ng-if="myRoute.estDeparture === 'LEAVING_NOW'">
@@ -19,10 +19,10 @@
                     </div>
                     <div class="row">
                         <div class="col col-80">
-                            to {{::myRoute.destinationName}}
+                            to {{myRoute.destinationName}}
                         </div>
                         <div class="col">
-                            {{::myRoute.routeFare | currency:$:2}}
+                            {{myRoute.routeFare | currency:$:2}}
                         </div>
                     </div>
                 </div>

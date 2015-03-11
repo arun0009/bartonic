@@ -20,7 +20,7 @@ angular.module('bartionic')
             // Get poller.
             var realTimeDeparturePoller = poller.get(realTimeDepartureResource, {
                 action: 'myQuery',
-                delay: 30000
+                delay: 5000
             });
             return realTimeDeparturePoller;
         }
