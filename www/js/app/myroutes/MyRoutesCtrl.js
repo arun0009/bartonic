@@ -39,12 +39,16 @@ var MyRoutesCtrl = function ($scope, $state, $filter, $ionicPlatform, $q, $timeo
                     myRouteInfo.originName = originNames[key];
                     myRouteInfo.destinationName = destinationNames[key];
                     myRouteInfo.hasLink = hasLink;
-                    var estDepartureDetails = $filter('filter')(estTimeDeparture.root.station.etd, {abbreviation: trainHeadStation});
-                    if (estDepartureDetails != null && estDepartureDetails.length > 0) {
-                        if (angular.isArray(estDepartureDetails[0].estimate)) {
-                            myRouteInfo.estDeparture = isNaN(estDepartureDetails[0].estimate[0].minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails[0].estimate[0].minutes) * 60;
+                    var estDepartureDetails = $filter('filter')(estTimeDeparture.root.station.etd, {abbreviation: trainHeadStation}, true);
+                    if (estDepartureDetails != null) {
+                        //should be a way to filter and return first object?
+                        if (angular.isArray(estDepartureDetails)) {
+                            estDepartureDetails = estDepartureDetails[0];
+                        }
+                        if (angular.isArray(estDepartureDetails.estimate)) {
+                            myRouteInfo.estDeparture = isNaN(estDepartureDetails.estimate[0].minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate[0].minutes) * 60;
                         } else {
-                            myRouteInfo.estDeparture = isNaN(estDepartureDetails[0].estimate.minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails[0].estimate.minutes) * 60;
+                            myRouteInfo.estDeparture = isNaN(estDepartureDetails.estimate.minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate.minutes) * 60;
                         }
                     }
                     //$scope.$broadcast('timer-set-countdown', myRouteInfo.estDeparture);

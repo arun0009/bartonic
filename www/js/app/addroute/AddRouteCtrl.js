@@ -1,5 +1,6 @@
 var AddRouteCtrl = function ($scope, $state, $ionicPlatform, StationsLookupService) {
 
+
     this.getStations = function () {
         StationsLookupService.stationsDeferredRequest().$promise.then(function (response) {
            $scope.stations = response.root.stations;
@@ -11,6 +12,9 @@ var AddRouteCtrl = function ($scope, $state, $ionicPlatform, StationsLookupServi
     this.addRouteToFavorites = function () {
         var favoriteRoutes =  JSON.parse(window.localStorage.getItem('favoriteRoutes')) || [];
         favoriteRoutes.push({originAbbr: this.origin.abbr, originName: this.origin.name, destinationAbbr: this.destination.abbr, destinationName: this.destination.name});
+        if(this.reverseDirection){
+            favoriteRoutes.push({originAbbr: this.destination.abbr, originName: this.destination.name, destinationAbbr: this.origin.abbr, destinationName: this.origin.name});
+        }
         window.localStorage.setItem('favoriteRoutes', JSON.stringify(favoriteRoutes));
         console.log(JSON.stringify(favoriteRoutes));
         $state.go("tab.myroutes", {}, {reload: true});
