@@ -21,7 +21,10 @@ var MyRoutesCtrl = function ($scope, $state, $filter, $ionicPlatform, $q, $timeo
                 var trainHeadStation = "";
                 var myRouteInfo = {};
                 var routeFare = scheduledDepartureDetails.root.schedule.request.trip[0]._fare;
+                var destTimeMin = scheduledDepartureDetails.root.schedule.request.trip[0]._destTimeMin;
+                var hasLink = false;
                 if (angular.isArray(scheduledDepartureDetails.root.schedule.request.trip[0].leg)) {
+                    hasLink = true;
                     trainHeadStation = scheduledDepartureDetails.root.schedule.request.trip[0].leg[0]._trainHeadStation;
                 } else {
                     trainHeadStation = scheduledDepartureDetails.root.schedule.request.trip[0].leg._trainHeadStation;
@@ -32,8 +35,10 @@ var MyRoutesCtrl = function ($scope, $state, $filter, $ionicPlatform, $q, $timeo
                     //console.log("estTimeDeparture is : " + angular.toJson(estTimeDeparture));
                     myRouteInfo.id = key;
                     myRouteInfo.routeFare = routeFare;
+                    myRouteInfo.destTimeMin = destTimeMin;
                     myRouteInfo.originName = originNames[key];
                     myRouteInfo.destinationName = destinationNames[key];
+                    myRouteInfo.hasLink = hasLink;
                     var estDepartureDetails = $filter('filter')(estTimeDeparture.root.station.etd, {abbreviation: trainHeadStation});
                     if (estDepartureDetails != null && estDepartureDetails.length > 0) {
                         if (angular.isArray(estDepartureDetails[0].estimate)) {

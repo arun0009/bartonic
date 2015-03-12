@@ -5,24 +5,25 @@
             <div ng-init="myroutes.loadFavoriteRouteSchedule()">
                 <div ng-repeat="myRoute in myRoutes track by $index">
                     <div class="row">
-                        <div class="col col-80">
+                        <div class="col col-67">
                             {{myRoute.originName}}
                         </div>
                         <div class="col">
                             <span ng-if="myRoute.estDeparture === 'LEAVING_NOW'">
                                 Leaving
                             </span>
-                            <span ng-if="myRoute.estDeparture> 0">
+                            <span ng-if="myRoute.estDeparture > 0">
                                 <timer interval="1000" countdown="myRoute.estDeparture">{{minutes}}m:{{seconds}}s</timer>
                            </span>
+
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col col-80">
-                            to {{myRoute.destinationName}}
+                        <div class="col col-67">
+                            <span ng-if="myRoute.hasLink"><i class="icon ion-link"></i></span> to {{myRoute.destinationName}}
                         </div>
                         <div class="col">
-                            {{myRoute.routeFare | currency:$:2}}
+                            <small>{{myRoute.routeFare | currency:$:2}}, Arr {{myRoute.destTimeMin}}</small>
                         </div>
                     </div>
                 </div>
