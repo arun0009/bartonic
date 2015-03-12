@@ -29,7 +29,7 @@ var MyRoutesCtrl = function ($scope, $state, $filter, $ionicPlatform, $q, $timeo
 
                 var originAbbr = favoriteRoutes[key].originAbbr;
                 EstTimeDepartureService.departureTimeDeferredRequest(originAbbr).promise.then(null, null, function (estTimeDeparture) {
-                    console.log("estTimeDeparture is : " + angular.toJson(estTimeDeparture));
+                    //console.log("estTimeDeparture is : " + angular.toJson(estTimeDeparture));
                     myRouteInfo.id = key;
                     myRouteInfo.routeFare = routeFare;
                     myRouteInfo.originName = originNames[key];
