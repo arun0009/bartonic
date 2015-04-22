@@ -70,8 +70,8 @@ var MyRoutesCtrl = function ($scope, $state, $filter, $ionicPlatform, $q, $timeo
             }
         }
         window.localStorage.setItem('favoriteRoutes', JSON.stringify(favoriteRoutes));
-        $scope.myRoutes = favoriteRoutes;
-    }
+        window.location.reload();
+     }
 }
 
 
