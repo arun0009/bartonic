@@ -69,18 +69,8 @@ var config = function(src) {
         .pipe(gulp.dest('www/js/config/'));
 }
 
-gulp.task('config-dev', function() {
-    return config('www/js/config/config-dev.json')
-});
-
-
 gulp.task('config-prod', function() {
     return config('www/js/config/config-prod.json')
-});
-
-gulp.task('ionic-clean-build', function() {
-    sh.exec('ionic platform rm ios android');
-    sh.exec('ionic platform add ios android');
 });
 
 gulp.task('include-scripts', function() {

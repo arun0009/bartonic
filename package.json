@@ -19,6 +19,11 @@
   },
   "cordovaPlugins": [
     "org.apache.cordova.device",
-    "org.apache.cordova.console"
+    "org.apache.cordova.console",
+    "https://github.com/danwilson/google-analytics-plugin.git"
+  ],
+  "cordovaPlatforms": [
+    "ios",
+    "android"
   ]
 }

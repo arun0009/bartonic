@@ -60,6 +60,19 @@ var MyRoutesCtrl = function ($scope, $state, $filter, $ionicPlatform, $q, $timeo
             });
         });
     }
+
+    this.deleteRoute = function(route){
+        var favoriteRoutes = JSON.parse(window.localStorage.getItem('favoriteRoutes')) || [];
+        for (var i = 0; i < favoriteRoutes.length; i++) {
+            console.log(favoriteRoutes[i]);
+            if(favoriteRoutes[i].originName === route.originName && favoriteRoutes[i].destinationName === route.destinationName){
+                favoriteRoutes.splice(i, 1);
+            }
+        }
+        window.localStorage.setItem('favoriteRoutes', JSON.stringify(favoriteRoutes));
+        $scope.myRoutes = favoriteRoutes;
+    }
 }
+
 
 angular.module('bartionic.myroutes').controller('MyRoutesCtrl', MyRoutesCtrl);

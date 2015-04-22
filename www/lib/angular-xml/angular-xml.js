@@ -22,8 +22,15 @@ if (!X2JS) {
         return $q.when(response);
       }
     }
+    function responseErrorHandler(response) {
+      if (response && responseIsXml(response)) {
+        response.data = x2js.xml_str2json(response.data);
+      }
+      return $q.reject(response);
+    }
     return {
-      response: responseHandler
+      response: responseHandler,
+      responseError: responseErrorHandler
     };
   }
 
@@ -40,11 +47,10 @@ if (!X2JS) {
 
   if (ng) {
     ng
-      .module('xml', [])
-      .config(['$provide', configProvider])
-      .provider('x2js', X2JSProvider)
-      .value('X2JS', X2JS);
+        .module('xml', [])
+        .config(['$provide', configProvider])
+        .provider('x2js', X2JSProvider)
+        .value('X2JS', X2JS);
   }
 
 }(angular, X2JS));
-

@@ -6,8 +6,8 @@
   ],
   "dependencies": {
     "ngCordova": "0.1.12-alpha",
-    "angular-xml": "2.0.1",
-    "angular-timer": "1.2.2",
+    "angular-xml": "2.1.0",
+    "angular-timer": "1.3.1",
     "angular-poller": "0.3.2",
     "angular-resource": "1.3.6"
   },

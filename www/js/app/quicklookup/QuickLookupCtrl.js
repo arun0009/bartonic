@@ -22,11 +22,16 @@ var QuickLookupCtrl = function ($scope, $filter, $state, $ionicPlatform, Station
             }
             console.log(trainHeadStation);
             EstTimeDepartureService.departureTimeDeferredRequest(origin).promise.then(null, null, function (response) {
-                var estDepartureDetails = $filter('filter')(response.root.station.etd, {abbreviation: trainHeadStation});
-                if (estDepartureDetails != null && estDepartureDetails.length > 0) {
-                    console.log("estimated minutes for departure: " + estDepartureDetails[0].estimate[0].minutes);
-                    $scope.estDeparture = isNaN(estDepartureDetails[0].estimate[0].minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails[0].estimate[0].minutes) * 60;
-                    console.log("scope set to " + $scope.estDeparture);
+                var estDepartureDetails = $filter('filter')(response.root.station.etd, {abbreviation: trainHeadStation}, true);
+                if (estDepartureDetails != null) {
+                    if (angular.isArray(estDepartureDetails)) {
+                        estDepartureDetails = estDepartureDetails[0];
+                    }
+                    if (angular.isArray(estDepartureDetails.estimate)) {
+                        $scope.estDeparture = isNaN(estDepartureDetails.estimate[0].minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate[0].minutes) * 60;
+                    } else {
+                        $scope.estDeparture = isNaN(estDepartureDetails.estimate.minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate.minutes) * 60;
+                    }
                 }
                 $scope.$broadcast('timer-set-countdown', $scope.estDeparture);
             });
