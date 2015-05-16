@@ -1,6 +1,6 @@
 angular.module('bartionic', ['ionic', 'ngCordova', 'xml', 'timer', 'emguo.poller', 'bartionic.myroutes', 'bartionic.addroute', 'bartionic.quicklookup',
-                'bartionic.map'])
-    .config(function ($stateProvider, $urlRouterProvider, $httpProvider, ENV) {
+    'bartionic.map'])
+    .config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
         $httpProvider.interceptors.push('xmlHttpInterceptor');
         $httpProvider.defaults.useXDomain = true;
         delete $httpProvider.defaults.headers.common["X-Requested-With"];
@@ -19,8 +19,12 @@ angular.module('bartionic', ['ionic', 'ngCordova', 'xml', 'timer', 'emguo.poller
             templateUrl: "js/app/tabs/tabs.html"
         })
     })
-    .run(function ($ionicPlatform) {
+    .run(function ($ionicPlatform, $state) {
         $ionicPlatform.ready(function () {
+            $ionicPlatform.on('resume', function () {
+                $state.go($state.current, {}, {reload: true});
+            });
+
             if (window.StatusBar) {
                 StatusBar.styleDefault();
             }
