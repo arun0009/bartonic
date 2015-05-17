@@ -1,6 +1,6 @@
-![Alt text](https://raw.githubusercontent.com/arun0009/bartonic/master/resources/icon.png "Bartonic") 
+![Alt text](https://raw.githubusercontent.com/arun0009/bartonic/master/resources/icon.png "BARTonic") 
 
-# Bartonic 
+# BARTonic 
 
 ### Real time Quick Bart Schedule, Favorite Routes, Bart Map - Ionic App
 
