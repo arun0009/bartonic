@@ -4,12 +4,3 @@ body {
 .col {
     background-color:#eeeeee;
 }
-
-.col-64 {
-    -webkit-box-flex: 0;
-    -webkit-flex: 0 0 64%;
-    -moz-box-flex: 0;
-    -moz-flex: 0 0 64%;
-    -ms-flex: 0 0 64%;
-    flex: 0 0 64%;
-    max-width: 64%; }

@@ -3,10 +3,10 @@
         <ion-list show-delete="false" can-swipe="true">
             <ion-item ng-repeat="myRoute in myRoutes track by $index">
                 <div class="row">
-                    <div class="col-64">
+                    <div class="col-75">
                         <small>{{myRoute.originName}}</small>
                     </div>
-                    <div>
+                    <div class="text-right">
                             <span ng-if="myRoute.estDeparture === 'LEAVING_NOW'">
                                 <small>Leaving</small>
                             </span>
@@ -18,10 +18,10 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-64">
+                    <div class="col-75">
                         <small><span ng-if="myRoute.hasLink"><i class="icon ion-link"></i></span> to {{myRoute.destinationName}}</small>
                     </div>
-                    <div>
+                    <div class="text-right">
                         <small>{{myRoute.routeFare | currency:$:2}}, Arr {{myRoute.destTimeMin}}</small>
                     </div>
                 </div>
