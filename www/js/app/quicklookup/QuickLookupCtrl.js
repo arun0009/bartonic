@@ -10,30 +10,40 @@ var QuickLookupCtrl = function ($scope, $filter, $state, $ionicPlatform, Station
 
 
     this.showEstimatedDeparture = function () {
+        var stations = $scope.stations;
         var origin = this.origin;
         var destination = this.destination;
+        var quickLookup = {};
         ScheduledDepartureDetailsService.scheduledDepartureDetailsDeferredRequest(origin, destination).$promise.then(function (scheduledDepartureDetails) {
-            var trainHeadStation;
-            $scope.routeFare = scheduledDepartureDetails.root.schedule.request.trip[0]._fare;
+            quickLookup.destination = destination;
+            quickLookup.hasLink = false;
+            quickLookup.routeFare = scheduledDepartureDetails.root.schedule.request.trip[0]._fare;
             if (angular.isArray(scheduledDepartureDetails.root.schedule.request.trip[0].leg)) {
-                trainHeadStation = scheduledDepartureDetails.root.schedule.request.trip[0].leg[0]._trainHeadStation;
+                quickLookup.hasLink = true;
+                quickLookup.trainHeadStation = scheduledDepartureDetails.root.schedule.request.trip[0].leg[0]._trainHeadStation;
+                quickLookup.firstStationName = $filter('filter')(stations.station, {abbr: quickLookup.trainHeadStation}, true)[0].name;
+                quickLookup.connectingStationName = $filter('filter')(stations.station,
+                    {abbr: scheduledDepartureDetails.root.schedule.request.trip[0].leg[0]._destination}, true)[0].name;
             } else {
-                trainHeadStation = scheduledDepartureDetails.root.schedule.request.trip[0].leg._trainHeadStation;
+                quickLookup.trainHeadStation = scheduledDepartureDetails.root.schedule.request.trip[0].leg._trainHeadStation;
+                quickLookup.firstStationName = $filter('filter')(stations.station, {abbr: origin}, true)[0].name;
             }
-            console.log(trainHeadStation);
+
+            quickLookup.destinationStationName = $filter('filter')(stations.station, {abbr: destination}, true)[0].name;
+
             EstTimeDepartureService.departureTimeDeferredRequest(origin).promise.then(null, null, function (response) {
-                var estDepartureDetails = $filter('filter')(response.root.station.etd, {abbreviation: trainHeadStation}, true);
+                var estDepartureDetails = $filter('filter')(response.root.station.etd, {abbreviation: quickLookup.trainHeadStation}, true);
                 if (estDepartureDetails != null) {
                     if (angular.isArray(estDepartureDetails)) {
                         estDepartureDetails = estDepartureDetails[0];
                     }
                     if (angular.isArray(estDepartureDetails.estimate)) {
-                        $scope.estDeparture = isNaN(estDepartureDetails.estimate[0].minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate[0].minutes) * 60;
+                        quickLookup.estDeparture = isNaN(estDepartureDetails.estimate[0].minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate[0].minutes) * 60;
                     } else {
-                        $scope.estDeparture = isNaN(estDepartureDetails.estimate.minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate.minutes) * 60;
+                        quickLookup.estDeparture = isNaN(estDepartureDetails.estimate.minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate.minutes) * 60;
                     }
                 }
-                $scope.$broadcast('timer-set-countdown', $scope.estDeparture);
+                $scope.quickLookup = quickLookup;
             });
         }), function (err) {
             console.log("Exception occurred in getting schedule : " + e);
