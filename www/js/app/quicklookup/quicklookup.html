@@ -21,39 +21,38 @@
                 <button type="submit" class="button button-full button-positive">Quick Lookup</button>
 
 
-                <div class="item calm-border" ng-if="quickLookup.estDeparture">
-                    <div class="row">
-                        <div class="col-75">
-                            <div>
-                                {{quickLookup.firstStationName}}
+                <div ng-repeat="quickLookup in quickLookups track by $index">
+                    <div class="item calm-border" ng-if="quickLookup.estDeparture">
+                        <div class="row">
+                            <div class="col-67">
+                                <div>
+                                    <small><span ng-if="quickLookup.hasLink"><i class="icon ion-android-train"></i></span> {{quickLookup.firstStationName}}</small>
+                                </div>
+                                <div ng-if="quickLookup.hasLink">
+                                    <small><i class="icon ion-link"></i> {{quickLookup.connectingStationName}}</small>
+                                </div>
+                                <div>
+                                    <small><span ng-if="quickLookup.hasLink"><i class="icon ion-android-train"></i></span> {{quickLookup.destinationStationName}}</small>
+                                </div>
                             </div>
-                            <div ng-if="quickLookup.hasLink">
-                                <i class="icon ion-link"></i> {{quickLookup.connectingStationName}}
-                            </div>
-                            <div>
-                                {{quickLookup.destinationStationName}}
-                            </div>
-                        </div>
-                        <div class="col-center">
-                            <span ng-if="quickLookup.estDeparture === 'LEAVING_NOW'">
-                                <b>Leaving</b>
-                            </span>
-                            <span ng-if="quickLookup.estDeparture > 0">
-                                <b>
-                                    <timer interval="1000" countdown="quickLookup.estDeparture">{{minutes}}m:{{seconds}}s</timer>
-                                </b>
-                           </span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-75 padding-top">
-                            Fare
-                        </div>
-                        <div>
-                            <b>{{quickLookup.routeFare | currency:$:2}}</b>
-                        </div>
-                    </div>
+                            <div class="col-center">
+                                <div>
+                                <span ng-if="quickLookup.estDeparture === 'LEAVING_NOW'">
+                                    <small><b>Leaving</b></small>
+                                </span>
+                                <span ng-if="quickLookup.estDeparture > 0">
+                                    <small>
+                                        <timer interval="1000" countdown="quickLookup.estDeparture">{{minutes}}m:{{seconds}}s</timer>
+                                    </small>
 
+                               </span>
+                                </div>
+                                <div>
+                                    <small>{{quickLookup.routeFare | currency:$:2}}, Arr {{quickLookup.destTimeMin}}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
