@@ -31,7 +31,7 @@ var QuickLookupCtrl = function ($scope, $filter, $state, $ionicPlatform, Station
                     quickLookup.firstStationName = $filter('filter')(stations.station, {abbr: quickLookup.trainHeadStation}, true)[0].name;
                     quickLookup.connectingStationName = $filter('filter')(stations.station, {abbr: trip.leg[0]._destination}, true)[0].name;
                     quickLookup.destinationStationName = $filter('filter')(stations.station, {abbr: trip.leg[1]._trainHeadStation}, true)[0].name;
-                    if(trip.leg[2] != null){
+                    if (trip.leg[2] != null) {
                         quickLookup.hasMoreLinks = true;
                         quickLookup.finalConnectingStationName = $filter('filter')(stations.station, {abbr: trip.leg[1]._destination}, true)[0].name;
                         quickLookup.finalDestinationStationName = $filter('filter')(stations.station, {abbr: trip.leg[2]._trainHeadStation}, true)[0].name;
@@ -42,7 +42,8 @@ var QuickLookupCtrl = function ($scope, $filter, $state, $ionicPlatform, Station
                 }
 
                 EstTimeDepartureService.departureTimeDeferredRequest(origin).promise.then(null, null, function (estTimeDeparture) {
-                    var estDepartureDetails = $filter('filter')(estTimeDeparture.root.station.etd, {abbreviation: quickLookup.trainHeadStation}, true);
+
+                    var estDepartureDetails = angular.isArray(estTimeDeparture.root.station.etd) ? $filter('filter')(estTimeDeparture.root.station.etd, {abbreviation: quickLookup.trainHeadStation}, true) : estTimeDeparture.root.station.etd;
                     if (estDepartureDetails != null) {
                         if (angular.isArray(estDepartureDetails)) {
                             estDepartureDetails = estDepartureDetails[0];
