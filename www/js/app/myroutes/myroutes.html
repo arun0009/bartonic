@@ -1,7 +1,7 @@
 <ion-view>
     <ion-content ng-init="myroutes.loadFavoriteRouteSchedule()" has-header="true" padding="true">
         <ion-list show-delete="false" can-swipe="true">
-            <ion-item ng-repeat="myRoute in myRoutes track by $index">
+            <ion-item ng-repeat="myRoute in myRoutes | orderBy:myRoute.index  track by $index">
                 <div class="row">
                     <div class="col-75">
                         <small>{{myRoute.originName}}</small>
@@ -12,7 +12,7 @@
                             </span>
                             <span ng-if="myRoute.estDeparture > 0">
                                 <small>
-                                    <timer interval="1000" countdown="myRoute.estDeparture">{{minutes}}m:{{seconds}}s</timer>
+                                    <timer interval="1000" language="en" countdown="myRoute.estDeparture">{{minutes}}m:{{seconds}}s</timer>
                                 </small>
                            </span>
                     </div>

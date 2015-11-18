@@ -22,7 +22,8 @@ var MyRoutesCtrl = function ($scope, $state, $filter, $ionicPlatform, $q, $timeo
             //console.log("estTimeDeparture is : " + angular.toJson(estTimeDeparture));
             myRouteInfo.originName = originNames[myRouteInfo.id];
             myRouteInfo.destinationName = destinationNames[myRouteInfo.id];
-            var estDepartureDetails = $filter('filter')(estTimeDeparture.root.station.etd, {abbreviation: myRouteInfo.trainHeadStation}, true);
+
+            var estDepartureDetails = angular.isArray(estTimeDeparture.root.station.etd) ? $filter('filter')(estTimeDeparture.root.station.etd, {abbreviation: myRouteInfo.trainHeadStation}, true): estTimeDeparture.root.station.etd;
             if (estDepartureDetails != null) {
                 //should be a way to filter and return first object?
                 if (angular.isArray(estDepartureDetails)) {
@@ -37,17 +38,24 @@ var MyRoutesCtrl = function ($scope, $state, $filter, $ionicPlatform, $q, $timeo
             var myRouteInfoInScope = $filter('filter')($scope.myRoutes, {id: myRouteInfo.id}, true);
             if (!myRouteInfoInScope.length) {
                 $scope.myRoutes.push(myRouteInfo);
+                $scope.myRoutes.sort(function(a, b) {
+                    return parseFloat(a.index) - parseFloat(b.index);
+                });
             }
         });
     }
 
     this.loadFavoriteRouteSchedule = function () {
         var favoriteRoutes = JSON.parse(window.localStorage.getItem('favoriteRoutes')) || [];
+        favoriteRoutes.sort(function(a, b) {
+            return parseFloat(a.index) - parseFloat(b.index);
+        });
         console.log('fav routes : ' + angular.toJson(favoriteRoutes));
         $q.all(getScheduleDepuartureDetailsPromises(favoriteRoutes)).then(function (data) {
             angular.forEach(data, function (scheduledDepartureDetails, key) {
                 var trainHeadStation = "";
                 var myRouteInfo = {};
+                myRouteInfo.index = favoriteRoutes[key].index;
                 myRouteInfo.id = key;
                 myRouteInfo.routeFare = scheduledDepartureDetails.root.schedule.request.trip[0]._fare;
                 myRouteInfo.destTimeMin = scheduledDepartureDetails.root.schedule.request.trip[0]._destTimeMin;

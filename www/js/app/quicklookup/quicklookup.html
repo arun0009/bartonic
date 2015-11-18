@@ -26,13 +26,19 @@
                         <div class="row">
                             <div class="col-67">
                                 <div>
-                                    <small><span ng-if="quickLookup.hasLink"><i class="icon ion-android-train"></i></span> {{quickLookup.firstStationName}}</small>
+                                    <small><span><i class="icon ion-android-train" style=""></i></span> {{quickLookup.firstStationName}}</small>
                                 </div>
                                 <div ng-if="quickLookup.hasLink">
                                     <small><i class="icon ion-link"></i> {{quickLookup.connectingStationName}}</small>
+                                    <div>
+                                        <small><i class="icon ion-android-train" style=""></i> {{quickLookup.destinationStationName}}</small>
+                                    </div>
                                 </div>
-                                <div>
-                                    <small><span ng-if="quickLookup.hasLink"><i class="icon ion-android-train"></i></span> {{quickLookup.destinationStationName}}</small>
+                                <div ng-if="quickLookup.hasMoreLinks">
+                                    <small><i class="icon ion-link"></i> {{quickLookup.finalConnectingStationName}}</small>
+                                    <div>
+                                        <small><i class="icon ion-android-train" style=""></i> {{quickLookup.finalDestinationStationName}}</small>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-center">
