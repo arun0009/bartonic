@@ -1,7 +1,7 @@
 <ion-view>
     <ion-content ng-init="myroutes.loadFavoriteRouteSchedule()" has-header="true" padding="true">
         <ion-list show-delete="false" can-swipe="true">
-            <ion-item ng-repeat="myRoute in myRoutes | orderBy:myRoute.index  track by $index">
+            <ion-item ng-repeat="myRoute in myRoutes | orderBy: 'index'">
                 <div class="row">
                     <div class="col-75">
                         <small>{{myRoute.originName}}</small>

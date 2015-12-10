@@ -38,18 +38,12 @@ var MyRoutesCtrl = function ($scope, $state, $filter, $ionicPlatform, $q, $timeo
             var myRouteInfoInScope = $filter('filter')($scope.myRoutes, {id: myRouteInfo.id}, true);
             if (!myRouteInfoInScope.length) {
                 $scope.myRoutes.push(myRouteInfo);
-                $scope.myRoutes.sort(function(a, b) {
-                    return parseFloat(a.index) - parseFloat(b.index);
-                });
             }
         });
     }
 
     this.loadFavoriteRouteSchedule = function () {
         var favoriteRoutes = JSON.parse(window.localStorage.getItem('favoriteRoutes')) || [];
-        favoriteRoutes.sort(function(a, b) {
-            return parseFloat(a.index) - parseFloat(b.index);
-        });
         console.log('fav routes : ' + angular.toJson(favoriteRoutes));
         $q.all(getScheduleDepuartureDetailsPromises(favoriteRoutes)).then(function (data) {
             angular.forEach(data, function (scheduledDepartureDetails, key) {
