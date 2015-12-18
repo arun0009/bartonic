@@ -1,19 +1,10 @@
-var QuickLookupCtrl = function ($scope, $filter, $state, $ionicPlatform, StationsLookupService, ScheduledDepartureDetailsService, EstTimeDepartureService) {
-
-    this.getStations = function () {
-        StationsLookupService.stationsDeferredRequest().$promise.then(function (response) {
-            $scope.stations = response.root.stations;
-        }), function (err) {
-            console.error("Exception occurred in retrieving stations: " + err.message);
-        };
-    };
-
+var QuickLookupCtrl = function ($scope, $filter, $state, $ionicPlatform, ScheduledDepartureDetailsService, EstTimeDepartureService) {
 
     this.showEstimatedDeparture = function () {
         $scope.quickLookups = [];
         var stations = $scope.stations;
-        var origin = this.origin;
-        var destination = this.destination;
+        var origin = this.origin.abbr;
+        var destination = this.destination.abbr;
 
         ScheduledDepartureDetailsService.scheduledDepartureDetailsDeferredRequest(origin, destination).$promise.then(function (scheduledDepartureDetails) {
 
@@ -28,17 +19,17 @@ var QuickLookupCtrl = function ($scope, $filter, $state, $ionicPlatform, Station
                 if (angular.isArray(trip.leg)) {
                     quickLookup.hasLink = true;
                     quickLookup.trainHeadStation = trip.leg[0]._trainHeadStation;
-                    quickLookup.firstStationName = $filter('filter')(stations.station, {abbr: quickLookup.trainHeadStation}, true)[0].name;
-                    quickLookup.connectingStationName = $filter('filter')(stations.station, {abbr: trip.leg[0]._destination}, true)[0].name;
-                    quickLookup.destinationStationName = $filter('filter')(stations.station, {abbr: trip.leg[1]._trainHeadStation}, true)[0].name;
+                    quickLookup.firstStationName = $filter('filter')(stations, {abbr: quickLookup.trainHeadStation}, true)[0].name;
+                    quickLookup.connectingStationName = $filter('filter')(stations, {abbr: trip.leg[0]._destination}, true)[0].name;
+                    quickLookup.destinationStationName = $filter('filter')(stations, {abbr: trip.leg[1]._trainHeadStation}, true)[0].name;
                     if (trip.leg[2] != null) {
                         quickLookup.hasMoreLinks = true;
-                        quickLookup.finalConnectingStationName = $filter('filter')(stations.station, {abbr: trip.leg[1]._destination}, true)[0].name;
-                        quickLookup.finalDestinationStationName = $filter('filter')(stations.station, {abbr: trip.leg[2]._trainHeadStation}, true)[0].name;
+                        quickLookup.finalConnectingStationName = $filter('filter')(stations, {abbr: trip.leg[1]._destination}, true)[0].name;
+                        quickLookup.finalDestinationStationName = $filter('filter')(stations, {abbr: trip.leg[2]._trainHeadStation}, true)[0].name;
                     }
                 } else {
                     quickLookup.trainHeadStation = trip.leg._trainHeadStation;
-                    quickLookup.firstStationName = $filter('filter')(stations.station, {abbr: quickLookup.trainHeadStation}, true)[0].name;
+                    quickLookup.firstStationName = $filter('filter')(stations, {abbr: quickLookup.trainHeadStation}, true)[0].name;
                 }
 
                 EstTimeDepartureService.departureTimeDeferredRequest(origin).promise.then(null, null, function (estTimeDeparture) {

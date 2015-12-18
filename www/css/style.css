@@ -1,6 +1,36 @@
-body {
-    cursor: url('http://ionicframework.com/img/finger.png'), auto;
+.pane {
+    background: url('../img/background.jpg') no-repeat;
+    background-size: cover;
 }
-.col {
-    background-color:#eeeeee;
+
+.item-complex .item-content, .item-select, .item {
+    background: transparent;
+    border-color: transparent;
+    color: #dddddd;
+    font-weight: bold;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.input-label {
+    color: #dddddd;
+    font-weight: bold;
+}
+
+.optColor {
+    background-color: #009689;
+}
+
+.modalClass {
+    background: url('../img/background.jpg') no-repeat;
+    background-size: cover;
+}
+
+.button-select {
+    padding: 0 16px;
+    text-align: left;
+    min-width: 100%;
+    min-height: 59px;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 53px;
 }

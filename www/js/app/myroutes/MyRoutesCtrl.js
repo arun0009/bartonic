@@ -1,9 +1,18 @@
-var MyRoutesCtrl = function ($scope, $state, $filter, $ionicPlatform, $q, $timeout, ScheduledDepartureDetailsService, EstTimeDepartureService) {
+var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform, $q, $timeout, ScheduledDepartureDetailsService, EstTimeDepartureService, StationsLookupService) {
 
     $scope.myRoutes = [];
     var originNames = [];
     var destinationNames = [];
     //window.localStorage.clear();
+
+    StationsLookupService.stationsDeferredRequest().$promise.then(function (response) {
+        var stations = response.root.stations.station;
+        $rootScope.stations = stations;
+        $rootScope.sourceStations = stations;
+        $rootScope.destinationStations = stations;
+    }), function (err) {
+        console.error("Exception occurred in retrieving stations: " + err.message);
+    };
 
     function getScheduleDepuartureDetailsPromises(favoriteRoutes) {
         var scheduleDepartureDetailsPromises = [];
@@ -47,6 +56,7 @@ var MyRoutesCtrl = function ($scope, $state, $filter, $ionicPlatform, $q, $timeo
         console.log('fav routes : ' + angular.toJson(favoriteRoutes));
         $q.all(getScheduleDepuartureDetailsPromises(favoriteRoutes)).then(function (data) {
             angular.forEach(data, function (scheduledDepartureDetails, key) {
+                console.log("scheduledDepartureDetails is : " +angular.toJson(scheduledDepartureDetails));
                 var trainHeadStation = "";
                 var myRouteInfo = {};
                 myRouteInfo.index = favoriteRoutes[key].index;
