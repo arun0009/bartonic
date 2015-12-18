@@ -5,14 +5,16 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
     var destinationNames = [];
     //window.localStorage.clear();
 
-    StationsLookupService.stationsDeferredRequest().$promise.then(function (response) {
-        var stations = response.root.stations.station;
-        $rootScope.stations = stations;
-        $rootScope.sourceStations = stations;
-        $rootScope.destinationStations = stations;
-    }), function (err) {
-        console.error("Exception occurred in retrieving stations: " + err.message);
-    };
+    if (!$rootScope.stations) {
+        StationsLookupService.stationsDeferredRequest().$promise.then(function (response) {
+            var stations = response.root.stations.station;
+            $rootScope.stations = stations;
+            $rootScope.sourceStations = stations;
+            $rootScope.destinationStations = stations;
+        }), function (err) {
+            console.error("Exception occurred in retrieving stations: " + err.message);
+        };
+    }
 
     function getScheduleDepuartureDetailsPromises(favoriteRoutes) {
         var scheduleDepartureDetailsPromises = [];
@@ -32,7 +34,7 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
             myRouteInfo.originName = originNames[myRouteInfo.id];
             myRouteInfo.destinationName = destinationNames[myRouteInfo.id];
 
-            var estDepartureDetails = angular.isArray(estTimeDeparture.root.station.etd) ? $filter('filter')(estTimeDeparture.root.station.etd, {abbreviation: myRouteInfo.trainHeadStation}, true): estTimeDeparture.root.station.etd;
+            var estDepartureDetails = angular.isArray(estTimeDeparture.root.station.etd) ? $filter('filter')(estTimeDeparture.root.station.etd, {abbreviation: myRouteInfo.trainHeadStation}, true) : estTimeDeparture.root.station.etd;
             if (estDepartureDetails != null) {
                 //should be a way to filter and return first object?
                 if (angular.isArray(estDepartureDetails)) {
@@ -56,7 +58,6 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
         console.log('fav routes : ' + angular.toJson(favoriteRoutes));
         $q.all(getScheduleDepuartureDetailsPromises(favoriteRoutes)).then(function (data) {
             angular.forEach(data, function (scheduledDepartureDetails, key) {
-                console.log("scheduledDepartureDetails is : " +angular.toJson(scheduledDepartureDetails));
                 var trainHeadStation = "";
                 var myRouteInfo = {};
                 myRouteInfo.index = favoriteRoutes[key].index;
