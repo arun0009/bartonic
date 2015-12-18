@@ -1,4 +1,4 @@
-angular.module('bartionic', ['ionic', 'ngCordova', 'xml', 'timer', 'emguo.poller', 'bartionic.myroutes', 'bartionic.addroute', 'bartionic.quicklookup',
+angular.module('bartionic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', 'timer', 'emguo.poller', 'bartionic.myroutes', 'bartionic.addroute', 'bartionic.quicklookup',
     'bartionic.map'])
     .config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
         $httpProvider.interceptors.push('xmlHttpInterceptor');
@@ -18,6 +18,9 @@ angular.module('bartionic', ['ionic', 'ngCordova', 'xml', 'timer', 'emguo.poller
             abstract: true,
             templateUrl: "js/app/tabs/tabs.html"
         })
+    })
+    .config(function ($ionicConfigProvider) {
+        $ionicConfigProvider.navBar.alignTitle('center');
     })
     .run(function ($ionicPlatform, $state) {
         $ionicPlatform.ready(function () {

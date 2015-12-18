@@ -1,9 +1,20 @@
-var MyRoutesCtrl = function ($scope, $state, $filter, $ionicPlatform, $q, $timeout, ScheduledDepartureDetailsService, EstTimeDepartureService) {
+var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform, $q, $timeout, ScheduledDepartureDetailsService, EstTimeDepartureService, StationsLookupService) {
 
     $scope.myRoutes = [];
     var originNames = [];
     var destinationNames = [];
     //window.localStorage.clear();
+
+    if (!$rootScope.stations) {
+        StationsLookupService.stationsDeferredRequest().$promise.then(function (response) {
+            var stations = response.root.stations.station;
+            $rootScope.stations = stations;
+            $rootScope.sourceStations = stations;
+            $rootScope.destinationStations = stations;
+        }), function (err) {
+            console.error("Exception occurred in retrieving stations: " + err.message);
+        };
+    }
 
     function getScheduleDepuartureDetailsPromises(favoriteRoutes) {
         var scheduleDepartureDetailsPromises = [];
@@ -23,7 +34,7 @@ var MyRoutesCtrl = function ($scope, $state, $filter, $ionicPlatform, $q, $timeo
             myRouteInfo.originName = originNames[myRouteInfo.id];
             myRouteInfo.destinationName = destinationNames[myRouteInfo.id];
 
-            var estDepartureDetails = angular.isArray(estTimeDeparture.root.station.etd) ? $filter('filter')(estTimeDeparture.root.station.etd, {abbreviation: myRouteInfo.trainHeadStation}, true): estTimeDeparture.root.station.etd;
+            var estDepartureDetails = angular.isArray(estTimeDeparture.root.station.etd) ? $filter('filter')(estTimeDeparture.root.station.etd, {abbreviation: myRouteInfo.trainHeadStation}, true) : estTimeDeparture.root.station.etd;
             if (estDepartureDetails != null) {
                 //should be a way to filter and return first object?
                 if (angular.isArray(estDepartureDetails)) {

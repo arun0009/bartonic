@@ -1,13 +1,4 @@
-var AddRouteCtrl = function ($scope, $state, $ionicPlatform, StationsLookupService) {
-
-
-    this.getStations = function () {
-        StationsLookupService.stationsDeferredRequest().$promise.then(function (response) {
-           $scope.stations = response.root.stations;
-        }), function (err) {
-            console.error("Exception occurred in retrieving stations: " + err.message);
-        };
-    }
+var AddRouteCtrl = function ($scope, $state) {
 
     this.addRouteToFavorites = function () {
         var favoriteRoutes =  JSON.parse(window.localStorage.getItem('favoriteRoutes')) || [];
@@ -22,7 +13,7 @@ var AddRouteCtrl = function ($scope, $state, $ionicPlatform, StationsLookupServi
     }
 
     this.cancelAddRoute = function () {
-        $scope.go("tab.myroutes");
+        $state.go("tab.myroutes");
     }
 }
 angular.module('bartionic.addroute').controller('AddRouteCtrl', AddRouteCtrl);
