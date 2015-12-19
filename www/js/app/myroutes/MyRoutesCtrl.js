@@ -1,4 +1,5 @@
-var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform, $q, $timeout, ScheduledDepartureDetailsService, EstTimeDepartureService, StationsLookupService) {
+var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform, $q, $timeout, $log, MyRoutesService, ScheduledDepartureDetailsService,
+                             EstTimeDepartureService, StationsLookupService) {
 
     $scope.myRoutes = [];
     var originNames = [];
@@ -12,7 +13,7 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
             $rootScope.sourceStations = stations;
             $rootScope.destinationStations = stations;
         }), function (err) {
-            console.error("Exception occurred in retrieving stations: " + err.message);
+            $log.error("Exception occurred in retrieving stations: " + err.message);
         };
     }
 
@@ -55,7 +56,7 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
 
     this.loadFavoriteRouteSchedule = function () {
         var favoriteRoutes = JSON.parse(window.localStorage.getItem('favoriteRoutes')) || [];
-        console.log('fav routes : ' + angular.toJson(favoriteRoutes));
+        $log.debug('fav routes : ' + angular.toJson(favoriteRoutes));
         $q.all(getScheduleDepuartureDetailsPromises(favoriteRoutes)).then(function (data) {
             angular.forEach(data, function (scheduledDepartureDetails, key) {
                 var trainHeadStation = "";
@@ -78,10 +79,15 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
         });
     }
 
+    this.getSchedules = function (route) {
+        MyRoutesService.setMyRoute(route);
+        $state.go('tab.myrouteschedule');
+    }
+
     this.deleteRoute = function (route) {
         var favoriteRoutes = JSON.parse(window.localStorage.getItem('favoriteRoutes')) || [];
         for (var i = 0; i < favoriteRoutes.length; i++) {
-            console.log(favoriteRoutes[i]);
+            $log.debug(favoriteRoutes[i]);
             if (favoriteRoutes[i].originName === route.originName && favoriteRoutes[i].destinationName === route.destinationName) {
                 favoriteRoutes.splice(i, 1);
             }

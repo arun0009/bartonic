@@ -1,4 +1,4 @@
-var AddRouteCtrl = function ($scope, $state) {
+var AddRouteCtrl = function ($scope, $state, $log) {
 
     this.addRouteToFavorites = function () {
         var favoriteRoutes =  JSON.parse(window.localStorage.getItem('favoriteRoutes')) || [];
@@ -8,7 +8,7 @@ var AddRouteCtrl = function ($scope, $state) {
             favoriteRoutes.push({index: ++index, originAbbr: this.destination.abbr, originName: this.destination.name, destinationAbbr: this.origin.abbr, destinationName: this.origin.name});
         }
         window.localStorage.setItem('favoriteRoutes', JSON.stringify(favoriteRoutes));
-        console.log(JSON.stringify(favoriteRoutes));
+        $log.debug(JSON.stringify(favoriteRoutes));
         $state.go("tab.myroutes", {}, {reload: true});
     }
 

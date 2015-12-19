@@ -1,0 +1,54 @@
+<ion-view title="Departures" hide-back-button="false">
+    <ion-nav-bar>
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-content>
+        <form ng-init="myrouteschedule.showEstimatedDeparture()">
+            <div>
+                <div ng-repeat="quickLookup in quickLookups track by $index">
+                    <div class="item calm-border" ng-if="quickLookup.estDeparture">
+                        <div class="row">
+                            <div class="col-67">
+                                <div>
+                                    <small><span><i class="icon ion-android-train" style=""></i></span> {{quickLookup.firstStationName}}</small>
+                                </div>
+                                <div ng-if="quickLookup.hasLink">
+                                    <small><i class="icon ion-link"></i> {{quickLookup.connectingStationName}}</small>
+                                    <div>
+                                        <small><i class="icon ion-android-train" style=""></i> {{quickLookup.destinationStationName}}</small>
+                                    </div>
+                                </div>
+                                <div ng-if="quickLookup.hasMoreLinks">
+                                    <small><i class="icon ion-link"></i> {{quickLookup.finalConnectingStationName}}</small>
+                                    <div>
+                                        <small><i class="icon ion-android-train" style=""></i> {{quickLookup.finalDestinationStationName}}</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-center">
+                                <div>
+                                <span ng-if="quickLookup.estDeparture === 'LEAVING_NOW'">
+                                    <small><b>Leaving</b></small>
+                                </span>
+                                <span ng-if="quickLookup.estDeparture > 0">
+                                    <small>
+                                        <timer interval="1000" language="en" countdown="quickLookup.estDeparture">{{minutes}}m:{{seconds}}s</timer>
+                                    </small>
+
+                               </span>
+                                </div>
+                                <div>
+                                    <small>{{quickLookup.routeFare | currency:$:2}}, Arr {{quickLookup.destTimeMin}}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>
+
+
+

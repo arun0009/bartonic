@@ -1,6 +1,7 @@
-angular.module('bartionic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', 'timer', 'emguo.poller', 'bartionic.myroutes', 'bartionic.addroute', 'bartionic.quicklookup',
-    'bartionic.map'])
-    .config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
+angular.module('bartionic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', 'timer', 'emguo.poller', 'bartionic.myroutes', 'bartionic.myrouteschedule',
+    'bartionic.addroute', 'bartionic.quicklookup', 'bartionic.map'])
+    .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $logProvider, ENV) {
+        $logProvider.debugEnabled(ENV.DEBUGENABLED);
         $httpProvider.interceptors.push('xmlHttpInterceptor');
         $httpProvider.defaults.useXDomain = true;
         delete $httpProvider.defaults.headers.common["X-Requested-With"];
@@ -24,6 +25,12 @@ angular.module('bartionic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', 
     })
     .run(function ($ionicPlatform, $state) {
         $ionicPlatform.ready(function () {
+
+            //hide splash screen
+            if(navigator.splashscreen){
+                navigator.splashscreen.hide();
+            }
+
             $ionicPlatform.on('resume', function () {
                 $state.go($state.current, {}, {reload: true});
             });

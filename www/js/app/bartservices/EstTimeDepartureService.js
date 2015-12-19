@@ -1,5 +1,5 @@
 angular.module('bartionic')
-    .factory('EstTimeDepartureService', function ($resource, poller, ScheduledDepartureDetailsService, ENV) {
+    .factory('EstTimeDepartureService', function ($resource, $log, poller, ScheduledDepartureDetailsService, ENV) {
         var departureTimeDeferredResponse = {};
         return {
             departureTimeDeferredRequest : function (origin){
@@ -14,7 +14,7 @@ angular.module('bartionic')
         }
 
         function getRealTimeDeparture(origin) {
-            console.log("origin is : " + origin);
+            $log.debug("origin is : " + origin);
             var realTimeDepartureEndpoint = ENV.bartBaseURL + '/etd.aspx?cmd=etd&orig=' + origin + '&key=' + ENV.bartApiKey;
             var realTimeDepartureResource = $resource(realTimeDepartureEndpoint, {}, {myQuery: {method: 'GET', isArray: false}});
             // Get poller.
