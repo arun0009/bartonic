@@ -1,4 +1,4 @@
-angular.module('bartionic.quicklookup').factory('QuickLookupService', function ($filter, $q, $log, ScheduledDepartureDetailsService, EstTimeDepartureService) {
+angular.module('bartonic.quicklookup').factory('QuickLookupService', function ($filter, $q, $log, ScheduledDepartureDetailsService, EstTimeDepartureService) {
 
     return {
         getEstimatedDeparture: function (stations, origin, destination) {

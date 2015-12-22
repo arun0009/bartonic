@@ -1,4 +1,4 @@
-angular.module('bartionic')
+angular.module('bartonic')
     .factory('ScheduledDepartureDetailsService', function ($resource, $log, poller, ENV) {
         var scheduledDepartureDetailsDeferredResponse = {};
         return {

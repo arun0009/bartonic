@@ -1,4 +1,4 @@
-angular.module('bartionic.myroutes').factory('MyRoutesService', function() {
+angular.module('bartonic.myroutes').factory('MyRoutesService', function() {
     var myRoute = {};
     return {
         setMyRoute: function(route) {

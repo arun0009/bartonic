@@ -13,4 +13,4 @@ var QuickLookupCtrl = function ($scope, $log, QuickLookupService) {
         });
     }
 }
-angular.module('bartionic.quicklookup').controller('QuickLookupCtrl', QuickLookupCtrl);
+angular.module('bartonic.quicklookup').controller('QuickLookupCtrl', QuickLookupCtrl);

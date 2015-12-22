@@ -1,4 +1,4 @@
-angular.module('bartionic')
+angular.module('bartonic')
     .factory('StationsLookupService', function ($resource, ENV) {
         var stationsDeferredResponse = {};
         return {

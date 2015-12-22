@@ -14,4 +14,4 @@ var MyRouteScheduleCtrl = function ($scope, $filter, $log, MyRoutesService, Quic
     }
 }
 
-angular.module('bartionic.myrouteschedule').controller('MyRouteScheduleCtrl', MyRouteScheduleCtrl);
+angular.module('bartonic.myrouteschedule').controller('MyRouteScheduleCtrl', MyRouteScheduleCtrl);

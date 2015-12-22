@@ -1,4 +1,4 @@
-angular.module('bartionic.quicklookup', ['ionic', 'ngResource'])
+angular.module('bartonic.quicklookup', ['ionic', 'ngResource'])
     .config(function ($stateProvider) {
         $stateProvider.state('tab.quicklookup', {
             url: '/quicklookup',

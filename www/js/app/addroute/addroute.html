@@ -2,7 +2,7 @@
     <ion-content>
         <form>
             <div class="padding">
-                <button class="button button-outline button-select button-light ion-android-subway" modal-class="modalClass" modal-select ng-model="addroute.origin" options="sourceStations"
+                <button class="button button-outline button-select button-light ion-android-subway" modal-class="modalClass" modal-select ng-model="addroute.origin" options="stations"
                         modal-title="Select Origin" header-footer-class="bar-stable" sub-header-class="bar-stable" has-search="true">
                     {{&nbsp;addroute.origin.name || &apos;&nbsp;Select Origin&apos;}}
                     <div class="option">
@@ -12,7 +12,7 @@
             </div>
 
             <div class="padding">
-                <button class="button button-outline button-select button-light ion-android-subway" modal-class="modalClass" modal-select ng-model="addroute.destination" options="destinationStations"
+                <button class="button button-outline button-select button-light ion-android-subway" modal-class="modalClass" modal-select ng-model="addroute.destination" options="stations"
                         modal-title="Select Destination" header-footer-class="bar-stable" sub-header-class="bar-stable" has-search="true">
                     {{&nbsp;addroute.destination.name || &apos;&nbsp;Select Destination&apos;}}
                     <div class="option">

@@ -1,21 +1,11 @@
 var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform, $q, $timeout, $log, MyRoutesService, ScheduledDepartureDetailsService,
-                             EstTimeDepartureService, StationsLookupService) {
+                             EstTimeDepartureService) {
 
     $scope.myRoutes = [];
     var originNames = [];
     var destinationNames = [];
-    //window.localStorage.clear();
+    window.localStorage.clear();
 
-    if (!$rootScope.stations) {
-        StationsLookupService.stationsDeferredRequest().$promise.then(function (response) {
-            var stations = response.root.stations.station;
-            $rootScope.stations = stations;
-            $rootScope.sourceStations = stations;
-            $rootScope.destinationStations = stations;
-        }), function (err) {
-            $log.error("Exception occurred in retrieving stations: " + err.message);
-        };
-    }
 
     function getScheduleDepuartureDetailsPromises(favoriteRoutes) {
         var scheduleDepartureDetailsPromises = [];
@@ -98,4 +88,4 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
 }
 
 
-angular.module('bartionic.myroutes').controller('MyRoutesCtrl', MyRoutesCtrl);
+angular.module('bartonic.myroutes').controller('MyRoutesCtrl', MyRoutesCtrl);

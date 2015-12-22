@@ -1,5 +1,5 @@
 var MapCtrl = function ($scope) {
 }
 
-angular.module('bartionic.map').controller('MapCtrl', MapCtrl);
+angular.module('bartonic.map').controller('MapCtrl', MapCtrl);
 
