@@ -47,7 +47,6 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
         $log.debug('fav routes : ' + angular.toJson(favoriteRoutes));
         $q.all(getScheduleDepuartureDetailsPromises(favoriteRoutes)).then(function (data) {
             angular.forEach(data, function (scheduledDepartureDetails, key) {
-                var trainHeadStation = "";
                 var myRouteInfo = {};
                 myRouteInfo.index = favoriteRoutes[key].index;
                 myRouteInfo.id = key;
