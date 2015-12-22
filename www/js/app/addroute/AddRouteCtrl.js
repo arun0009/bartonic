@@ -1,4 +1,6 @@
-var AddRouteCtrl = function ($scope, $state, $log, $filter) {
+var AddRouteCtrl = function ($scope, $state, $log, $filter, stations) {
+
+    $scope.stations = stations.root.stations.station;
 
     this.addRouteToFavorites = function () {
         var favoriteRoutes = JSON.parse(window.localStorage.getItem('favoriteRoutes')) || [];

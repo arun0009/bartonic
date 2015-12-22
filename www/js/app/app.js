@@ -22,24 +22,14 @@ angular.module('bartonic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', '
     })
     .run(function ($ionicPlatform, $state, $rootScope, StationsLookupService) {
         $ionicPlatform.ready(function () {
-            StationsLookupService.stationsDeferredRequest().$promise.then(function (response) {
-                $rootScope.stations = response.root.stations.station;
-                var favoriteRoutes = JSON.parse(window.localStorage.getItem('favoriteRoutes')) || [];
-                if (favoriteRoutes.length == 0) {
-                    $state.go("tab.addroute");
-                } else {
-                    $state.go("tab.myroutes");
-                }
-                //hide splash screen
-                if (navigator.splashscreen) {
-                    setTimeout(function () {
-                        navigator.splashscreen.hide();
-                    }, 100);
-                }
-            }), function (err) {
-                $log.error("Exception occurred in retrieving stations: " + err.message);
-            };
-
+            var favoriteRoutes = JSON.parse(window.localStorage.getItem('favoriteRoutes')) || [];
+            if (favoriteRoutes.length != 0) {
+                $state.go("tab.myroutes");
+            } else {
+                $state.go('tab.addroute');
+            }
+            hideSplashScreen();
+            
             $ionicPlatform.on('resume', function () {
                 $state.go($state.current, {}, {reload: true});
             });
@@ -48,5 +38,14 @@ angular.module('bartonic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', '
                 StatusBar.styleDefault();
             }
         })
-    })
-;
+
+        function hideSplashScreen() {
+            if (navigator.splashscreen) {
+                setTimeout(function () {
+                    navigator.splashscreen.hide();
+                }, 100);
+            }
+        }
+    });
+
+

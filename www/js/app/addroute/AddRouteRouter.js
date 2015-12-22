@@ -5,7 +5,12 @@ angular.module('bartonic.addroute', ['ionic', 'ngResource'])
             views: {
                 'tab-addroute': {
                     controller: 'AddRouteCtrl as addroute',
-                    templateUrl: 'js/app/addroute/addroute.html'
+                    templateUrl: 'js/app/addroute/addroute.html',
+                    resolve: {
+                        stations: function(StationsLookupService) {
+                            return StationsLookupService.stationsDeferredRequest().$promise;
+                        }
+                    }
                 }
             }
         })

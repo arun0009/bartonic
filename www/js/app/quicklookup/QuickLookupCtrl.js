@@ -1,4 +1,6 @@
-var QuickLookupCtrl = function ($scope, $log, QuickLookupService) {
+var QuickLookupCtrl = function ($scope, $log, stations, QuickLookupService) {
+
+    $scope.stations = stations.root.stations.station;
 
     this.showEstimatedDeparture = function () {
         $scope.quickLookups = [];
