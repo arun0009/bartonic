@@ -25,11 +25,13 @@ angular.module('bartonic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', '
             var favoriteRoutes = JSON.parse(window.localStorage.getItem('favoriteRoutes')) || [];
             if (favoriteRoutes.length != 0) {
                 $state.go("tab.myroutes");
+                hideSplashScreen(100);
             } else {
                 $state.go('tab.addroute');
+                hideSplashScreen(1000);
             }
-            hideSplashScreen();
-            
+
+
             $ionicPlatform.on('resume', function () {
                 $state.go($state.current, {}, {reload: true});
             });
@@ -39,11 +41,11 @@ angular.module('bartonic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', '
             }
         })
 
-        function hideSplashScreen() {
+        function hideSplashScreen(milliseconds) {
             if (navigator.splashscreen) {
                 setTimeout(function () {
                     navigator.splashscreen.hide();
-                }, 100);
+                }, milliseconds);
             }
         }
     });
