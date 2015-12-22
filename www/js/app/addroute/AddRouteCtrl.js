@@ -1,9 +1,14 @@
-var AddRouteCtrl = function ($scope, $state, $log) {
+var AddRouteCtrl = function ($scope, $state, $log, $filter) {
 
     this.addRouteToFavorites = function () {
         var favoriteRoutes = JSON.parse(window.localStorage.getItem('favoriteRoutes')) || [];
         var index = favoriteRoutes.length;
-        if (!angular.isUndefined(this.origin) && !angular.isUndefined(this.destination)) {
+
+        if (!angular.isUndefined(this.origin) && !angular.isUndefined(this.destination) && this.origin.abbr != this.destination.abbr) {
+            if ($filter('filter')(favoriteRoutes, {originAbbr: this.origin.abbr, destinationAbbr: this.destination.abbr}).length != 0) {
+                $state.go("tab.myroutes", {}, {reload: false});
+                return;
+            }
             favoriteRoutes.push({
                 index: ++index,
                 originAbbr: this.origin.abbr,
