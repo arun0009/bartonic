@@ -23,7 +23,6 @@ angular.module('bartonic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', '
     .run(function ($ionicPlatform, $state, $rootScope, StationsLookupService) {
         $ionicPlatform.ready(function () {
             StationsLookupService.stationsDeferredRequest().$promise.then(function (response) {
-                console.log($rootScope.stations);
                 $rootScope.stations = response.root.stations.station;
                 var favoriteRoutes = JSON.parse(window.localStorage.getItem('favoriteRoutes')) || [];
                 if (favoriteRoutes.length == 0) {

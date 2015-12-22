@@ -4,8 +4,7 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
     $scope.myRoutes = [];
     var originNames = [];
     var destinationNames = [];
-    window.localStorage.clear();
-
+    //window.localStorage.clear();
 
     function getScheduleDepuartureDetailsPromises(favoriteRoutes) {
         var scheduleDepartureDetailsPromises = [];
@@ -21,7 +20,6 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
 
     function setEstimatedDepartureDetails(myRouteInfo, originAbbr) {
         EstTimeDepartureService.departureTimeDeferredRequest(originAbbr).promise.then(null, null, function (estTimeDeparture) {
-            //console.log("estTimeDeparture is : " + angular.toJson(estTimeDeparture));
             myRouteInfo.originName = originNames[myRouteInfo.id];
             myRouteInfo.destinationName = destinationNames[myRouteInfo.id];
 
