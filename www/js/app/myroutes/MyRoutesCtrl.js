@@ -49,7 +49,7 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
         var favoriteRoutes = JSON.parse(window.localStorage.getItem('favoriteRoutes')) || [];
         getFavoriteRouteSchedule(favoriteRoutes);
         $interval(function () {
-            getFavoriteRouteSchedule(favoriteRoutes)
+            getFavoriteRouteSchedule(favoriteRoutes);
         }, 15000);
     }
 

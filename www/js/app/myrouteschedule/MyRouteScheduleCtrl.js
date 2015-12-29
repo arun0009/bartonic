@@ -10,11 +10,12 @@ var MyRouteScheduleCtrl = function ($scope, $filter, $log, $interval, stations, 
         var destination = route.destinationAbbr;
         quickLookUp($scope.stations, origin, destination);
         $interval(function () {
-            quickLookUp($scope.stations, origin, destination)
+            quickLookUp($scope.stations, origin, destination);
         }, 60000);
     }
 
     function quickLookUp(stations, origin, destination) {
+        console.log( new Date().getMinutes());
         QuickLookupService.getEstimatedDeparture(stations, origin, destination).then(function (data) {
             $scope.quickLookups = data;
         }, function (error) {
