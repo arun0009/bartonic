@@ -11,6 +11,41 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+/* iPhone < 5: */
+@media screen and (device-aspect-ratio: 2/3) {
+    .item-complex .item-content, .item-select, .item {
+        font-size: small;
+    }
+}
+
+/* iPhone 5: */
+@media screen and (device-aspect-ratio: 40/71) {
+    .item-complex .item-content, .item-select, .item {
+        font-size: small;
+    }
+}
+
+/* iPhone 6: */
+@media screen and (device-aspect-ratio: 375/667) {
+    .item-complex .item-content, .item-select, .item {
+        font-size: small;
+    }
+}
+
+/* iPhone 6 Plus: */
+@media screen and (device-aspect-ratio: 16/9) {
+    .item-complex .item-content, .item-select, .item {
+        font-size: medium;
+    }
+}
+
+/* iPad: */
+@media screen and (device-aspect-ratio: 3/4) {
+    .item-complex .item-content, .item-select, .item {
+        font-size: large;
+    }
+}
+
 .input-label {
     color: #dddddd;
     font-weight: bold;
@@ -33,4 +68,14 @@
     font-size: 18px;
     font-weight: bold;
     line-height: 53px;
+}
+
+.smallfont {
+    font-size: x-small !important;
+    color: #dddddd !important;
+    display: inline;
+}
+
+.button-small-font {
+    font-size: small !important;
 }

@@ -26,7 +26,7 @@
                     <button type="button" class="button button-full button-balanced ion-ios-search-strong" ng-click="quicklookup.showEstimatedDeparture()">&nbsp;Quick Lookup</button>
                 </div>
 
-                <div ng-repeat="quickLookup in quickLookups track by $index">
+                <div ng-repeat="quickLookup in quickLookups track by $index | orderBy: 'index'">
                     <div class="item calm-border" ng-if="quickLookup.estDeparture">
                         <div class="row">
                             <div class="col-67">
@@ -49,11 +49,12 @@
                             <div class="col-center">
                                 <div>
                                 <span ng-if="quickLookup.estDeparture === 'LEAVING_NOW'">
-                                    <small><b>Leaving</b></small>
+                                    <small><b>Leaving</b></small> <p class="smallfont">({{quickLookup.carLength}} car)</p>
                                 </span>
                                 <span ng-if="quickLookup.estDeparture > 0">
                                     <small>
                                         <timer interval="1000" language="en" countdown="quickLookup.estDeparture">{{minutes}}m:{{seconds}}s</timer>
+                                        <p class="smallfont">({{quickLookup.carLength}} car)</p>
                                     </small>
 
                                </span>

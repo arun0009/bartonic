@@ -1,5 +1,5 @@
 angular.module('bartonic')
-    .factory('ScheduledDepartureDetailsService', function ($resource, $log, poller, ENV) {
+    .factory('ScheduledDepartureDetailsService', function ($resource, $log, ENV) {
         var scheduledDepartureDetailsDeferredResponse = {};
         return {
             scheduledDepartureDetailsDeferredRequest: function (origin, destination) {

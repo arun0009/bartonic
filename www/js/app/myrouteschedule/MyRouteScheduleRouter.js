@@ -6,7 +6,12 @@ angular.module('bartonic.myrouteschedule', ['ionic', 'ngResource'])
             views: {
                 'tab-myroutes': {
                     controller: 'MyRouteScheduleCtrl as myrouteschedule',
-                    templateUrl: 'js/app/myrouteschedule/myrouteschedule.html'
+                    templateUrl: 'js/app/myrouteschedule/myrouteschedule.html',
+                    resolve: {
+                        stations: function(StationsLookupService) {
+                            return StationsLookupService.stationsDeferredRequest().$promise;
+                        }
+                    }
                 }
             }
         })

@@ -1,18 +1,19 @@
-<ion-view title="My Routes">
-    <ion-content ng-init="myroutes.loadFavoriteRouteSchedule()" has-header="true" padding="true">
+<ion-view title="My Routes" ng-init="myroutes.loadFavoriteRouteSchedule()">
+    <ion-content has-header="true" padding="true">
         <ion-list show-delete="false" can-swipe="true">
-            <ion-item ng-repeat="myRoute in myRoutes | orderBy: 'index'" ng-click="myroutes.getSchedules(myRoute)">
+            <ion-item ng-repeat="myRoute in myRoutes  track by $index | orderBy: 'index'" ng-click="myroutes.getRouteSchedules(myRoute)">
                 <div class="row">
                     <div class="col-75">
                         <small>{{myRoute.originName}}</small>
                     </div>
                     <div class="text-right">
                             <span ng-if="myRoute.estDeparture === 'LEAVING_NOW'">
-                                <small>Leaving</small>
+                                <small>Leaving</small> <p class="smallfont">({{myRoute.carLength}} car)</p>
                             </span>
                             <span ng-if="myRoute.estDeparture > 0">
                                 <small>
                                     <timer interval="1000" language="en" countdown="myRoute.estDeparture">{{minutes}}m:{{seconds}}s</timer>
+                                    <p class="smallfont">({{myRoute.carLength}} car)</p>
                                 </small>
                            </span>
                     </div>

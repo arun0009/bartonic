@@ -1,14 +1,10 @@
-angular.module('bartonic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', 'timer', 'emguo.poller', 'bartonic.myroutes', 'bartonic.myrouteschedule',
+angular.module('bartonic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', 'timer', 'bartonic.myroutes', 'bartonic.myrouteschedule',
     'bartonic.addroute', 'bartonic.quicklookup', 'bartonic.map'])
     .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $logProvider, ENV) {
         $logProvider.debugEnabled(ENV.DEBUGENABLED);
         $httpProvider.interceptors.push('xmlHttpInterceptor');
         $httpProvider.defaults.useXDomain = true;
         delete $httpProvider.defaults.headers.common["X-Requested-With"];
-    })
-    .config(function (pollerConfig) {
-        pollerConfig.stopOnStateChange = true; // If you use $stateProvider from ui-router.
-        pollerConfig.stopOnRouteChange = true; // If you use $routeProvider from ngRoute.
     })
     .config(function ($stateProvider) {
         $stateProvider.state('tab', {

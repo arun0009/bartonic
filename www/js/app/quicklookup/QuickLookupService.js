@@ -29,25 +29,25 @@ angular.module('bartonic.quicklookup').factory('QuickLookupService', function ($
                         quickLookup.firstStationName = $filter('filter')(stations, {abbr: quickLookup.trainHeadStation}, true)[0].name;
                     }
 
-                    EstTimeDepartureService.departureTimeDeferredRequest(origin).promise.then(null, null, function (estTimeDeparture) {
-
+                    EstTimeDepartureService.departureTimeDeferredRequest(origin).$promise.then(function (estTimeDeparture) {
                         var estDepartureDetails = angular.isArray(estTimeDeparture.root.station.etd) ? $filter('filter')(estTimeDeparture.root.station.etd, {abbreviation: quickLookup.trainHeadStation}, true) : estTimeDeparture.root.station.etd;
                         if (estDepartureDetails != null) {
                             if (angular.isArray(estDepartureDetails)) {
                                 estDepartureDetails = estDepartureDetails[0];
                             }
                             if (angular.isArray(estDepartureDetails.estimate)) {
+                                quickLookup.carLength = estDepartureDetails.estimate[key].length;
                                 quickLookup.estDeparture = isNaN(estDepartureDetails.estimate[key].minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate[key].minutes) * 60;
                             } else {
+                                quickLookup.carLength = estDepartureDetails.estimate.length;
                                 quickLookup.estDeparture = isNaN(estDepartureDetails.estimate.minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate.minutes) * 60;
                             }
                         }
+                        quickLookups.push(quickLookup);
                     });
-
-                    quickLookups.push(quickLookup);
+                    deferred.resolve(quickLookups);
                 });
 
-                deferred.resolve(quickLookups);
 
             }), function (err) {
                 $log.error("Exception occurred in getting schedule : " + err);

@@ -1,4 +1,4 @@
-var QuickLookupCtrl = function ($scope, $log, stations, QuickLookupService) {
+var QuickLookupCtrl = function ($scope, $log, $interval, stations, QuickLookupService) {
 
     $scope.stations = stations.root.stations.station;
 
@@ -7,7 +7,13 @@ var QuickLookupCtrl = function ($scope, $log, stations, QuickLookupService) {
         var stations = $scope.stations;
         var origin = this.origin.abbr;
         var destination = this.destination.abbr;
+        quickLookUp(stations, origin, destination);
+        $interval(function () {
+            quickLookUp(stations, origin, destination)
+        }, 60000);
+    }
 
+    function quickLookUp(stations, origin, destination){
         QuickLookupService.getEstimatedDeparture(stations, origin, destination).then(function (data) {
             $scope.quickLookups = data;
         }, function (error) {

@@ -29,11 +29,12 @@
                             <div class="col-center">
                                 <div>
                                 <span ng-if="quickLookup.estDeparture === 'LEAVING_NOW'">
-                                    <small><b>Leaving</b></small>
+                                    <small><b>Leaving</b></small> <p class="smallfont">({{quickLookup.carLength}} car)</p>
                                 </span>
                                 <span ng-if="quickLookup.estDeparture > 0">
                                     <small>
                                         <timer interval="1000" language="en" countdown="quickLookup.estDeparture">{{minutes}}m:{{seconds}}s</timer>
+                                        <p class="smallfont">({{quickLookup.carLength}} car)</p>
                                     </small>
 
                                </span>

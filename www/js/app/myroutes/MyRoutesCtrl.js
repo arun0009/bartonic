@@ -1,4 +1,4 @@
-var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform, $q, $timeout, $log, MyRoutesService, ScheduledDepartureDetailsService,
+var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform, $q, $interval, $log, MyRoutesService, ScheduledDepartureDetailsService,
                              EstTimeDepartureService) {
 
     $scope.myRoutes = [];
@@ -19,7 +19,7 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
     }
 
     function setEstimatedDepartureDetails(myRouteInfo, originAbbr) {
-        EstTimeDepartureService.departureTimeDeferredRequest(originAbbr).promise.then(null, null, function (estTimeDeparture) {
+        EstTimeDepartureService.departureTimeDeferredRequest(originAbbr).$promise.then(function (estTimeDeparture) {
             myRouteInfo.originName = originNames[myRouteInfo.id];
             myRouteInfo.destinationName = destinationNames[myRouteInfo.id];
 
@@ -31,20 +31,29 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
                 }
                 if (angular.isArray(estDepartureDetails.estimate)) {
                     myRouteInfo.estDeparture = isNaN(estDepartureDetails.estimate[0].minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate[0].minutes) * 60;
+                    myRouteInfo.carLength = estDepartureDetails.estimate[0].length;
                 } else {
                     myRouteInfo.estDeparture = isNaN(estDepartureDetails.estimate.minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate.minutes) * 60;
+                    myRouteInfo.carLength = estDepartureDetails.estimate.length;
+
                 }
             }
-            var myRouteInfoInScope = $filter('filter')($scope.myRoutes, {id: myRouteInfo.id}, true);
-            if (!myRouteInfoInScope.length) {
-                $scope.myRoutes.push(myRouteInfo);
-            }
+            $scope.myRoutes[myRouteInfo.id] = myRouteInfo;
+
+        }, function (err) {
+            $log.error("Exception occurred getting route estimates : " + err);
         });
     }
 
     this.loadFavoriteRouteSchedule = function () {
         var favoriteRoutes = JSON.parse(window.localStorage.getItem('favoriteRoutes')) || [];
-        $log.debug('fav routes : ' + angular.toJson(favoriteRoutes));
+        getFavoriteRouteSchedule(favoriteRoutes);
+        $interval(function () {
+            getFavoriteRouteSchedule(favoriteRoutes)
+        }, 15000);
+    }
+
+    function getFavoriteRouteSchedule(favoriteRoutes) {
         $q.all(getScheduleDepuartureDetailsPromises(favoriteRoutes)).then(function (data) {
             angular.forEach(data, function (scheduledDepartureDetails, key) {
                 var myRouteInfo = {};
@@ -52,6 +61,7 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
                 myRouteInfo.id = key;
                 myRouteInfo.routeFare = scheduledDepartureDetails.root.schedule.request.trip[0]._fare;
                 myRouteInfo.destTimeMin = scheduledDepartureDetails.root.schedule.request.trip[0]._destTimeMin;
+
                 myRouteInfo.hasLink = false;
                 if (angular.isArray(scheduledDepartureDetails.root.schedule.request.trip[0].leg)) {
                     myRouteInfo.hasLink = true;
@@ -66,7 +76,7 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
         });
     }
 
-    this.getSchedules = function (route) {
+    this.getRouteSchedules = function (route) {
         MyRoutesService.setMyRoute(route);
         $state.go('tab.myrouteschedule');
     }
