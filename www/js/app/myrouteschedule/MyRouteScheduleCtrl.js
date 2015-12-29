@@ -15,7 +15,6 @@ var MyRouteScheduleCtrl = function ($scope, $filter, $log, $interval, stations, 
     }
 
     function quickLookUp(stations, origin, destination) {
-        console.log( new Date().getMinutes());
         QuickLookupService.getEstimatedDeparture(stations, origin, destination).then(function (data) {
             $scope.quickLookups = data;
         }, function (error) {
