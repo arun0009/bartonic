@@ -6,12 +6,7 @@ angular.module('bartonic.quicklookup', ['ionic', 'ngResource'])
             views: {
                 'tab-quicklookup': {
                     controller: 'QuickLookupCtrl as quicklookup',
-                    templateUrl: 'js/app/quicklookup/quicklookup.html',
-                    resolve: {
-                        stations: function(StationsLookupService) {
-                            return StationsLookupService.stationsDeferredRequest().$promise;
-                        }
-                    }
+                    templateUrl: 'js/app/quicklookup/quicklookup.html'
                 }
             }
         })

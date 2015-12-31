@@ -1,6 +1,12 @@
-var AddRouteCtrl = function ($scope, $state, $log, $filter, stations) {
+var AddRouteCtrl = function ($scope, $state, $log, $filter, StationsLookupService) {
 
-    $scope.stations = stations.root.stations.station;
+    $scope.stations = [];
+
+    StationsLookupService.stationsDeferredRequest().$promise.then(function (response) {
+        $scope.stations = response.root.stations.station;
+    }), function (err) {
+        console.error("Exception occurred in retrieving stations: " + err.message);
+    };
 
     this.addRouteToFavorites = function () {
         var favoriteRoutes = JSON.parse(window.localStorage.getItem('favoriteRoutes')) || [];

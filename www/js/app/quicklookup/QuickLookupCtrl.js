@@ -1,6 +1,12 @@
-var QuickLookupCtrl = function ($scope, $log, $interval, stations, QuickLookupService) {
+var QuickLookupCtrl = function ($scope, $log, $interval, StationsLookupService, QuickLookupService) {
 
-    $scope.stations = stations.root.stations.station;
+    $scope.stations = [];
+
+    StationsLookupService.stationsDeferredRequest().$promise.then(function (response) {
+        $scope.stations = response.root.stations.station;
+    }), function (err) {
+        console.error("Exception occurred in retrieving stations: " + err.message);
+    };
 
     this.showEstimatedDeparture = function () {
         $scope.quickLookups = [];
@@ -13,7 +19,7 @@ var QuickLookupCtrl = function ($scope, $log, $interval, stations, QuickLookupSe
         }, 60000);
     }
 
-    function quickLookUp(stations, origin, destination){
+    function quickLookUp(stations, origin, destination) {
         QuickLookupService.getEstimatedDeparture(stations, origin, destination).then(function (data) {
             $scope.quickLookups = data;
         }, function (error) {
