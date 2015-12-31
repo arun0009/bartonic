@@ -3,7 +3,7 @@
         <ion-nav-back-button>
         </ion-nav-back-button>
     </ion-nav-bar>
-    <ion-content>
+    <ion-content padding="false">
         <form ng-init="myrouteschedule.showEstimatedDeparture()">
             <div>
                 <div ng-repeat="quickLookup in quickLookups | orderBy: 'id'">
@@ -29,12 +29,12 @@
                             <div class="col-center">
                                 <div>
                                 <span ng-if="quickLookup.estDeparture === 'LEAVING_NOW'">
-                                    <small><b>Leaving</b></small> <p class="smallfont">({{quickLookup.carLength}} car)</p>
+                                    <small><b>Leaving</b> ({{quickLookup.carLength}} car)</small>
                                 </span>
                                 <span ng-if="quickLookup.estDeparture > 0">
                                     <small>
                                         <timer interval="1000" language="en" countdown="quickLookup.estDeparture">{{minutes}}m:{{seconds}}s</timer>
-                                        <p class="smallfont">({{quickLookup.carLength}} car)</p>
+                                        ({{quickLookup.carLength}} car)
                                     </small>
 
                                </span>
