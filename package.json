@@ -21,7 +21,8 @@
     "org.apache.cordova.device",
     "org.apache.cordova.console",
     "org.apache.cordova.splashscreen",
-    "https://github.com/danwilson/google-analytics-plugin.git"
+    "https://github.com/danwilson/google-analytics-plugin.git",
+    "https://github.com/apache/cordova-plugin-whitelist.git"
   ],
   "cordovaPlatforms": [
     "ios",
