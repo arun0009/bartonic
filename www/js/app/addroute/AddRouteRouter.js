@@ -1,4 +1,4 @@
-angular.module('bartionic.addroute', ['ionic', 'ngResource'])
+angular.module('bartonic.addroute', ['ionic', 'ngResource'])
     .config(function ($stateProvider) {
         $stateProvider.state('tab.addroute', {
             url: '/addroute',

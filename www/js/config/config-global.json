@@ -1,7 +1,8 @@
 {
-  "name": "bartionic",
+  "name": "bartonic",
   "constants": {
     "ENV": {
+      "DEBUGENABLED": false,
       "bartBaseURL": "http://api.bart.gov/api"
     }
 

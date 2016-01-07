@@ -1,36 +1,15 @@
-<ion-view title="Quick Lookup">
+<ion-view title="Departures" hide-back-button="false">
+    <ion-nav-bar>
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+    </ion-nav-bar>
     <ion-content padding="false">
-        <form>
+        <form ng-init="myrouteschedule.showEstimatedDeparture()">
             <div>
-                <div class="padding">
-                    <button class="button button-outline button-select button-light ion-android-subway" modal-class="modalClass" modal-select ng-model="quicklookup.origin"
-                            options="stations" modal-title="Select Origin" header-footer-class="bar-stable" sub-header-class="bar-stable" has-search="true">
-                        {{&nbsp;quicklookup.origin.name || &apos;&nbsp;Select Origin&apos;}}
-                        <div class="option">
-                            {{option.name}}
-                        </div>
-                    </button>
-                </div>
-
-                <div class="padding">
-                    <button class="button button-outline button-select button-light ion-android-subway" modal-class="modalClass" modal-select ng-model="quicklookup.destination"
-                            options="stations" modal-title="Select Destination" header-footer-class="bar-stable" sub-header-class="bar-stable" has-search="true">
-                        {{&nbsp;quicklookup.destination.name || &apos;&nbsp;Select Destination&apos;}}
-                        <div class="option">
-                            {{option.name}}
-                        </div>
-                    </button>
-                </div>
-
-                <div class="button-bar padding">
-                    <button type="button" class="button button-full button-balanced ion-ios-search-strong" ng-click="quicklookup.showEstimatedDeparture()">&nbsp;Quick Lookup
-                    </button>
-                </div>
-
                 <div ng-repeat="quickLookup in quickLookups | orderBy: 'id'">
                     <div class="item calm-border" ng-if="quickLookup.estDeparture">
                         <div class="row">
-                            <div class="col-66">
+                            <div class="col-67">
                                 <div>
                                     <small><span><i class="icon ion-android-train" style=""></i></span> {{quickLookup.firstStationName}}</small>
                                 </div>
@@ -50,7 +29,7 @@
                             <div class="col-center">
                                 <div>
                                 <span ng-if="quickLookup.estDeparture === 'LEAVING_NOW'">
-                                    <small><b>Leaving</b></small> ({{quickLookup.carLength}} car)
+                                    <small><b>Leaving</b> ({{quickLookup.carLength}} car)</small>
                                 </span>
                                 <span ng-if="quickLookup.estDeparture > 0">
                                     <small>

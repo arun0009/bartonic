@@ -11,6 +11,50 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+.col-72 {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 72%;
+    -moz-box-flex: 0;
+    -moz-flex: 0 0 72%;
+    -ms-flex: 0 0 72%;
+    flex: 0 0 72%;
+    max-width: 72%; }
+
+/* iPhone < 5: */
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px){
+    .item-complex .item-content, .item-select, .item {
+        font-size: 13px;
+    }
+}
+
+/* iPhone 5: */
+@media only screen and (min-device-width : 320px) and (max-device-width : 568px){
+    .item-complex .item-content, .item-select, .item {
+        font-size: 14px;
+    }
+}
+
+/* iPhone 6: */
+@media only screen and (min-device-width: 375px) and (max-device-width: 667px) {
+    .item-complex .item-content, .item-select, .item {
+        font-size: 17px;
+    }
+}
+
+/* iPhone 6 Plus: */
+@media only screen and (min-device-width: 414px) and (max-device-width: 736px){
+    .item-complex .item-content, .item-select, .item {
+        font-size: 18px;
+    }
+}
+
+/* iPad: */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
+    .item-complex .item-content, .item-select, .item {
+        font-size: 22px;
+    }
+}
+
 .input-label {
     color: #dddddd;
     font-weight: bold;
@@ -33,4 +77,8 @@
     font-size: 18px;
     font-weight: bold;
     line-height: 53px;
+}
+
+.button-small-font {
+    font-size: small !important;
 }
