@@ -1,5 +1,5 @@
 {
-  "name": "bartionic",
+  "name": "bartonic",
   "constants": {
     "ENV": {
       "bartBaseURL": "http://api.bart.gov/api"

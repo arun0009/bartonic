@@ -1,5 +1,5 @@
-angular.module('bartionic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', 'timer', 'emguo.poller', 'bartionic.myroutes', 'bartionic.addroute', 'bartionic.quicklookup',
-    'bartionic.map'])
+angular.module('bartonic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', 'timer', 'bartonic.myroutes', 'bartonic.addroute', 'bartonic.quicklookup',
+    'bartonic.map'])
     .config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
         $httpProvider.interceptors.push('xmlHttpInterceptor');
         $httpProvider.defaults.useXDomain = true;
@@ -7,10 +7,6 @@ angular.module('bartionic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', 
 
         $urlRouterProvider.otherwise('/tab/myroutes');
 
-    })
-    .config(function (pollerConfig) {
-        pollerConfig.stopOnStateChange = true; // If you use $stateProvider from ui-router.
-        pollerConfig.stopOnRouteChange = true; // If you use $routeProvider from ngRoute.
     })
     .config(function ($stateProvider) {
         $stateProvider.state('tab', {

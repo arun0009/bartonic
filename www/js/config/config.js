@@ -1,4 +1,4 @@
-angular.module("bartionic")
+angular.module("bartonic")
 
 .constant("ENV", {
 	"bartBaseURL": "http://api.bart.gov/api",

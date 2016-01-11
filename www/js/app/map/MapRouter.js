@@ -1,4 +1,4 @@
-angular.module('bartionic.map', ['ionic', 'ngResource'])
+angular.module('bartonic.map', ['ionic', 'ngResource'])
     .config(function ($stateProvider) {
         $stateProvider.state('tab.map', {
             url: '/map',

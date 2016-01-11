@@ -16,4 +16,4 @@ var AddRouteCtrl = function ($scope, $state) {
         $state.go("tab.myroutes");
     }
 }
-angular.module('bartionic.addroute').controller('AddRouteCtrl', AddRouteCtrl);
+angular.module('bartonic.addroute').controller('AddRouteCtrl', AddRouteCtrl);

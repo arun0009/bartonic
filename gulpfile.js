@@ -48,7 +48,7 @@ gulp.task('git-check', function(done) {
     done();
 });
 
-// Custom gulp tasks for bartionic...
+// Custom gulp tasks for bartonic...
 gulp.task('cleanup-css', function() {
     return gulp.src('www/css/style.css')
         .pipe(uncss({

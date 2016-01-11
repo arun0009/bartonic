@@ -29,7 +29,7 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
     }
 
     function setEstimatedDepartureDetails(myRouteInfo, originAbbr) {
-        EstTimeDepartureService.departureTimeDeferredRequest(originAbbr).promise.then(null, null, function (estTimeDeparture) {
+        EstTimeDepartureService.departureTimeDeferredRequest(originAbbr).$promise.then(function (estTimeDeparture) {
             //console.log("estTimeDeparture is : " + angular.toJson(estTimeDeparture));
             myRouteInfo.originName = originNames[myRouteInfo.id];
             myRouteInfo.destinationName = destinationNames[myRouteInfo.id];
@@ -92,4 +92,4 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
 }
 
 
-angular.module('bartionic.myroutes').controller('MyRoutesCtrl', MyRoutesCtrl);
+angular.module('bartonic.myroutes').controller('MyRoutesCtrl', MyRoutesCtrl);
