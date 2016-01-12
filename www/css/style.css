@@ -86,3 +86,7 @@
 .button-small-font {
     font-size: small !important;
 }
+
+[nav-view-transition][nav-view-direction] {
+    background-color: transparent;
+}

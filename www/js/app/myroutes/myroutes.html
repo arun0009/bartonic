@@ -1,5 +1,5 @@
 <ion-view title="My Routes" ng-init="myroutes.loadFavoriteRouteSchedule()">
-    <ion-content padding="false">
+    <ion-content padding="false" has-bouncing="false">
         <ion-list show-delete="false" can-swipe="true">
             <ion-item ng-repeat="myRoute in myRoutes  track by $index | orderBy: 'index'" ng-click="myroutes.getRouteSchedules(myRoute)">
                 <div class="row">

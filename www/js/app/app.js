@@ -14,6 +14,7 @@ angular.module('bartonic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', '
         })
     })
     .config(function ($ionicConfigProvider) {
+        $ionicConfigProvider.views.swipeBackEnabled(false);
         $ionicConfigProvider.navBar.alignTitle('center');
     })
     .run(function ($ionicPlatform, $state) {
@@ -26,7 +27,6 @@ angular.module('bartonic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', '
                 $state.go('tab.addroute');
                 hideSplashScreen(1000);
             }
-
 
             $ionicPlatform.on('resume', function () {
                 $state.go($state.current, {}, {reload: true});

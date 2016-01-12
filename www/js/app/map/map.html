@@ -1,6 +1,6 @@
 <ion-view title="Bart Map">
-    <ion-content>
-        <ion-scroll direction="xy" zooming="true" style="width: 100%; height: 100%" on-double-tap="map.resetMap()">
+    <ion-content has-bouncing="false">
+        <ion-scroll direction="xy" zooming="true" scrollbar-x="false" scrollbar-y="false" min-zoom="1" style="width: 100%; height: 100%" on-double-tap="map.resetMap()">
             <img src="img/bart_map.jpg" ng-style="mapStyle"/>
         </ion-scroll>
     </ion-content>
