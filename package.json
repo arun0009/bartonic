@@ -18,14 +18,11 @@
     "shelljs": "^0.5.3"
   },
   "cordovaPlugins": [
-    "org.apache.cordova.device",
-    "org.apache.cordova.console",
-    "org.apache.cordova.splashscreen",
-    "https://github.com/danwilson/google-analytics-plugin.git",
-    "https://github.com/apache/cordova-plugin-whitelist.git"
+    "cordova-plugin-device",
+    "cordova-plugin-console",
+    "cordova-plugin-splashscreen",
+    "cordova-plugin-google-analytics",
+    "cordova-plugin-whitelist"
   ],
-  "cordovaPlatforms": [
-    "ios",
-    "android"
-  ]
+  "cordovaPlatforms": []
 }
