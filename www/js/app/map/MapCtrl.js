@@ -4,7 +4,7 @@ var MapCtrl = function ($scope, $window, $ionicScrollDelegate) {
 
     $scope.mapStyle = {
         "width": $window.innerWidth + "px",
-        "height": $window.innerHeight - 100 + "px"
+        "height": $window.innerHeight - 90 + "px"
     };
 
     this.resetMap = function () {
