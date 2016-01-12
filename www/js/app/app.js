@@ -1,10 +1,12 @@
-angular.module('bartonic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', 'timer', 'bartonic.myroutes', 'bartonic.myrouteschedule',
-    'bartonic.addroute', 'bartonic.quicklookup', 'bartonic.map'])
-    .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $logProvider, ENV) {
-        $logProvider.debugEnabled(ENV.DEBUGENABLED);
+angular.module('bartonic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', 'timer', 'bartonic.myroutes', 'bartonic.addroute', 'bartonic.quicklookup',
+    'bartonic.map'])
+    .config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
         $httpProvider.interceptors.push('xmlHttpInterceptor');
         $httpProvider.defaults.useXDomain = true;
         delete $httpProvider.defaults.headers.common["X-Requested-With"];
+
+        $urlRouterProvider.otherwise('/tab/myroutes');
+
     })
     .config(function ($stateProvider) {
         $stateProvider.state('tab', {
@@ -16,18 +18,8 @@ angular.module('bartonic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', '
     .config(function ($ionicConfigProvider) {
         $ionicConfigProvider.navBar.alignTitle('center');
     })
-    .run(function ($ionicPlatform, $state, $rootScope, StationsLookupService) {
+    .run(function ($ionicPlatform, $state) {
         $ionicPlatform.ready(function () {
-            var favoriteRoutes = JSON.parse(window.localStorage.getItem('favoriteRoutes')) || [];
-            if (favoriteRoutes.length != 0) {
-                $state.go("tab.myroutes");
-                hideSplashScreen(100);
-            } else {
-                $state.go('tab.addroute');
-                hideSplashScreen(1000);
-            }
-
-
             $ionicPlatform.on('resume', function () {
                 $state.go($state.current, {}, {reload: true});
             });
@@ -36,14 +28,5 @@ angular.module('bartonic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', '
                 StatusBar.styleDefault();
             }
         })
-
-        function hideSplashScreen(milliseconds) {
-            if (navigator.splashscreen) {
-                setTimeout(function () {
-                    navigator.splashscreen.hide();
-                }, milliseconds);
-            }
-        }
-    });
-
-
+    })
+;
