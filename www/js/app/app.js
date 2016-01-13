@@ -14,9 +14,10 @@ angular.module('bartonic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', '
         })
     })
     .config(function ($ionicConfigProvider) {
+        $ionicConfigProvider.views.swipeBackEnabled(false);
         $ionicConfigProvider.navBar.alignTitle('center');
     })
-    .run(function ($ionicPlatform, $state, $rootScope, StationsLookupService) {
+    .run(function ($ionicPlatform, $state) {
         $ionicPlatform.ready(function () {
             var favoriteRoutes = JSON.parse(window.localStorage.getItem('favoriteRoutes')) || [];
             if (favoriteRoutes.length != 0) {
@@ -26,7 +27,6 @@ angular.module('bartonic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', '
                 $state.go('tab.addroute');
                 hideSplashScreen(1000);
             }
-
 
             $ionicPlatform.on('resume', function () {
                 $state.go($state.current, {}, {reload: true});

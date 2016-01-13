@@ -11,6 +11,10 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+.item.activated, .item.activated.item-complex>.item-content {
+    box-shadow: inset 0 0 100px 150px #609596;
+}
+
 .col-72 {
     -webkit-box-flex: 0;
     -webkit-flex: 0 0 72%;
@@ -81,4 +85,8 @@
 
 .button-small-font {
     font-size: small !important;
+}
+
+[nav-view-transition][nav-view-direction] {
+    background-color: transparent;
 }
