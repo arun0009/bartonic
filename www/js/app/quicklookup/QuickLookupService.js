@@ -30,14 +30,19 @@ angular.module('bartonic.quicklookup').factory('QuickLookupService', function ($
                     }
 
                     EstTimeDepartureService.departureTimeDeferredRequest(origin).$promise.then(function (estTimeDeparture) {
+                        $log.debug("quickLookup.trainHeadStation is : ", quickLookup.trainHeadStation);
                         var estDepartureDetails = angular.isArray(estTimeDeparture.root.station.etd) ? $filter('filter')(estTimeDeparture.root.station.etd, {abbreviation: quickLookup.trainHeadStation}, true) : estTimeDeparture.root.station.etd;
                         if (estDepartureDetails != null) {
                             if (angular.isArray(estDepartureDetails)) {
+                                $log.debug("array is : ", angular.toJson(estDepartureDetails));
                                 estDepartureDetails = estDepartureDetails[0];
                             }
                             if (angular.isArray(estDepartureDetails.estimate)) {
-                                quickLookup.carLength = estDepartureDetails.estimate[key].length;
-                                quickLookup.estDeparture = isNaN(estDepartureDetails.estimate[key].minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate[key].minutes) * 60;
+                                $log.debug("quicklookups ==> ", angular.toJson(quickLookups) + " and trainHead is " + quickLookup.trainHeadStation);
+                                var indx = $filter('filter') (quickLookups, {trainHeadStation: quickLookup.trainHeadStation});
+                                $log.debug("array of est Departure is : ", angular.toJson(estDepartureDetails.estimate));
+                                quickLookup.carLength = estDepartureDetails.estimate[indx.length].length;
+                                quickLookup.estDeparture = isNaN(estDepartureDetails.estimate[indx.length].minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate[indx.length].minutes) * 60;
                             } else {
                                 quickLookup.carLength = estDepartureDetails.estimate.length;
                                 quickLookup.estDeparture = isNaN(estDepartureDetails.estimate.minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate.minutes) * 60;
