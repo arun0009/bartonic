@@ -1,16 +1,32 @@
-angular.module('bartonic.quicklookup').factory('QuickLookupService', function ($filter, $q, $log, ScheduledDepartureDetailsService, EstTimeDepartureService) {
+angular.module('bartonic.quicklookup').factory('QuickLookupService', function ($filter, $log, StationsLookupService, ScheduledDepartureDetailsService, EstTimeDepartureService) {
 
     return {
-        getEstimatedDeparture: function (stations, origin, destination) {
-            var quickLookups = [];
-            var deferred = $q.defer();
-            ScheduledDepartureDetailsService.scheduledDepartureDetailsDeferredRequest(origin, destination).$promise.then(function (scheduledDepartureDetails) {
-                angular.forEach(scheduledDepartureDetails.root.schedule.request.trip, function (trip, key) {
+        getEstimatedDeparture: function (origin, destination) {
+            var estTimeDeparture = {};
+            var stations = {};
+            var headStations = [];
+            return StationsLookupService.stationsLookupObservable().map(function (response) {
+                stations = response.data.root.stations.station;
+                return stations;
+            }).flatMap(function (stations) {
+                return EstTimeDepartureService.getEstTimeDepartureObservable(origin).map(function (response) {
+                    $log.debug('inside first observable...');
+                    estTimeDeparture = response.data;
+                    return estTimeDeparture;
+                })
+            }).flatMap(function (estTimeDeparture) {
+                return ScheduledDepartureDetailsService.getScheduledDepartureDetailsObservable(origin, destination).flatMap(function (response) {
+                    var scheduledDepartureDetails = response.data;
+                    return Rx.Observable.just(scheduledDepartureDetails.root.schedule.request.trip);
+                })
+            }).flatMap(function (trips) {
+                return Rx.Observable.range(0, trips.length).map(function (indx) {
+                    var trip = trips[indx];
                     var quickLookup = {};
                     quickLookup.destination = destination;
                     quickLookup.hasLink = false;
                     quickLookup.hasMoreLinks = false;
-                    quickLookup.id = key;
+                    quickLookup.id = indx;
                     quickLookup.routeFare = trip._fare;
                     quickLookup.destTimeMin = trip._destTimeMin;
                     if (angular.isArray(trip.leg)) {
@@ -29,31 +45,32 @@ angular.module('bartonic.quicklookup').factory('QuickLookupService', function ($
                         quickLookup.firstStationName = $filter('filter')(stations, {abbr: quickLookup.trainHeadStation}, true)[0].name;
                     }
 
-                    EstTimeDepartureService.departureTimeDeferredRequest(origin).$promise.then(function (estTimeDeparture) {
-                        var estDepartureDetails = angular.isArray(estTimeDeparture.root.station.etd) ? $filter('filter')(estTimeDeparture.root.station.etd, {abbreviation: quickLookup.trainHeadStation}, true) : estTimeDeparture.root.station.etd;
-                        if (estDepartureDetails != null) {
-                            if (angular.isArray(estDepartureDetails)) {
-                                estDepartureDetails = estDepartureDetails[0];
-                            }
-                            if (angular.isArray(estDepartureDetails.estimate)) {
-                                quickLookup.carLength = estDepartureDetails.estimate[key].length;
-                                quickLookup.estDeparture = isNaN(estDepartureDetails.estimate[key].minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate[key].minutes) * 60;
+                    $log.debug("quickLookup.trainHeadStation is : ", quickLookup.trainHeadStation);
+                    headStations.push(quickLookup.trainHeadStation);
+                    var headStationCounter = $filter('filter')(headStations, quickLookup.trainHeadStation, true).length;
+                    var estDepartureDetails = angular.isArray(estTimeDeparture.root.station.etd) ? $filter('filter')(estTimeDeparture.root.station.etd, {abbreviation: quickLookup.trainHeadStation}, true) : estTimeDeparture.root.station.etd;
+                    $log.debug("estDepartureDetails is : ", angular.toJson(estDepartureDetails));
+                    if (estDepartureDetails != null && estDepartureDetails.length > 0) {
+                        if (angular.isArray(estDepartureDetails)) {
+                            estDepartureDetails = estDepartureDetails[0];
+                        }
+                        if (angular.isDefined(estDepartureDetails.estimate)) {
+                            if (angular.isArray(estDepartureDetails.estimate) && angular.isDefined(estDepartureDetails.estimate[quickLookup.id])) {
+                                //$log.debug(angular.toJson(quickLookup) +  ":::::: " + angular.toJson(estDepartureDetails));
+                                quickLookup.carLength = estDepartureDetails.estimate[headStationCounter - 1].length;
+                                quickLookup.estDepartureFlag = isNaN(estDepartureDetails.estimate[headStationCounter - 1 ].minutes) ? 0 : parseInt(estDepartureDetails.estimate[headStationCounter - 1].minutes) * 60;
+                                quickLookup.estDeparture = isNaN(estDepartureDetails.estimate[headStationCounter - 1 ].minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate[headStationCounter - 1].minutes) * 60;
                             } else {
                                 quickLookup.carLength = estDepartureDetails.estimate.length;
+                                quickLookup.estDepartureFlag = isNaN(estDepartureDetails.estimate.minutes) ? 0 : parseInt(estDepartureDetails.estimate.minutes) * 60;
                                 quickLookup.estDeparture = isNaN(estDepartureDetails.estimate.minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate.minutes) * 60;
                             }
                         }
-                        quickLookups.push(quickLookup);
-                    });
-                    deferred.resolve(quickLookups);
-                });
+                    }
+                    return quickLookup;
+                })
+            })
 
-
-            }), function (err) {
-                $log.error("Exception occurred in getting schedule : " + err);
-                deferred.reject(quickLookups);
-            }
-            return deferred.promise;
         }
     }
 });

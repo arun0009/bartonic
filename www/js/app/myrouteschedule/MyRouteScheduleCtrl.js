@@ -1,6 +1,4 @@
-var MyRouteScheduleCtrl = function ($scope, $filter, $log, $interval, stations, MyRoutesService, QuickLookupService) {
-
-    $scope.stations = stations.root.stations.station;
+var MyRouteScheduleCtrl = function ($scope, $filter, $log, $interval, MyRoutesService, QuickLookupService) {
 
     this.showEstimatedDeparture = function () {
         $scope.quickLookups = [];
@@ -8,17 +6,23 @@ var MyRouteScheduleCtrl = function ($scope, $filter, $log, $interval, stations, 
         var route = $filter('filter')(favoriteRoutes, {index: MyRoutesService.getMyRoute().index})[0];
         var origin = route.originAbbr;
         var destination = route.destinationAbbr;
-        quickLookUp($scope.stations, origin, destination);
+        quickLookUp(origin, destination);
         $interval(function () {
-            quickLookUp($scope.stations, origin, destination);
+            quickLookUp(origin, destination);
         }, 60000);
     }
 
-    function quickLookUp(stations, origin, destination) {
-        QuickLookupService.getEstimatedDeparture(stations, origin, destination).then(function (data) {
-            $scope.quickLookups = data;
-        }, function (error) {
-            $log.error("error in getting estimated departures : " + error);
+    function quickLookUp(origin, destination) {
+        var quickLookups = [];
+        QuickLookupService.getEstimatedDeparture(origin, destination).subscribe(function (quickLookup) {
+            quickLookups.push(quickLookup);
+        }, function (err) {
+            $log.error("error occurred calling estimate departure ", err);
+        }, function () {
+            $log.debug("completed quickLookUp call");
+            quickLookups = $filter('orderBy')(quickLookups, "estDepartureFlag");
+            $scope.quickLookups = quickLookups;
+            $scope.$apply();
         });
     }
 }

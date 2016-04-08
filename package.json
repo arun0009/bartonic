@@ -24,5 +24,7 @@
     "cordova-plugin-google-analytics",
     "cordova-plugin-whitelist"
   ],
-  "cordovaPlatforms": []
+  "cordovaPlatforms": [
+    "ios"
+  ]
 }

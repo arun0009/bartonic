@@ -23,11 +23,11 @@
                 </div>
 
                 <div class="button-bar padding">
-                    <button type="button" class="button button-full button-balanced ion-ios-search-strong" ng-click="quicklookup.showEstimatedDeparture()">&nbsp;Quick Lookup
+                    <button type="button" class="button button-full button-calm ion-ios-search-strong" ng-click="quicklookup.showEstimatedDeparture()">&nbsp;Quick Lookup
                     </button>
                 </div>
 
-                <div ng-repeat="quickLookup in quickLookups | orderBy: 'id'">
+                <div ng-repeat="quickLookup in quickLookups">
                     <div class="item calm-border" ng-if="quickLookup.estDeparture">
                         <div class="row">
                             <div class="col-66">

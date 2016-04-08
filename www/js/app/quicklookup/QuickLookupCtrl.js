@@ -1,29 +1,32 @@
-var QuickLookupCtrl = function ($scope, $log, $interval, StationsLookupService, QuickLookupService) {
+var QuickLookupCtrl = function ($scope, $filter, $log, $interval, StationsLookupService, QuickLookupService) {
 
     $scope.stations = [];
 
-    StationsLookupService.stationsDeferredRequest().$promise.then(function (response) {
-        $scope.stations = response.root.stations.station;
-    }), function (err) {
-        console.error("Exception occurred in retrieving stations: " + err.message);
-    };
+    StationsLookupService.stationsLookupObservable().subscribe(function (response) {
+        $scope.stations = response.data.root.stations.station;
+    });
 
     this.showEstimatedDeparture = function () {
         $scope.quickLookups = [];
-        var stations = $scope.stations;
         var origin = this.origin.abbr;
         var destination = this.destination.abbr;
-        quickLookUp(stations, origin, destination);
+        quickLookUp(origin, destination);
         $interval(function () {
             quickLookUp(stations, origin, destination);
         }, 60000);
     }
 
-    function quickLookUp(stations, origin, destination) {
-        QuickLookupService.getEstimatedDeparture(stations, origin, destination).then(function (data) {
-            $scope.quickLookups = data;
-        }, function (error) {
-            $log.error("error in getting estimated departures : " + error);
+    function quickLookUp(origin, destination) {
+        var quickLookups = [];
+        QuickLookupService.getEstimatedDeparture(origin, destination).subscribe(function (quickLookup) {
+            quickLookups.push(quickLookup);
+        }, function (err) {
+            $log.error("error occurred calling estimate departure ", err);
+        }, function () {
+            $log.debug("completed quickLookUp call");
+            quickLookups = $filter('orderBy')(quickLookups, "estDepartureFlag");
+            $scope.quickLookups = quickLookups;
+            $scope.$apply();
         });
     }
 }

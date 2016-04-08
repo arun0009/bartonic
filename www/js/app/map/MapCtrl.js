@@ -1,6 +1,6 @@
-var MapCtrl = function ($scope, $window, $ionicScrollDelegate) {
-    console.log($window.innerWidth);
-    console.log($window.innerHeight);
+var MapCtrl = function ($scope, $window, $log, $ionicScrollDelegate) {
+    //$log.debug($window.innerWidth);
+    //$log.debug($window.innerHeight);
 
     $scope.mapStyle = {
         "width": $window.innerWidth + "px",

@@ -9,7 +9,6 @@ angular.module('bartonic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', '
     .config(function ($stateProvider) {
         $stateProvider.state('tab', {
             url: "/tab",
-            abstract: true,
             templateUrl: "js/app/tabs/tabs.html"
         })
     })

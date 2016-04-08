@@ -6,24 +6,30 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
     var destinationNames = [];
     //window.localStorage.clear();
 
-    function getScheduleDepuartureDetailsPromises(favoriteRoutes) {
-        var scheduleDepartureDetailsPromises = [];
+    function getScheduleDepuartureDetailsSource(favoriteRoutes) {
+        var scheduleDepartureDetailsObservables = [];
         for (var i = 0; i < favoriteRoutes.length; i++) {
             var originAbbr = favoriteRoutes[i].originAbbr;
             var destinationAbbr = favoriteRoutes[i].destinationAbbr;
             originNames.push(favoriteRoutes[i].originName);
             destinationNames.push(favoriteRoutes[i].destinationName);
-            scheduleDepartureDetailsPromises.push(ScheduledDepartureDetailsService.scheduledDepartureDetailsDeferredRequest(originAbbr, destinationAbbr).$promise);
+            //$log.debug("pushing in " + originAbbr + " destination is : " + destinationAbbr);
+            scheduleDepartureDetailsObservables.push(ScheduledDepartureDetailsService.getScheduledDepartureDetailsObservable(originAbbr, destinationAbbr));
         }
-        return scheduleDepartureDetailsPromises;
+        return Rx.Observable.just(scheduleDepartureDetailsObservables);
     }
 
-    function setEstimatedDepartureDetails(myRouteInfo, originAbbr) {
-        EstTimeDepartureService.departureTimeDeferredRequest(originAbbr).$promise.then(function (estTimeDeparture) {
+    function setEstimatedDepartureDetails(myRouteInfo, originAbbr, trainHeadStations) {
+        return EstTimeDepartureService.getEstTimeDepartureObservable(originAbbr).map(function (response) {
+            var estTimeDeparture = response.data;
             myRouteInfo.originName = originNames[myRouteInfo.id];
             myRouteInfo.destinationName = destinationNames[myRouteInfo.id];
+            var estDepartureDetails = EstTimeDepartureService.getEstimatedDeparturesForHeadStations(estTimeDeparture, trainHeadStations);
 
-            var estDepartureDetails = angular.isArray(estTimeDeparture.root.station.etd) ? $filter('filter')(estTimeDeparture.root.station.etd, {abbreviation: myRouteInfo.trainHeadStation}, true) : estTimeDeparture.root.station.etd;
+            //$log.debug("before sort --> " + angular.toJson(estDepartureDetails));
+            estDepartureDetails = estDepartureDetails.sort(EstTimeDepartureService.compareDepartureTimes);
+            //$log.debug("after sort --> " + angular.toJson(estDepartureDetails));
+
             if (estDepartureDetails != null) {
                 //should be a way to filter and return first object?
                 if (angular.isArray(estDepartureDetails)) {
@@ -38,40 +44,57 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
 
                 }
             }
-            $scope.myRoutes[myRouteInfo.id] = myRouteInfo;
-
-        }, function (err) {
-            $log.error("Exception occurred getting route estimates : " + err);
+            return myRouteInfo;
         });
     }
 
     this.loadFavoriteRouteSchedule = function () {
         var favoriteRoutes = JSON.parse(window.localStorage.getItem('favoriteRoutes')) || [];
-        getFavoriteRouteSchedule(favoriteRoutes);
+        getMyFavoriteRoutes(favoriteRoutes);
         $interval(function () {
-            getFavoriteRouteSchedule(favoriteRoutes);
+            getMyFavoriteRoutes(favoriteRoutes);
         }, 15000);
     }
 
+    function getMyFavoriteRoutes(favouriteRoutes) {
+        var myFavRoutes = [];
+        getFavoriteRouteSchedule(favouriteRoutes).subscribe(function (favRoute) {
+            myFavRoutes.push(favRoute);
+        }, function (err) {
+            $log.error("error occurred calling favorite routes ", err);
+        }, function () {
+            $log.debug("completed getMyFavoriteRoutes call");
+            myFavRoutes = $filter('orderBy')(myFavRoutes, "index");
+            $scope.myRoutes = myFavRoutes;
+            $scope.$apply();
+        });
+    }
+
     function getFavoriteRouteSchedule(favoriteRoutes) {
-        $q.all(getScheduleDepuartureDetailsPromises(favoriteRoutes)).then(function (data) {
-            angular.forEach(data, function (scheduledDepartureDetails, key) {
-                var myRouteInfo = {};
-                myRouteInfo.index = favoriteRoutes[key].index;
-                myRouteInfo.id = key;
-                myRouteInfo.routeFare = scheduledDepartureDetails.root.schedule.request.trip[0]._fare;
-                myRouteInfo.destTimeMin = scheduledDepartureDetails.root.schedule.request.trip[0]._destTimeMin;
+        var trainHeadStations = {};
+        return getScheduleDepuartureDetailsSource(favoriteRoutes).flatMap(function (scheduleDepartureDetailsSource) {
+            return Rx.Observable.range(0, scheduleDepartureDetailsSource.length).flatMap(function (key) {
+                return scheduleDepartureDetailsSource[key].map(function (response) {
+                    var scheduledDepartureDetails = response.data;
+                    trainHeadStations = ScheduledDepartureDetailsService.getTrainHeadStations(scheduledDepartureDetails);
+                    //$log.debug("train head stations are : " + angular.toJson(trainHeadStations));
+                    var myRouteInfo = {};
+                    myRouteInfo.index = favoriteRoutes[key].index;
+                    myRouteInfo.id = key;
+                    myRouteInfo.routeFare = scheduledDepartureDetails.root.schedule.request.trip[0]._fare;
+                    myRouteInfo.destTimeMin = scheduledDepartureDetails.root.schedule.request.trip[0]._destTimeMin;
 
-                myRouteInfo.hasLink = false;
-                if (angular.isArray(scheduledDepartureDetails.root.schedule.request.trip[0].leg)) {
-                    myRouteInfo.hasLink = true;
-                    myRouteInfo.trainHeadStation = scheduledDepartureDetails.root.schedule.request.trip[0].leg[0]._trainHeadStation;
-                } else {
-                    myRouteInfo.trainHeadStation = scheduledDepartureDetails.root.schedule.request.trip[0].leg._trainHeadStation;
-                }
-
-                var originAbbr = favoriteRoutes[key].originAbbr;
-                setEstimatedDepartureDetails(myRouteInfo, originAbbr);
+                    myRouteInfo.hasLink = false;
+                    if (angular.isArray(scheduledDepartureDetails.root.schedule.request.trip[0].leg)) {
+                        myRouteInfo.hasLink = true;
+                        myRouteInfo.trainHeadStation = scheduledDepartureDetails.root.schedule.request.trip[0].leg[0]._trainHeadStation;
+                    } else {
+                        myRouteInfo.trainHeadStation = scheduledDepartureDetails.root.schedule.request.trip[0].leg._trainHeadStation;
+                    }
+                    return myRouteInfo;
+                }).flatMap(function (myRouteInfo) {
+                    return setEstimatedDepartureDetails(myRouteInfo, favoriteRoutes[myRouteInfo.id].originAbbr, trainHeadStations);
+                });
             });
         });
     }
