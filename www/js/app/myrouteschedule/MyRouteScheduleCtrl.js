@@ -15,6 +15,7 @@ var MyRouteScheduleCtrl = function ($scope, $filter, $log, $interval, MyRoutesSe
     function quickLookUp(origin, destination) {
         var quickLookups = [];
         QuickLookupService.getEstimatedDeparture(origin, destination).subscribe(function (quickLookup) {
+            $log.debug("quickLookup is ::", angular.toJson(quickLookup));
             quickLookups.push(quickLookup);
         }, function (err) {
             $log.error("error occurred calling estimate departure ", err);
