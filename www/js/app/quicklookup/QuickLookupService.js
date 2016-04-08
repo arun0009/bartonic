@@ -54,18 +54,12 @@ angular.module('bartonic.quicklookup').factory('QuickLookupService', function ($
                         if (angular.isArray(estDepartureDetails)) {
                             estDepartureDetails = estDepartureDetails[0];
                         }
-                        if (angular.isDefined(estDepartureDetails.estimate)) {
-                            if (angular.isArray(estDepartureDetails.estimate) && angular.isDefined(estDepartureDetails.estimate[quickLookup.id])) {
-                                //$log.debug(angular.toJson(quickLookup) +  ":::::: " + angular.toJson(estDepartureDetails));
-                                quickLookup.carLength = estDepartureDetails.estimate[headStationCounter - 1].length;
-                                quickLookup.estDepartureFlag = isNaN(estDepartureDetails.estimate[headStationCounter - 1 ].minutes) ? 0 : parseInt(estDepartureDetails.estimate[headStationCounter - 1].minutes) * 60;
-                                quickLookup.estDeparture = isNaN(estDepartureDetails.estimate[headStationCounter - 1 ].minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate[headStationCounter - 1].minutes) * 60;
-                            } else {
-                                quickLookup.carLength = estDepartureDetails.estimate.length;
-                                quickLookup.estDepartureFlag = isNaN(estDepartureDetails.estimate.minutes) ? 0 : parseInt(estDepartureDetails.estimate.minutes) * 60;
-                                quickLookup.estDeparture = isNaN(estDepartureDetails.estimate.minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate.minutes) * 60;
-                            }
-                        }
+                        if (angular.isArray(estDepartureDetails.estimate) && angular.isDefined(estDepartureDetails.estimate[quickLookup.id])) {
+                            //$log.debug(angular.toJson(quickLookup) +  ":::::: " + angular.toJson(estDepartureDetails));
+                            quickLookup.carLength = estDepartureDetails.estimate[headStationCounter - 1].length;
+                            quickLookup.estDepartureFlag = isNaN(estDepartureDetails.estimate[headStationCounter - 1].minutes) ? 0 : parseInt(estDepartureDetails.estimate[headStationCounter - 1].minutes) * 60;
+                            quickLookup.estDeparture = isNaN(estDepartureDetails.estimate[headStationCounter - 1].minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate[headStationCounter - 1].minutes) * 60;
+                        } 
                     }
                     return quickLookup;
                 })
