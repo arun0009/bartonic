@@ -1,21 +1,24 @@
 angular.module('bartonic')
-    .factory('ScheduledDepartureDetailsService', function ($resource, $log, ENV) {
-        var scheduledDepartureDetailsDeferredResponse = {};
+    .factory('ScheduledDepartureDetailsService', function ($http, $log, ENV) {
         return {
-            scheduledDepartureDetailsDeferredRequest: function (origin, destination) {
-                scheduledDepartureDetailsDeferredResponse = getScheduledDepartureDetails(origin, destination);
-                return scheduledDepartureDetailsDeferredResponse;
+            getScheduledDepartureDetailsObservable: function (origin, destination) {
+                //$log.debug("origin is : " + origin, " destination is : " + destination);
+                return Rx.Observable.fromPromise($http({
+                    method: 'GET',
+                    url: ENV.bartBaseURL + '/sched.aspx',
+                    params: {cmd: 'depart', b:'0', a:'3', l:'1', orig: origin, dest: destination, key: ENV.bartApiKey}
+                }));
             },
 
-            getScheduledDepartureDetailsDeferredResponse: function () {
-                return scheduledDepartureDetailsDeferredResponse;
+            getTrainHeadStations: function (scheduledDepartureDetails) {
+                var trainHeadStations = [];
+                angular.forEach(scheduledDepartureDetails.root.schedule.request.trip, function (trips) {
+                    var trainHeadStation = angular.isArray(trips.leg) ? trips.leg[0]._trainHeadStation : trips.leg._trainHeadStation;
+                    if (trainHeadStations.indexOf(trainHeadStation) == -1) {
+                        trainHeadStations.push(trainHeadStation);
+                    }
+                });
+                return trainHeadStations;
             }
-        }
-
-        function getScheduledDepartureDetails(origin, destination) {
-            $log.debug("origin is : " + origin, " destination is : " + destination);
-            var scheduledDepartureEndpoint = ENV.bartBaseURL + '/sched.aspx?cmd=depart&b=0&a=3&l=1&orig=' + origin + '&dest=' + destination + '&key=' + ENV.bartApiKey;
-            var scheduledDepartureResource = $resource(scheduledDepartureEndpoint, {}, {query: {method: 'GET', isArray: false}});
-            return scheduledDepartureResource.query();
         }
     });

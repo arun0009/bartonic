@@ -1,20 +1,17 @@
 angular.module('bartonic')
-    .factory('StationsLookupService', function ($resource, ENV) {
-        var stationsDeferredResponse = {};
+    .factory('StationsLookupService', function ($http, ENV) {
         return {
-            stationsDeferredRequest: function () {
-                stationsDeferredResponse = getStations();
-                return stationsDeferredResponse;
+            stationsLookupObservable: function () {
+                return Rx.Observable.fromPromise($http({
+                    method: 'GET',
+                    cache: true,
+                    url: ENV.bartBaseURL + '/stn.aspx',
+                    params: {cmd: 'stns', key: ENV.bartApiKey}
+                }));
             },
 
             getStationsDeferredResponse: function () {
                 return stationsDeferredResponse;
             }
-        }
-
-        function getStations() {
-            var stationsEndpoint = ENV.bartBaseURL + '/stn.aspx?cmd=stns&key=' + ENV.bartApiKey;
-            var stationsResource = $resource(stationsEndpoint, {}, {query: {method: 'GET', isArray: false, cache: true}});
-            return stationsResource.query();
         }
     });

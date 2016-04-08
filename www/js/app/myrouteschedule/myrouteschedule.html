@@ -6,7 +6,7 @@
     <ion-content padding="false" has-bouncing="false">
         <form ng-init="myrouteschedule.showEstimatedDeparture()">
             <div>
-                <div ng-repeat="quickLookup in quickLookups | orderBy: 'estDeparture'">
+                <div ng-repeat="quickLookup in quickLookups">
                     <div class="item calm-border" ng-if="quickLookup.estDeparture">
                         <div class="row">
                             <div class="col-67">

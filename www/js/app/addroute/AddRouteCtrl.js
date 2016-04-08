@@ -2,11 +2,9 @@ var AddRouteCtrl = function ($scope, $state, $log, $filter, StationsLookupServic
 
     $scope.stations = [];
 
-    StationsLookupService.stationsDeferredRequest().$promise.then(function (response) {
-        $scope.stations = response.root.stations.station;
-    }), function (err) {
-        console.error("Exception occurred in retrieving stations: " + err.message);
-    };
+    StationsLookupService.stationsLookupObservable().subscribe(function (response) {
+        $scope.stations = response.data.root.stations.station;
+    });
 
     this.addRouteToFavorites = function () {
         var favoriteRoutes = JSON.parse(window.localStorage.getItem('favoriteRoutes')) || [];
@@ -34,7 +32,7 @@ var AddRouteCtrl = function ($scope, $state, $log, $filter, StationsLookupServic
                 });
             }
             window.localStorage.setItem('favoriteRoutes', JSON.stringify(favoriteRoutes));
-            $log.debug(JSON.stringify(favoriteRoutes));
+            //$log.debug(JSON.stringify(favoriteRoutes));
             $state.go("tab.myroutes", {}, {reload: true});
         }
     }
