@@ -1,5 +1,5 @@
-angular.module('bartonic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', 'timer', 'bartonic.myroutes', 'bartonic.myrouteschedule',
-    'bartonic.addroute', 'bartonic.quicklookup', 'bartonic.map'])
+angular.module('bartonic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', 'timer',
+        'bartonic.myroutes', 'bartonic.myrouteschedule', 'bartonic.addroute', 'bartonic.quicklookup', 'bartonic.map', 'bartonic.info'])
     .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $logProvider, ENV) {
         $logProvider.debugEnabled(ENV.DEBUGENABLED);
         $httpProvider.interceptors.push('xmlHttpInterceptor');

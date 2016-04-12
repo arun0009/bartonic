@@ -35,13 +35,16 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
                 if (angular.isArray(estDepartureDetails)) {
                     estDepartureDetails = estDepartureDetails[0];
                 }
-                if (angular.isArray(estDepartureDetails.estimate)) {
-                    myRouteInfo.estDeparture = isNaN(estDepartureDetails.estimate[0].minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate[0].minutes) * 60;
-                    myRouteInfo.carLength = estDepartureDetails.estimate[0].length;
+                if (angular.isDefined(estDepartureDetails)) {
+                    if (angular.isArray(estDepartureDetails.estimate)) {
+                        myRouteInfo.estDeparture = isNaN(estDepartureDetails.estimate[0].minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate[0].minutes) * 60;
+                        myRouteInfo.carLength = estDepartureDetails.estimate[0].length;
+                    } else {
+                        myRouteInfo.estDeparture = isNaN(estDepartureDetails.estimate.minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate.minutes) * 60;
+                        myRouteInfo.carLength = estDepartureDetails.estimate.length;
+                    }
                 } else {
-                    myRouteInfo.estDeparture = isNaN(estDepartureDetails.estimate.minutes) ? 'LEAVING_NOW' : parseInt(estDepartureDetails.estimate.minutes) * 60;
-                    myRouteInfo.carLength = estDepartureDetails.estimate.length;
-
+                    myRouteInfo.estDeparture = 'No Service';
                 }
             }
             return myRouteInfo;

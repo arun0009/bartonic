@@ -12,7 +12,7 @@ var QuickLookupCtrl = function ($scope, $filter, $log, $interval, StationsLookup
         var destination = this.destination.abbr;
         quickLookUp(origin, destination);
         $interval(function () {
-            quickLookUp(stations, origin, destination);
+            quickLookUp(origin, destination);
         }, 60000);
     }
 
