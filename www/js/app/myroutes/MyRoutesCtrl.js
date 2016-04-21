@@ -10,8 +10,6 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
     var originNames = [];
     var destinationNames = [];
     //window.localStorage.clear();
-    var favoriteRoutes = JSON.parse(window.localStorage.getItem('favoriteRoutes'));
-    console.log(angular.toJson(favoriteRoutes));
 
     function getScheduleDepuartureDetailsSource(favoriteRoutes) {
         var scheduleDepartureDetailsObservables = [];
@@ -135,8 +133,7 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
     this.reorderRoutes = function (route, fromIndex, toIndex) {
         if (fromIndex != toIndex) {
             var favoriteRoutes = JSON.parse(window.localStorage.getItem('favoriteRoutes'));
-            console.log(angular.toJson(favoriteRoutes));
-            //console.log(angular.toJson(route));
+            $log.debug(angular.toJson(favoriteRoutes));
             var routeReordered = favoriteRoutes[fromIndex];
             routeReordered.index = favoriteRoutes[toIndex].index;
             favoriteRoutes.splice(fromIndex, 1);
