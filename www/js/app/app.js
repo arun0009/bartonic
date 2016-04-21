@@ -15,6 +15,7 @@ angular.module('bartonic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', '
     .config(function ($ionicConfigProvider) {
         $ionicConfigProvider.views.swipeBackEnabled(false);
         $ionicConfigProvider.navBar.alignTitle('center');
+        $ionicConfigProvider.tabs.position('bottom');
     })
     .run(function ($ionicPlatform, $state) {
         $ionicPlatform.ready(function () {

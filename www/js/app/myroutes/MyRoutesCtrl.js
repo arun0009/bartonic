@@ -2,6 +2,11 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
                              EstTimeDepartureService) {
 
     $scope.myRoutes = [];
+    $scope.data = {
+        showDelete: false,
+        showReorder: false
+    };
+
     var originNames = [];
     var destinationNames = [];
     //window.localStorage.clear();
@@ -113,10 +118,44 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
             $log.debug(favoriteRoutes[i]);
             if (favoriteRoutes[i].originName === route.originName && favoriteRoutes[i].destinationName === route.destinationName) {
                 favoriteRoutes.splice(i, 1);
+                for (var i = route.index; i < route.length; i++) {
+                    var favoriteRoute = favoriteRoutes[i];
+                    favoriteRoute.index = parseInt(favoriteRoute.index) - 1;
+                    favoriteRoutes.splice(i, 1);
+                    favoriteRoutes.splice(i, 0, favoriteRoute);
+                }
             }
         }
         window.localStorage.setItem('favoriteRoutes', JSON.stringify(favoriteRoutes));
         window.location.reload();
+    }
+
+    this.reorderRoutes = function (route, fromIndex, toIndex) {
+        if (fromIndex != toIndex) {
+            var favoriteRoutes = JSON.parse(window.localStorage.getItem('favoriteRoutes'));
+            $log.debug(angular.toJson(favoriteRoutes));
+            var routeReordered = favoriteRoutes[fromIndex];
+            routeReordered.index = favoriteRoutes[toIndex].index;
+            favoriteRoutes.splice(fromIndex, 1);
+            favoriteRoutes.splice(toIndex, 0, routeReordered);
+            if (toIndex < fromIndex) {
+                for (var i = toIndex + 1; i <= fromIndex; i++) {
+                    var favoriteRoute = favoriteRoutes[i];
+                    favoriteRoute.index = parseInt(favoriteRoute.index) + 1;
+                    favoriteRoutes.splice(i, 1);
+                    favoriteRoutes.splice(i, 0, favoriteRoute);
+                }
+            } else {
+                for (var i = fromIndex; i < toIndex; i++) {
+                    var favoriteRoute = favoriteRoutes[i];
+                    favoriteRoute.index = parseInt(favoriteRoute.index) - 1;
+                    favoriteRoutes.splice(i, 1);
+                    favoriteRoutes.splice(i, 0, favoriteRoute);
+                }
+            }
+            window.localStorage.setItem('favoriteRoutes', JSON.stringify(favoriteRoutes));
+            window.location.reload();
+        }
     }
 }
 

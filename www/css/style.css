@@ -87,3 +87,18 @@
     background-color: transparent;
 }
 
+.list-right-editing .item-right-editable .item-content,.item-right-editing.item-right-editable .item-content {
+    margin-left: 40px !important;
+    margin-right: 0px !important;
+}
+.item-right-edit {
+    left: 0 !important;
+    width: 40px !important;
+    right: initial !important;
+}
+
+.item-right-editable .item-content {
+    -webkit-transition-property: margin-left !important;
+    -moz-transition-property: margin-left !important;
+    transition-property: margin-left !important;
+}
