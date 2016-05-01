@@ -112,6 +112,10 @@
     transition-property: margin-left !important;
 }
 
+.compact-padding {
+    padding: 5px 10px;
+}
+
 .item-padding {
     padding-bottom: 10px;
     padding-top: 10px;

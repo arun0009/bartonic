@@ -2,7 +2,7 @@
     <ion-content padding="false" has-bouncing="false">
         <form>
             <div>
-                <div class="padding">
+                <div class="compact-padding">
                     <button class="button button-outline button-select button-light ion-android-subway" modal-class="modalClass" modal-select ng-model="quicklookup.origin"
                             options="stations" modal-title="Select Origin" header-footer-class="bar-stable" sub-header-class="bar-stable" has-search="true">
                         {{&nbsp;quicklookup.origin.name || &apos;&nbsp;Select Origin&apos;}}
@@ -12,7 +12,7 @@
                     </button>
                 </div>
 
-                <div class="padding">
+                <div class="compact-padding">
                     <button class="button button-outline button-select button-light ion-android-subway" modal-class="modalClass" modal-select ng-model="quicklookup.destination"
                             options="stations" modal-title="Select Destination" header-footer-class="bar-stable" sub-header-class="bar-stable" has-search="true">
                         {{&nbsp;quicklookup.destination.name || &apos;&nbsp;Select Destination&apos;}}
@@ -40,7 +40,7 @@
                 </div>
 
 
-                <div class="button-bar padding">
+                <div class="button-bar compact-padding">
                     <button type="button" class="button button-full button-calm ion-ios-search-strong" ng-click="quicklookup.showEstimatedDeparture()">&nbsp;Quick Lookup
                     </button>
                 </div>
