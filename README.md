@@ -9,6 +9,7 @@ An ios app that lets you check real time bart train schedules, add your daily/fa
 [BARTonic](https://itunes.apple.com/us/app/bartonic/id1067117704?mt=8) has been launched on Apple Store and is available for free download
 
 Many thanks to the following open source projects/contributors that made this app possible:
+
 1. [Ionic Framework](https://github.com/driftyco/ionic)
 2. [RxJS](https://github.com/Reactive-Extensions/RxJS)
 3. [angular-xml](https://github.com/johngeorgewright/angular-xml)
