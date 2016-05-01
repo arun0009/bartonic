@@ -2,9 +2,6 @@
   "name": "bartonic",
   "version": "1.0.0",
   "description": "Bart Real Time Schedule - BRTS",
-  "dependencies": {
-    "angular-bootstrap-datetimepicker": "^1.0.1"
-  },
   "devDependencies": {
     "ava": "^0.14.0",
     "globby": "^4.0.0",
