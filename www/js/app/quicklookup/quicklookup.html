@@ -2,7 +2,7 @@
     <ion-content padding="false" has-bouncing="false">
         <form>
             <div>
-                <div class="padding">
+                <div class="compact-padding">
                     <button class="button button-outline button-select button-light ion-android-subway" modal-class="modalClass" modal-select ng-model="quicklookup.origin"
                             options="stations" modal-title="Select Origin" header-footer-class="bar-stable" sub-header-class="bar-stable" has-search="true">
                         {{&nbsp;quicklookup.origin.name || &apos;&nbsp;Select Origin&apos;}}
@@ -12,7 +12,7 @@
                     </button>
                 </div>
 
-                <div class="padding">
+                <div class="compact-padding">
                     <button class="button button-outline button-select button-light ion-android-subway" modal-class="modalClass" modal-select ng-model="quicklookup.destination"
                             options="stations" modal-title="Select Destination" header-footer-class="bar-stable" sub-header-class="bar-stable" has-search="true">
                         {{&nbsp;quicklookup.destination.name || &apos;&nbsp;Select Destination&apos;}}
@@ -22,13 +22,31 @@
                     </button>
                 </div>
 
-                <div class="button-bar padding">
+                <div>
+                    <div ng-repeat="timeOption in timeOptions">
+                        <div ng-if="$index === 0">
+                            <ion-checkbox ng-model="timeOption.checked" ng-click="quicklookup.updateSelection($index, timeOptions, timeOption.title)" class="item-padding">
+                                {{ timeOption.title }}
+                            </ion-checkbox>
+                        </div>
+                        <div ng-if="$index > 0">
+                            <div ion-datetime-picker am-pm ng-model="timeOption.value">
+                                <ion-checkbox ng-model="timeOption.checked" ng-click="quicklookup.updateSelection($index, timeOptions, timeOption.title)">
+                                    {{ timeOption.title }} {{timeOption.value| date: "MM/dd/yyyy h:mm a"}}
+                                </ion-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="button-bar compact-padding">
                     <button type="button" class="button button-full button-calm ion-ios-search-strong" ng-click="quicklookup.showEstimatedDeparture()">&nbsp;Quick Lookup
                     </button>
                 </div>
 
                 <div ng-repeat="quickLookup in quickLookups">
-                    <div class="item calm-border" ng-if="quickLookup.estDeparture">
+                    <div class="item calm-border" ng-if="quickLookup.estDeparture || quickLookup.scheduled">
                         <div class="row">
                             <div class="col-66">
                                 <div>
@@ -47,18 +65,27 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-center">
-                                <div>
-                                <span ng-if="quickLookup.estDeparture === 'LEAVING_NOW'">
-                                    <small><b>Leaving</b></small> ({{quickLookup.carLength}} car)
-                                </span>
-                                <span ng-if="quickLookup.estDeparture > 0">
-                                    <small>
-                                        <timer interval="1000" language="en" countdown="quickLookup.estDeparture">{{minutes}}m:{{seconds}}s</timer>
-                                        ({{quickLookup.carLength}} car)
-                                    </small>
 
-                               </span>
+                            <div class="col-center" ng-if="!quickLookup.scheduled">
+                                <div>
+                                        <span ng-if="quickLookup.estDeparture === 'LEAVING_NOW'">
+                                            <small><b>Leaving</b></small> ({{quickLookup.carLength}} car)
+                                        </span>
+                                        <span ng-if="quickLookup.estDeparture > 0">
+                                            <small>
+                                                <timer interval="1000" language="en" countdown="quickLookup.estDeparture">{{minutes}}m:{{seconds}}s</timer>
+                                                ({{quickLookup.carLength}} car)
+                                            </small>
+                                        </span>
+                                </div>
+                                <div>
+                                    <small>{{quickLookup.routeFare | currency:$:2}}, Arr {{quickLookup.destTimeMin}}</small>
+                                </div>
+                            </div>
+
+                            <div class="col-center" ng-if="quickLookup.scheduled">
+                                <div>
+                                    <small>Departs: {{quickLookup.origTimeMin}}</small>
                                 </div>
                                 <div>
                                     <small>{{quickLookup.routeFare | currency:$:2}}, Arr {{quickLookup.destTimeMin}}</small>
@@ -66,7 +93,7 @@
                             </div>
                         </div>
                     </div>
-                    <div ng-if="!quickLookup.estDeparture">
+                    <div ng-if="!quickLookup.estDeparture && !quickLookup.scheduled">
                         <div class="item calm-border text-center" class="row">
                             <span>No Service</span>
                         </div>

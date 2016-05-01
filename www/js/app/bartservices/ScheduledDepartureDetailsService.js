@@ -1,12 +1,14 @@
 angular.module('bartonic')
     .factory('ScheduledDepartureDetailsService', function ($http, $log, ENV) {
         return {
-            getScheduledDepartureDetailsObservable: function (origin, destination) {
+            getScheduledDepartureDetailsObservable: function (origin, destination, cmd, date, time) {
                 //$log.debug("origin is : " + origin, " destination is : " + destination);
+                var b = (cmd === 'depart') ? '0' : '3';
+                var a = (cmd === 'depart') ? '3' : '0';
                 return Rx.Observable.fromPromise($http({
                     method: 'GET',
                     url: ENV.bartBaseURL + '/sched.aspx',
-                    params: {cmd: 'depart', b:'0', a:'3', l:'1', orig: origin, dest: destination, key: ENV.bartApiKey}
+                    params: {cmd: cmd, b: b, a: a, l:'1', orig: origin, dest: destination, date: date, time:time, key: ENV.bartApiKey}
                 }));
             },
 

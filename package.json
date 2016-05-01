@@ -2,7 +2,6 @@
   "name": "bartonic",
   "version": "1.0.0",
   "description": "Bart Real Time Schedule - BRTS",
-  "dependencies": {},
   "devDependencies": {
     "ava": "^0.14.0",
     "globby": "^4.0.0",
