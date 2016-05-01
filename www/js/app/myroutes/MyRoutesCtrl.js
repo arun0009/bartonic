@@ -19,7 +19,7 @@ var MyRoutesCtrl = function ($rootScope, $scope, $state, $filter, $ionicPlatform
             originNames.push(favoriteRoutes[i].originName);
             destinationNames.push(favoriteRoutes[i].destinationName);
             //$log.debug("pushing in " + originAbbr + " destination is : " + destinationAbbr);
-            scheduleDepartureDetailsObservables.push(ScheduledDepartureDetailsService.getScheduledDepartureDetailsObservable(originAbbr, destinationAbbr));
+            scheduleDepartureDetailsObservables.push(ScheduledDepartureDetailsService.getScheduledDepartureDetailsObservable(originAbbr, destinationAbbr, 'depart', 'now', 'now'));
         }
         return Rx.Observable.just(scheduleDepartureDetailsObservables);
     }

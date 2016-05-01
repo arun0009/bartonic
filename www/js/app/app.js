@@ -1,4 +1,4 @@
-angular.module('bartonic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', 'timer',
+angular.module('bartonic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', 'timer', 'ion-datetime-picker',
         'bartonic.myroutes', 'bartonic.myrouteschedule', 'bartonic.addroute', 'bartonic.quicklookup', 'bartonic.map', 'bartonic.info'])
     .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $logProvider, ENV) {
         $logProvider.debugEnabled(ENV.DEBUGENABLED);
@@ -20,12 +20,11 @@ angular.module('bartonic', ['ionic', 'ionic-modal-select', 'ngCordova', 'xml', '
     .run(function ($ionicPlatform, $state) {
         $ionicPlatform.ready(function () {
             var favoriteRoutes = JSON.parse(window.localStorage.getItem('favoriteRoutes')) || [];
+            hideSplashScreen(1000);
             if (favoriteRoutes.length != 0) {
                 $state.go("tab.myroutes");
-                hideSplashScreen(100);
             } else {
                 $state.go('tab.addroute');
-                hideSplashScreen(1000);
             }
 
             $ionicPlatform.on('resume', function () {

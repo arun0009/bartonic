@@ -3,6 +3,15 @@
     background-size: cover;
 }
 
+.popup {
+    background: url('../img/background.jpg') no-repeat;
+    background-size: cover;
+}
+
+.popup-title {
+    color: white;
+}
+
 .item-complex .item-content, .item-select, .item {
     background: transparent;
     border-color: transparent;
@@ -101,4 +110,9 @@
     -webkit-transition-property: margin-left !important;
     -moz-transition-property: margin-left !important;
     transition-property: margin-left !important;
+}
+
+.item-padding {
+    padding-bottom: 10px;
+    padding-top: 10px;
 }
