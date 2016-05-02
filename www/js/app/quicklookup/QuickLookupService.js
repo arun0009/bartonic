@@ -28,7 +28,7 @@ angular.module('bartonic.quicklookup').factory('QuickLookupService', function ($
                     var headStationCounter = $filter('filter')(headStations, quickLookup.trainHeadStation, true).length;
                     var estDepartureDetails = angular.isArray(estTimeDeparture.root.station.etd) ? $filter('filter')(estTimeDeparture.root.station.etd, {abbreviation: quickLookup.trainHeadStation}, true) : estTimeDeparture.root.station.etd;
                     $log.debug("estDepartureDetails is : ", angular.toJson(estDepartureDetails));
-                    if (estDepartureDetails != null && estDepartureDetails.length > 0) {
+                    if (estDepartureDetails != null) {
                         if (angular.isArray(estDepartureDetails)) {
                             estDepartureDetails = estDepartureDetails[0];
                         }
@@ -46,7 +46,7 @@ angular.module('bartonic.quicklookup').factory('QuickLookupService', function ($
         },
 
         quickLookupDetails: function (indx, destination, trip, stations) {
-           return quickLookupFunction(indx, destination, trip, stations);
+            return quickLookupFunction(indx, destination, trip, stations);
         }
     }
 

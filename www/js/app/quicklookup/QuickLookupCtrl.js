@@ -25,6 +25,7 @@ var QuickLookupCtrl = function ($scope, $filter, $log, $interval, StationsLookup
         );
     }
 
+
     this.showEstimatedDeparture = function () {
         if (this.origin && this.destination) {
             var origin = this.origin.abbr;
@@ -50,7 +51,6 @@ var QuickLookupCtrl = function ($scope, $filter, $log, $interval, StationsLookup
                 } else {
                     time = (dateTime.getHours() === 0 ? dateTime.getHours() + 12 : dateTime.getHours()) + ":" + dateTime.getMinutes() + " AM";
                 }
-                console.log("time is : ", time);
                 var quickLookups = [];
 
                 ScheduledDepartureDetailsService.getScheduledDepartureDetailsObservable(origin, destination, cmd, date, time).subscribe(function (response) {
@@ -65,6 +65,13 @@ var QuickLookupCtrl = function ($scope, $filter, $log, $interval, StationsLookup
                 }, function () {
                     quickLookups = $filter('orderBy')(quickLookups, "estDepartureFlag");
                     $scope.quickLookups = quickLookups;
+                    $scope.noservice = true;
+                    angular.forEach(quickLookups, function(lookup) {
+                       if(lookup.estDeparture) {
+                           $scope.noservice = false;
+                           return;
+                       }
+                    });
                     $scope.$apply();
                 });
             }
