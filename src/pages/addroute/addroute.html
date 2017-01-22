@@ -1,0 +1,33 @@
+<ion-navbar *navbar>
+  <ion-title>Add Route</ion-title>
+</ion-navbar>
+<ion-content has-bouncing="false">
+  <div padding>
+    <ion-item>
+      <ion-label>Select Origin</ion-label>
+      <ion-select [(ngModel)]="origin">
+        <ion-option *ngFor="let station of stations" [value]="station">{{station.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </div>
+  <div padding>
+    <ion-item>
+      <ion-label>Select Destination</ion-label>
+      <ion-select [(ngModel)]="destination">
+        <ion-option *ngFor="let station of stations" [value]="station">{{station.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </div>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label>Add Return Route</ion-label>
+        <ion-checkbox [(ngModel)]="reverseDirection"></ion-checkbox>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-segment>
+    <ion-segment-button value="Cancel" segment-button-ios-background-color (click)="cancelAddRoute()">Cancel</ion-segment-button>
+    <ion-segment-button value="AddRoute" (click)="addRouteToFavorites()">Add to My Routes</ion-segment-button>
+  </ion-segment>
+</ion-content>
