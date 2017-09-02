@@ -3,7 +3,7 @@
     <name>BARTonic</name>
     <description>BARTonic - Real Time Schedule BART app</description>
     <author email="arun0009@gmail.com" href="http://github.com/arun0009">Arun Gopalpuri</author>
-    <content original-src="index.html" src="http://192.168.86.48:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
