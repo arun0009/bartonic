@@ -9,3 +9,6 @@ hooks/
 *.iml
 *.ipr
 *.iws
+.history
+.vscode
+.DS_Store
