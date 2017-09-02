@@ -1,0 +1,43 @@
+<ion-navbar *navbar>
+  <ion-title>My Routes</ion-title>
+</ion-navbar>
+<ion-content padding="false" has-bouncing="false">
+  <ion-row>Arun</ion-row>
+  <ion-list show-delete="data.showDelete" show-reorder="data.showReorder">
+    <ion-item *ngFor="let myRoute of myFavRoutes" (click)="myroutes.getRouteSchedules(myRoute)">
+      <ion-row>
+        <ion-col width-67>
+          <small> {{myRoute.originName}}</small>
+        </ion-col>
+        <ion-col text-right>
+                        <span *ngIf="myRoute.estDeparture === 'LEAVING_NOW'">
+                            <small>Leaving ({{myRoute.carLength}} car)</small>
+                        </span>
+                      <span *ngIf="myRoute.estDeparture === 'No Service'">
+                            <small>No Service</small>
+                        </span>
+                        <span *ngIf="myRoute.estDeparture > 0">
+                            <small>
+                              <bart-timer departureTime="{{myRoute.estDeparture}}"></bart-timer>
+                              ({{myRoute.carLength}} car)
+                            </small>
+                        </span>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col width-67>
+          <small><span *ngIf="myRoute.hasLink"><i icon ion-link></i></span> to {{myRoute.destinationName}}</small>
+        </ion-col>
+        <ion-col text-right *ngIf="myRoute.estDeparture !== 'No Service'">
+          <small>${{myRoute.routeFare}}, Arr {{myRoute.destTimeMin}}</small>
+        </ion-col>
+      </ion-row>
+
+      <!--<ion-delete-button ion-minus-circled (click)="myroutes.deleteRoute(myRoute)"></ion-delete-button>-->
+      <!--<ion-reorder-button ion-navicon on-reorder="myroutes.reorderRoutes(myRoute, $fromIndex, $toIndex)"></ion-reorder-button>-->
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+
+
