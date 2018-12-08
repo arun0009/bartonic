@@ -1,7 +1,36 @@
-<ion-tabs #bartonicTabs>
-  <ion-tab [root]="myroutes" tabTitle="My Routes" tabIcon="flag"></ion-tab>
-  <ion-tab [root]="addroute" tabTitle="Add a Route" tabIcon="add-circle"></ion-tab>
-  <!--<ion-tab [root]="quicklookup" tabTitle="Quick Lookup" tabIcon="search"></ion-tab>-->
-  <ion-tab [root]="map" tabTitle="Bart Map" tabIcon="map"></ion-tab>
-  <ion-tab [root]="info" tabTitle="Info" tabIcon="information-circle"></ion-tab>
+<ion-tabs>
+  <ion-tab tab="myroutes">
+    <ion-router-outlet name="myroutes"></ion-router-outlet>
+  </ion-tab>
+  <ion-tab tab="addroute">
+    <ion-router-outlet name="addroute"></ion-router-outlet>
+  </ion-tab>
+  <ion-tab tab="map">
+    <ion-router-outlet name="map"></ion-router-outlet>
+  </ion-tab>
+  <ion-tab tab="info">
+    <ion-router-outlet name="info"></ion-router-outlet>
+  </ion-tab>
+
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="myroutes" href="/tabs/(myroutes:myroutes)">
+      <ion-icon name="flag"></ion-icon>
+      <ion-label>My Routes</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="addroute" href="/tabs/(addroute:addroute)">
+      <ion-icon name="add-circle"></ion-icon>
+      <ion-label>Add Route</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="map" href="/tabs/(map:map)">
+      <ion-icon name="map"></ion-icon>
+      <ion-label>Bart Map</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="info" href="/tabs/(info:info)">
+      <ion-icon name="information-circle"></ion-icon>
+      <ion-label>Info</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
 </ion-tabs>

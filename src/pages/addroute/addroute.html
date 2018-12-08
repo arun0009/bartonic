@@ -1,12 +1,14 @@
-<ion-navbar *navbar>
-  <ion-title>Add Route</ion-title>
-</ion-navbar>
+<ion-header>
+  <ion-toolbar> <ion-title>Add Route</ion-title> </ion-toolbar>
+</ion-header>
 <ion-content has-bouncing="false">
   <div padding>
     <ion-item>
       <ion-label>Select Origin</ion-label>
       <ion-select [(ngModel)]="origin">
-        <ion-option *ngFor="let station of stations" [value]="station">{{station.name}}</ion-option>
+        <ion-select-option *ngFor="let station of stations" [value]="station">{{
+          station.name
+        }}</ion-select-option>
       </ion-select>
     </ion-item>
   </div>
@@ -14,7 +16,9 @@
     <ion-item>
       <ion-label>Select Destination</ion-label>
       <ion-select [(ngModel)]="destination">
-        <ion-option *ngFor="let station of stations" [value]="station">{{station.name}}</ion-option>
+        <ion-select-option *ngFor="let station of stations" [value]="station">{{
+          station.name
+        }}</ion-select-option>
       </ion-select>
     </ion-item>
   </div>
@@ -27,7 +31,14 @@
     </ion-col>
   </ion-row>
   <ion-segment>
-    <ion-segment-button value="Cancel" segment-button-ios-background-color (click)="cancelAddRoute()">Cancel</ion-segment-button>
-    <ion-segment-button value="AddRoute" (click)="addRouteToFavorites()">Add to My Routes</ion-segment-button>
+    <ion-segment-button
+      value="Cancel"
+      segment-button-ios-background-color
+      (click)="cancelAddRoute()"
+      >Cancel</ion-segment-button
+    >
+    <ion-segment-button value="AddRoute" (click)="addRouteToFavorites()"
+      >Add to My Routes</ion-segment-button
+    >
   </ion-segment>
 </ion-content>

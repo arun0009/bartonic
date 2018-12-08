@@ -1,28 +1,29 @@
-import {Component} from "@angular/core";
-import {BartHelperService} from "../../services/BartHelperService";
-import {StationsLookupService} from "../../services/StationsLookupService";
-import {NavController, Tabs} from "ionic-angular";
+import { Component } from "@angular/core";
+import { BartHelperService } from "../../services/BartHelperService";
+import { StationsLookupService } from "../../services/StationsLookupService";
+import { NavController, Tabs } from "@ionic/angular";
 
 @Component({
-  selector: 'addroute',
-  templateUrl: 'addroute.html',
+  selector: "addroute",
+  templateUrl: "addroute.html",
   providers: [StationsLookupService]
-
 })
 export class AddRoutePage {
-  stations:any[] = [];
-  bartHelperService:BartHelperService;
-  origin:any;
-  destination:any;
-  reverseDirection:boolean = false;
-  cancelAddRoute:any;
+  stations: any[] = [];
+  bartHelperService: BartHelperService;
+  origin: any;
+  destination: any;
+  reverseDirection: boolean = false;
+  cancelAddRoute: any;
 
-  nav: NavController
-
-  constructor(nav:NavController, bartHelperService:BartHelperService, stationsLookupService:StationsLookupService) {
+  constructor(
+    private nav: NavController,
+    bartHelperService: BartHelperService,
+    stationsLookupService: StationsLookupService
+  ) {
     this.nav = nav;
     this.bartHelperService = bartHelperService;
-    stationsLookupService.getStations().subscribe((response) => {
+    stationsLookupService.getStations().subscribe(response => {
       this.stations = response.root.stations.station;
     });
   }
@@ -48,7 +49,5 @@ export class AddRoutePage {
       });
     }
     this.bartHelperService.addToFavoriteRoutes(favoriteRoutes);
-    var t: Tabs = this.nav.parent;
-    t.select(0);
   }
 }

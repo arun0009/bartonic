@@ -1,39 +1,33 @@
-import { NgModule } from '@angular/core';
-import { IonicApp, IonicModule } from 'ionic-angular';
-import { MyApp } from './app.component';
-import { AddRoutePage } from '../pages/addroute/addroute';
-import { InfoPage } from '../pages/info/info';
-import { MapPage } from '../pages/map/map';
-import { MyRoutesPage } from '../pages/myroutes/myroutes';
-import { QuickLookupPage } from '../pages/quicklookup/quicklookup'
-import { TabsPage } from '../pages/tabs/tabs'
-import { TimerComponent } from "../components/TimerComponent";
+import { NgModule } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { BrowserModule } from "@angular/platform-browser";
+import { HttpModule } from "@angular/http";
+
+import { IonicModule, IonicRouteStrategy } from "@ionic/angular";
+import { AppRoutingModule } from "./app-routing.module";
+
+import { BARTonic } from "./app.component";
+import { NativeStorage } from "@ionic-native/native-storage/ngx";
+import { RouteReuseStrategy } from "@angular/router";
+import { SplashScreen } from "@ionic-native/splash-screen/ngx";
+import { StatusBar } from "@ionic-native/status-bar/ngx";
 
 @NgModule({
-  declarations: [
-    MyApp,
-    AddRoutePage,
-    InfoPage,
-    MapPage,
-    MyRoutesPage,
-    QuickLookupPage,
-    TabsPage,
-    TimerComponent,
-  ],
+  declarations: [BARTonic],
   imports: [
-    IonicModule.forRoot(MyApp)
+    BrowserModule,
+    FormsModule,
+    HttpModule,
+    IonicModule.forRoot(),
+    AppRoutingModule
   ],
-  bootstrap: [IonicApp],
-  entryComponents: [
-    MyApp,
-    AddRoutePage,
-    InfoPage,
-    MapPage,
-    MyRoutesPage,
-    QuickLookupPage,
-    TabsPage,
-    TimerComponent
-  ],
-  providers: []
+  bootstrap: [BARTonic],
+  entryComponents: [],
+  providers: [
+    StatusBar,
+    SplashScreen,
+    NativeStorage,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+  ]
 })
-export class AppModule { }
+export class AppModule {}

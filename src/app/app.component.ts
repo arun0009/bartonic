@@ -1,29 +1,39 @@
-import {Component} from "@angular/core";
-import {Platform} from "ionic-angular";
-import {StatusBar, Splashscreen} from "ionic-native";
-import {TabsPage} from "../pages/tabs/tabs";
-import {BartHelperService} from "../services/BartHelperService";
+import { Component } from "@angular/core";
+import { Platform } from "@ionic/angular";
+import { SplashScreen } from "@ionic-native/splash-screen/ngx";
+import { StatusBar } from "@ionic-native/status-bar/ngx";
+import { BartHelperService } from "../services/BartHelperService";
+import { Router } from "@angular/router";
 
 @Component({
-  template: `<ion-nav [root]="rootPage"></ion-nav>`,
-  providers: [BartHelperService]
+  selector: "app-root",
+  templateUrl: "app.component.html",
+  providers: [BartHelperService],
+  styleUrls: ["app.scss"]
 })
-export class MyApp {
-
-  rootPage:any;
-  bartHelperService:any;
-
-  constructor(platform:Platform, bartHelperService:BartHelperService) {
+export class BARTonic {
+  constructor(
+    platform: Platform,
+    router: Router,
+    splashScreen: SplashScreen,
+    statusBar: StatusBar,
+    private bartHelperService: BartHelperService
+  ) {
+    splashScreen.show();
     this.bartHelperService = bartHelperService;
     platform.ready().then(() => {
       this.bartHelperService.loadFavoriteRoutes().then(() => {
         console.log("loaded fav routes");
-        // Okay, so the platform is ready and our plugins are available.
-        // Here you can do any higher level native things you might need.
-        StatusBar.styleDefault();
-        Splashscreen.hide();
-
-        this.rootPage = TabsPage;
+        this.bartHelperService = bartHelperService;
+        var favRoutes = this.bartHelperService.getFavoriteRoutes();
+        console.log("favRoutes length is : ", favRoutes.length);
+        if (favRoutes.length > 0) {
+          router.navigateByUrl("/tabs/(myroutes:myroutes)");
+        } else {
+          router.navigateByUrl("/tabs/(addroute:addroute)");
+        }
+        statusBar.styleDefault();
+        splashScreen.hide();
       });
     });
   }
