@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
-import { BartHelperService } from "../../services/BartHelperService";
-import { StationsLookupService } from "../../services/StationsLookupService";
+import { BartHelperService } from "../services/BartHelperService";
+import { StationsLookupService } from "../services/StationsLookupService";
 import { NavController, Tabs } from "@ionic/angular";
 
 @Component({

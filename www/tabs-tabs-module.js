@@ -1,4 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["pages-tabs-tabs-module"],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["tabs-tabs-module"],{
 
 /***/ "./node_modules/rxjs-compat/_esm5/Rx.js":
 /*!**********************************************!*\
@@ -6305,121 +6305,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/components/component.module.ts":
-/*!********************************************!*\
-  !*** ./src/components/component.module.ts ***!
-  \********************************************/
-/*! exports provided: ComponentsModule */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ComponentsModule", function() { return ComponentsModule; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _timer_timer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./timer/timer */ "./src/components/timer/timer.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-var ComponentsModule = /** @class */ (function () {
-    function ComponentsModule() {
-    }
-    ComponentsModule = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
-            declarations: [_timer_timer__WEBPACK_IMPORTED_MODULE_1__["TimerComponent"]],
-            exports: [_timer_timer__WEBPACK_IMPORTED_MODULE_1__["TimerComponent"]]
-        })
-    ], ComponentsModule);
-    return ComponentsModule;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/components/timer/timer.ts":
-/*!***************************************!*\
-  !*** ./src/components/timer/timer.ts ***!
-  \***************************************/
-/*! exports provided: TimerComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TimerComponent", function() { return TimerComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var TimerComponent = /** @class */ (function () {
-    function TimerComponent() {
-        var _this = this;
-        var t = Object(rxjs__WEBPACK_IMPORTED_MODULE_1__["timer"])(1000, 1000);
-        t.subscribe(function (t) { return (_this.departureTimer = _this.secondsToHms(_this.departureTime - t)); });
-    }
-    TimerComponent.prototype.secondsToHms = function (timeInSeconds) {
-        var h = Math.floor(timeInSeconds / 3600);
-        var m = Math.floor((timeInSeconds % 3600) / 60);
-        var s = Math.floor((timeInSeconds % 3600) % 60);
-        return ((h > 0 ? h + "h:" + (m < 10 ? "0" : "") : "") +
-            m +
-            "m:" +
-            (s < 10 ? "0" : "") +
-            s +
-            "s");
-    };
-    TimerComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: "bart-timer",
-            inputs: ["departureTime"],
-            template: "{{departureTimer}}"
-        }),
-        __metadata("design:paramtypes", [])
-    ], TimerComponent);
-    return TimerComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/models/MyRouteInfo.ts":
-/*!***********************************!*\
-  !*** ./src/models/MyRouteInfo.ts ***!
-  \***********************************/
-/*! exports provided: MyRouteInfo */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MyRouteInfo", function() { return MyRouteInfo; });
-var MyRouteInfo = /** @class */ (function () {
-    function MyRouteInfo() {
-    }
-    return MyRouteInfo;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/pages/addroute/addroute.html":
-/*!******************************************!*\
-  !*** ./src/pages/addroute/addroute.html ***!
-  \******************************************/
+/***/ "./src/app/addroute/addroute.html":
+/*!****************************************!*\
+  !*** ./src/app/addroute/addroute.html ***!
+  \****************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -6427,10 +6316,10 @@ module.exports = "<ion-header>\n  <ion-toolbar> <ion-title>Add Route</ion-title>
 
 /***/ }),
 
-/***/ "./src/pages/addroute/addroute.module.ts":
-/*!***********************************************!*\
-  !*** ./src/pages/addroute/addroute.module.ts ***!
-  \***********************************************/
+/***/ "./src/app/addroute/addroute.module.ts":
+/*!*********************************************!*\
+  !*** ./src/app/addroute/addroute.module.ts ***!
+  \*********************************************/
 /*! exports provided: AddRouteModule */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6442,7 +6331,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-/* harmony import */ var _addroute__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./addroute */ "./src/pages/addroute/addroute.ts");
+/* harmony import */ var _addroute__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./addroute */ "./src/app/addroute/addroute.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6476,10 +6365,10 @@ var AddRouteModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/pages/addroute/addroute.ts":
-/*!****************************************!*\
-  !*** ./src/pages/addroute/addroute.ts ***!
-  \****************************************/
+/***/ "./src/app/addroute/addroute.ts":
+/*!**************************************!*\
+  !*** ./src/app/addroute/addroute.ts ***!
+  \**************************************/
 /*! exports provided: AddRoutePage */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6487,8 +6376,8 @@ var AddRouteModule = /** @class */ (function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AddRoutePage", function() { return AddRoutePage; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _services_BartHelperService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/BartHelperService */ "./src/services/BartHelperService.ts");
-/* harmony import */ var _services_StationsLookupService__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/StationsLookupService */ "./src/services/StationsLookupService.ts");
+/* harmony import */ var _services_BartHelperService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/BartHelperService */ "./src/app/services/BartHelperService.ts");
+/* harmony import */ var _services_StationsLookupService__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/StationsLookupService */ "./src/app/services/StationsLookupService.ts");
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/index.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -6540,7 +6429,7 @@ var AddRoutePage = /** @class */ (function () {
     AddRoutePage = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: "addroute",
-            template: __webpack_require__(/*! ./addroute.html */ "./src/pages/addroute/addroute.html"),
+            template: __webpack_require__(/*! ./addroute.html */ "./src/app/addroute/addroute.html"),
             providers: [_services_StationsLookupService__WEBPACK_IMPORTED_MODULE_2__["StationsLookupService"]]
         }),
         __metadata("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_3__["NavController"],
@@ -6554,21 +6443,112 @@ var AddRoutePage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/pages/info/info.html":
-/*!**********************************!*\
-  !*** ./src/pages/info/info.html ***!
-  \**********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ "./src/app/components/component.module.ts":
+/*!************************************************!*\
+  !*** ./src/app/components/component.module.ts ***!
+  \************************************************/
+/*! exports provided: ComponentsModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-module.exports = "<ion-header>\n  <ion-toolbar> <ion-title>Advisory Information</ion-title> </ion-toolbar>\n</ion-header>\n<ion-content padding class=\"info\">\n  <ion-item>\n    <div><h2>Advisory Info!</h2></div>\n  </ion-item>\n  <ion-item text-wrap>\n    <div>{{ advisoryInfo }}</div>\n  </ion-item>\n</ion-content>\n"
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ComponentsModule", function() { return ComponentsModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _timer_timer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./timer/timer */ "./src/app/components/timer/timer.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var ComponentsModule = /** @class */ (function () {
+    function ComponentsModule() {
+    }
+    ComponentsModule = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
+            declarations: [_timer_timer__WEBPACK_IMPORTED_MODULE_1__["TimerComponent"]],
+            exports: [_timer_timer__WEBPACK_IMPORTED_MODULE_1__["TimerComponent"]]
+        })
+    ], ComponentsModule);
+    return ComponentsModule;
+}());
+
+
 
 /***/ }),
 
-/***/ "./src/pages/info/info.module.ts":
-/*!***************************************!*\
-  !*** ./src/pages/info/info.module.ts ***!
-  \***************************************/
+/***/ "./src/app/components/timer/timer.ts":
+/*!*******************************************!*\
+  !*** ./src/app/components/timer/timer.ts ***!
+  \*******************************************/
+/*! exports provided: TimerComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TimerComponent", function() { return TimerComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var TimerComponent = /** @class */ (function () {
+    function TimerComponent() {
+        var _this = this;
+        var t = Object(rxjs__WEBPACK_IMPORTED_MODULE_1__["timer"])(1000, 1000);
+        t.subscribe(function (t) { return (_this.departureTimer = _this.secondsToHms(_this.departureTime - t)); });
+    }
+    TimerComponent.prototype.secondsToHms = function (timeInSeconds) {
+        var h = Math.floor(timeInSeconds / 3600);
+        var m = Math.floor((timeInSeconds % 3600) / 60);
+        var s = Math.floor((timeInSeconds % 3600) % 60);
+        return ((h > 0 ? h + "h:" + (m < 10 ? "0" : "") : "") +
+            m +
+            "m:" +
+            (s < 10 ? "0" : "") +
+            s +
+            "s");
+    };
+    TimerComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: "bart-timer",
+            inputs: ["departureTime"],
+            template: "{{departureTimer}}"
+        }),
+        __metadata("design:paramtypes", [])
+    ], TimerComponent);
+    return TimerComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/info/info.html":
+/*!********************************!*\
+  !*** ./src/app/info/info.html ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<ion-header>\n  <ion-toolbar> <ion-title>Advisory Information</ion-title> </ion-toolbar>\n</ion-header>\n<ion-content padding class=\"info\">\n  <ion-item text-wrap>\n    <div>{{ advisoryInfo }}</div>\n  </ion-item>\n</ion-content>\n"
+
+/***/ }),
+
+/***/ "./src/app/info/info.module.ts":
+/*!*************************************!*\
+  !*** ./src/app/info/info.module.ts ***!
+  \*************************************/
 /*! exports provided: InfoModule */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6580,7 +6560,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-/* harmony import */ var _info__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./info */ "./src/pages/info/info.ts");
+/* harmony import */ var _info__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./info */ "./src/app/info/info.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6614,10 +6594,10 @@ var InfoModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/pages/info/info.ts":
-/*!********************************!*\
-  !*** ./src/pages/info/info.ts ***!
-  \********************************/
+/***/ "./src/app/info/info.ts":
+/*!******************************!*\
+  !*** ./src/app/info/info.ts ***!
+  \******************************/
 /*! exports provided: InfoPage */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6625,7 +6605,7 @@ var InfoModule = /** @class */ (function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InfoPage", function() { return InfoPage; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _services_AdvisoryService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/AdvisoryService */ "./src/services/AdvisoryService.ts");
+/* harmony import */ var _services_AdvisoryService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/AdvisoryService */ "./src/app/services/AdvisoryService.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6643,12 +6623,14 @@ var InfoPage = /** @class */ (function () {
     }
     InfoPage.prototype.ngOnInit = function () {
         var _this = this;
-        this.advisoryService.advisoryResponse().subscribe(function (advisoryInfo) { return _this.advisoryInfo = advisoryInfo.root.bsa.description; });
+        this.advisoryService
+            .advisoryResponse()
+            .subscribe(function (advisoryInfo) { return (_this.advisoryInfo = advisoryInfo.root.bsa.description); });
     };
     InfoPage = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'info',
-            template: __webpack_require__(/*! ./info.html */ "./src/pages/info/info.html"),
+            selector: "info",
+            template: __webpack_require__(/*! ./info.html */ "./src/app/info/info.html"),
             providers: [_services_AdvisoryService__WEBPACK_IMPORTED_MODULE_1__["AdvisoryService"]]
         }),
         __metadata("design:paramtypes", [_services_AdvisoryService__WEBPACK_IMPORTED_MODULE_1__["AdvisoryService"]])
@@ -6660,10 +6642,10 @@ var InfoPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/pages/map/map.html":
-/*!********************************!*\
-  !*** ./src/pages/map/map.html ***!
-  \********************************/
+/***/ "./src/app/map/map.html":
+/*!******************************!*\
+  !*** ./src/app/map/map.html ***!
+  \******************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -6671,10 +6653,10 @@ module.exports = "<ion-header>\n  <ion-toolbar> <ion-title>BART Map</ion-title> 
 
 /***/ }),
 
-/***/ "./src/pages/map/map.module.ts":
-/*!*************************************!*\
-  !*** ./src/pages/map/map.module.ts ***!
-  \*************************************/
+/***/ "./src/app/map/map.module.ts":
+/*!***********************************!*\
+  !*** ./src/app/map/map.module.ts ***!
+  \***********************************/
 /*! exports provided: MapModule */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6686,7 +6668,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-/* harmony import */ var _map__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./map */ "./src/pages/map/map.ts");
+/* harmony import */ var _map__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./map */ "./src/app/map/map.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6720,21 +6702,21 @@ var MapModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/pages/map/map.scss":
-/*!********************************!*\
-  !*** ./src/pages/map/map.scss ***!
-  \********************************/
+/***/ "./src/app/map/map.scss":
+/*!******************************!*\
+  !*** ./src/app/map/map.scss ***!
+  \******************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "img {\n  height: 70vh;\n  width: auto;\n  margin: auto;\n  display: block; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9kZXZlbG9wbWVudC9naXRodWIuY29tL2JhcnRvbmljL3NyYy9wYWdlcy9tYXAvbWFwLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxhQUFZO0VBQ1osWUFBVztFQUNYLGFBQVk7RUFDWixlQUFjLEVBQ2YiLCJmaWxlIjoic3JjL3BhZ2VzL21hcC9tYXAuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbImltZyB7XG4gIGhlaWdodDogNzB2aDtcbiAgd2lkdGg6IGF1dG87XG4gIG1hcmdpbjogYXV0bztcbiAgZGlzcGxheTogYmxvY2s7XG59XG4iXX0= */"
+module.exports = "img {\n  height: 70vh;\n  width: auto;\n  margin: auto;\n  display: block; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9kZXZlbG9wbWVudC9naXRodWIuY29tL2JhcnRvbmljL3NyYy9hcHAvbWFwL21hcC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsYUFBWTtFQUNaLFlBQVc7RUFDWCxhQUFZO0VBQ1osZUFBYyxFQUNmIiwiZmlsZSI6InNyYy9hcHAvbWFwL21hcC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiaW1nIHtcbiAgaGVpZ2h0OiA3MHZoO1xuICB3aWR0aDogYXV0bztcbiAgbWFyZ2luOiBhdXRvO1xuICBkaXNwbGF5OiBibG9jaztcbn1cbiJdfQ== */"
 
 /***/ }),
 
-/***/ "./src/pages/map/map.ts":
-/*!******************************!*\
-  !*** ./src/pages/map/map.ts ***!
-  \******************************/
+/***/ "./src/app/map/map.ts":
+/*!****************************!*\
+  !*** ./src/app/map/map.ts ***!
+  \****************************/
 /*! exports provided: MapPage */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6758,8 +6740,8 @@ var MapPage = /** @class */ (function () {
     MapPage = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: "map",
-            template: __webpack_require__(/*! ./map.html */ "./src/pages/map/map.html"),
-            styles: [__webpack_require__(/*! ./map.scss */ "./src/pages/map/map.scss")]
+            template: __webpack_require__(/*! ./map.html */ "./src/app/map/map.html"),
+            styles: [__webpack_require__(/*! ./map.scss */ "./src/app/map/map.scss")]
         }),
         __metadata("design:paramtypes", [])
     ], MapPage);
@@ -6770,21 +6752,41 @@ var MapPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/pages/myroutes/myroutes.html":
-/*!******************************************!*\
-  !*** ./src/pages/myroutes/myroutes.html ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ "./src/app/models/MyRouteInfo.ts":
+/*!***************************************!*\
+  !*** ./src/app/models/MyRouteInfo.ts ***!
+  \***************************************/
+/*! exports provided: MyRouteInfo */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-module.exports = "<ion-header>\n  <ion-toolbar> <ion-title>My Routes</ion-title> </ion-toolbar>\n</ion-header>\n<ion-content padding=\"false\" has-bouncing=\"false\">\n  <ion-list show-delete=\"data.showDelete\" show-reorder=\"data.showReorder\">\n    <ion-item\n      *ngFor=\"let myRoute of myFavRoutes\"\n      (click)=\"myroutes.getRouteSchedules(myRoute)\"\n    >\n      <ion-row>\n        <ion-col width-67>\n          <small> {{ myRoute.originName }}</small>\n        </ion-col>\n        <ion-col text-right>\n          <span *ngIf=\"myRoute.estDeparture === 'LEAVING_NOW'\">\n            <small>Leaving ({{ myRoute.carLength }} car)</small>\n          </span>\n          <span *ngIf=\"myRoute.estDeparture === 'No Service'\">\n            <small>No Service</small>\n          </span>\n          <span *ngIf=\"myRoute.estDeparture > 0\">\n            <bart-timer departureTime=\"{{myRoute.estDeparture}}\"></bart-timer>\n            <small> ({{ myRoute.carLength }} car) </small>\n          </span>\n        </ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col width-67>\n          <small\n            ><span *ngIf=\"myRoute.hasLink\"><i icon ion-link></i></span> to\n            {{ myRoute.destinationName }}</small\n          >\n        </ion-col>\n        <ion-col text-right *ngIf=\"myRoute.estDeparture !== 'No Service'\">\n          <small>${{ myRoute.routeFare }}, Arr {{ myRoute.destTimeMin }}</small>\n        </ion-col>\n      </ion-row>\n\n      <!--\n        <ion-delete-button ion-minus-circled (click)=\"myroutes.deleteRoute(myRoute)\"></ion-delete-button>\n      -->\n      <!--\n        <ion-reorder-button ion-navicon on-reorder=\"myroutes.reorderRoutes(myRoute, $fromIndex, $toIndex)\"></ion-reorder-button>\n      -->\n    </ion-item>\n  </ion-list>\n</ion-content>\n"
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MyRouteInfo", function() { return MyRouteInfo; });
+var MyRouteInfo = /** @class */ (function () {
+    function MyRouteInfo() {
+    }
+    return MyRouteInfo;
+}());
+
+
 
 /***/ }),
 
-/***/ "./src/pages/myroutes/myroutes.module.ts":
-/*!***********************************************!*\
-  !*** ./src/pages/myroutes/myroutes.module.ts ***!
-  \***********************************************/
+/***/ "./src/app/myroutes/myroutes.html":
+/*!****************************************!*\
+  !*** ./src/app/myroutes/myroutes.html ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<ion-header>\n  <ion-toolbar> <ion-title>My Routes</ion-title> </ion-toolbar>\n</ion-header>\n<ion-content padding=\"false\" has-bouncing=\"false\">\n  <ion-list show-delete=\"data.showDelete\" show-reorder=\"data.showReorder\">\n    <ion-item\n      *ngFor=\"let myRoute of myFavRoutes\"\n      (click)=\"myroutes.getRouteSchedules(myRoute)\"\n    >\n      <ion-grid>\n        <ion-row>\n          <ion-col size=\"8\">\n            <small> {{ myRoute.originName }}</small>\n          </ion-col>\n          <ion-col>\n            <span *ngIf=\"myRoute.estDeparture === 'LEAVING_NOW'\">\n              <small>Leaving ({{ myRoute.carLength }} car)</small>\n            </span>\n            <span *ngIf=\"myRoute.estDeparture === 'No Service'\">\n              <small>No Service</small>\n            </span>\n            <span *ngIf=\"myRoute.estDeparture > 0\">\n              <small>\n                <bart-timer\n                  departureTime=\"{{myRoute.estDeparture}}\"\n                ></bart-timer>\n              </small>\n              <small> ({{ myRoute.carLength }} car) </small>\n            </span>\n          </ion-col>\n        </ion-row>\n        <ion-row>\n          <ion-col size=\"8\">\n            <small>\n              <span *ngIf=\"myRoute.hasLink\"> <i icon ion-link></i> </span> to\n              {{ myRoute.destinationName }}\n            </small>\n          </ion-col>\n          <ion-col *ngIf=\"myRoute.estDeparture !== 'No Service'\">\n            <small>\n              ${{ myRoute.routeFare }}, Arr {{ myRoute.destTimeMin }}\n            </small>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n\n      <!--\n        <ion-delete-button ion-minus-circled (click)=\"myroutes.deleteRoute(myRoute)\"></ion-delete-button>\n      -->\n      <!--\n        <ion-reorder-button ion-navicon on-reorder=\"myroutes.reorderRoutes(myRoute, $fromIndex, $toIndex)\"></ion-reorder-button>\n      -->\n    </ion-item>\n  </ion-list>\n</ion-content>\n"
+
+/***/ }),
+
+/***/ "./src/app/myroutes/myroutes.module.ts":
+/*!*********************************************!*\
+  !*** ./src/app/myroutes/myroutes.module.ts ***!
+  \*********************************************/
 /*! exports provided: MyRoutesModule */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6796,8 +6798,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-/* harmony import */ var _myroutes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./myroutes */ "./src/pages/myroutes/myroutes.ts");
-/* harmony import */ var _components_component_module__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../components/component.module */ "./src/components/component.module.ts");
+/* harmony import */ var _myroutes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./myroutes */ "./src/app/myroutes/myroutes.ts");
+/* harmony import */ var _components_component_module__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/component.module */ "./src/app/components/component.module.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6833,10 +6835,10 @@ var MyRoutesModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/pages/myroutes/myroutes.ts":
-/*!****************************************!*\
-  !*** ./src/pages/myroutes/myroutes.ts ***!
-  \****************************************/
+/***/ "./src/app/myroutes/myroutes.ts":
+/*!**************************************!*\
+  !*** ./src/app/myroutes/myroutes.ts ***!
+  \**************************************/
 /*! exports provided: MyRoutesPage */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6844,10 +6846,10 @@ var MyRoutesModule = /** @class */ (function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MyRoutesPage", function() { return MyRoutesPage; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _models_MyRouteInfo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../models/MyRouteInfo */ "./src/models/MyRouteInfo.ts");
-/* harmony import */ var _services_ScheduledDepartureDetailsService__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/ScheduledDepartureDetailsService */ "./src/services/ScheduledDepartureDetailsService.ts");
-/* harmony import */ var _services_EstTimeDepartureService__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/EstTimeDepartureService */ "./src/services/EstTimeDepartureService.ts");
-/* harmony import */ var _services_BartHelperService__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/BartHelperService */ "./src/services/BartHelperService.ts");
+/* harmony import */ var _models_MyRouteInfo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../models/MyRouteInfo */ "./src/app/models/MyRouteInfo.ts");
+/* harmony import */ var _services_ScheduledDepartureDetailsService__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/ScheduledDepartureDetailsService */ "./src/app/services/ScheduledDepartureDetailsService.ts");
+/* harmony import */ var _services_EstTimeDepartureService__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/EstTimeDepartureService */ "./src/app/services/EstTimeDepartureService.ts");
+/* harmony import */ var _services_BartHelperService__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../services/BartHelperService */ "./src/app/services/BartHelperService.ts");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/index.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
@@ -6990,7 +6992,7 @@ var MyRoutesPage = /** @class */ (function () {
     MyRoutesPage = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: "myroutes",
-            template: __webpack_require__(/*! ./myroutes.html */ "./src/pages/myroutes/myroutes.html"),
+            template: __webpack_require__(/*! ./myroutes.html */ "./src/app/myroutes/myroutes.html"),
             providers: [_services_EstTimeDepartureService__WEBPACK_IMPORTED_MODULE_3__["EstTimeDepartureService"], _services_ScheduledDepartureDetailsService__WEBPACK_IMPORTED_MODULE_2__["ScheduledDepartureDetailsService"]]
         }),
         __metadata("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_6__["Platform"],
@@ -7005,10 +7007,10 @@ var MyRoutesPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/pages/quicklookup/quicklookup.html":
-/*!************************************************!*\
-  !*** ./src/pages/quicklookup/quicklookup.html ***!
-  \************************************************/
+/***/ "./src/app/quicklookup/quicklookup.html":
+/*!**********************************************!*\
+  !*** ./src/app/quicklookup/quicklookup.html ***!
+  \**********************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -7016,10 +7018,10 @@ module.exports = "<ion-header>\n  <ion-toolbar> <ion-title>Quick Lookup</ion-tit
 
 /***/ }),
 
-/***/ "./src/pages/quicklookup/quicklookup.module.ts":
-/*!*****************************************************!*\
-  !*** ./src/pages/quicklookup/quicklookup.module.ts ***!
-  \*****************************************************/
+/***/ "./src/app/quicklookup/quicklookup.module.ts":
+/*!***************************************************!*\
+  !*** ./src/app/quicklookup/quicklookup.module.ts ***!
+  \***************************************************/
 /*! exports provided: QuickLookupModule */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -7031,7 +7033,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-/* harmony import */ var _quicklookup__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./quicklookup */ "./src/pages/quicklookup/quicklookup.ts");
+/* harmony import */ var _quicklookup__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./quicklookup */ "./src/app/quicklookup/quicklookup.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7065,10 +7067,10 @@ var QuickLookupModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/pages/quicklookup/quicklookup.ts":
-/*!**********************************************!*\
-  !*** ./src/pages/quicklookup/quicklookup.ts ***!
-  \**********************************************/
+/***/ "./src/app/quicklookup/quicklookup.ts":
+/*!********************************************!*\
+  !*** ./src/app/quicklookup/quicklookup.ts ***!
+  \********************************************/
 /*! exports provided: QuickLookupPage */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -7091,7 +7093,7 @@ var QuickLookupPage = /** @class */ (function () {
     }
     QuickLookupPage = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            template: __webpack_require__(/*! ./quicklookup.html */ "./src/pages/quicklookup/quicklookup.html")
+            template: __webpack_require__(/*! ./quicklookup.html */ "./src/app/quicklookup/quicklookup.html")
         }),
         __metadata("design:paramtypes", [])
     ], QuickLookupPage);
@@ -7102,210 +7104,10 @@ var QuickLookupPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/pages/tabs/tabs.html":
-/*!**********************************!*\
-  !*** ./src/pages/tabs/tabs.html ***!
-  \**********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<ion-tabs>\n  <ion-tab tab=\"myroutes\">\n    <ion-router-outlet name=\"myroutes\"></ion-router-outlet>\n  </ion-tab>\n  <ion-tab tab=\"addroute\">\n    <ion-router-outlet name=\"addroute\"></ion-router-outlet>\n  </ion-tab>\n  <ion-tab tab=\"map\">\n    <ion-router-outlet name=\"map\"></ion-router-outlet>\n  </ion-tab>\n  <ion-tab tab=\"info\">\n    <ion-router-outlet name=\"info\"></ion-router-outlet>\n  </ion-tab>\n\n  <ion-tab-bar slot=\"bottom\">\n    <ion-tab-button tab=\"myroutes\" href=\"/tabs/(myroutes:myroutes)\">\n      <ion-icon name=\"flag\"></ion-icon>\n      <ion-label>My Routes</ion-label>\n    </ion-tab-button>\n\n    <ion-tab-button tab=\"addroute\" href=\"/tabs/(addroute:addroute)\">\n      <ion-icon name=\"add-circle\"></ion-icon>\n      <ion-label>Add Route</ion-label>\n    </ion-tab-button>\n\n    <ion-tab-button tab=\"map\" href=\"/tabs/(map:map)\">\n      <ion-icon name=\"map\"></ion-icon>\n      <ion-label>Bart Map</ion-label>\n    </ion-tab-button>\n\n    <ion-tab-button tab=\"info\" href=\"/tabs/(info:info)\">\n      <ion-icon name=\"information-circle\"></ion-icon>\n      <ion-label>Info</ion-label>\n    </ion-tab-button>\n  </ion-tab-bar>\n</ion-tabs>\n"
-
-/***/ }),
-
-/***/ "./src/pages/tabs/tabs.module.ts":
-/*!***************************************!*\
-  !*** ./src/pages/tabs/tabs.module.ts ***!
-  \***************************************/
-/*! exports provided: TabsPageModule */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TabsPageModule", function() { return TabsPageModule; });
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/index.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-/* harmony import */ var _tabs_router_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./tabs.router.module */ "./src/pages/tabs/tabs.router.module.ts");
-/* harmony import */ var _tabs_page__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./tabs.page */ "./src/pages/tabs/tabs.page.ts");
-/* harmony import */ var _addroute_addroute_module__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../addroute/addroute.module */ "./src/pages/addroute/addroute.module.ts");
-/* harmony import */ var _info_info_module__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../info/info.module */ "./src/pages/info/info.module.ts");
-/* harmony import */ var _map_map_module__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../map/map.module */ "./src/pages/map/map.module.ts");
-/* harmony import */ var _myroutes_myroutes_module__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../myroutes/myroutes.module */ "./src/pages/myroutes/myroutes.module.ts");
-/* harmony import */ var _quicklookup_quicklookup_module__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../quicklookup/quicklookup.module */ "./src/pages/quicklookup/quicklookup.module.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-
-
-
-
-
-
-
-
-
-var TabsPageModule = /** @class */ (function () {
-    function TabsPageModule() {
-    }
-    TabsPageModule = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
-            imports: [
-                _ionic_angular__WEBPACK_IMPORTED_MODULE_0__["IonicModule"],
-                _angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"],
-                _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"],
-                _tabs_router_module__WEBPACK_IMPORTED_MODULE_4__["TabsPageRoutingModule"],
-                _addroute_addroute_module__WEBPACK_IMPORTED_MODULE_6__["AddRouteModule"],
-                _info_info_module__WEBPACK_IMPORTED_MODULE_7__["InfoModule"],
-                _map_map_module__WEBPACK_IMPORTED_MODULE_8__["MapModule"],
-                _myroutes_myroutes_module__WEBPACK_IMPORTED_MODULE_9__["MyRoutesModule"],
-                _quicklookup_quicklookup_module__WEBPACK_IMPORTED_MODULE_10__["QuickLookupModule"]
-            ],
-            declarations: [_tabs_page__WEBPACK_IMPORTED_MODULE_5__["TabsPage"]]
-        })
-    ], TabsPageModule);
-    return TabsPageModule;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/pages/tabs/tabs.page.ts":
-/*!*************************************!*\
-  !*** ./src/pages/tabs/tabs.page.ts ***!
-  \*************************************/
-/*! exports provided: TabsPage */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TabsPage", function() { return TabsPage; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-var TabsPage = /** @class */ (function () {
-    function TabsPage() {
-    }
-    TabsPage = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: "app-tabs",
-            template: __webpack_require__(/*! ./tabs.html */ "./src/pages/tabs/tabs.html")
-        })
-    ], TabsPage);
-    return TabsPage;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/pages/tabs/tabs.router.module.ts":
-/*!**********************************************!*\
-  !*** ./src/pages/tabs/tabs.router.module.ts ***!
-  \**********************************************/
-/*! exports provided: TabsPageRoutingModule */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TabsPageRoutingModule", function() { return TabsPageRoutingModule; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var _tabs_page__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tabs.page */ "./src/pages/tabs/tabs.page.ts");
-/* harmony import */ var _addroute_addroute__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../addroute/addroute */ "./src/pages/addroute/addroute.ts");
-/* harmony import */ var _info_info__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../info/info */ "./src/pages/info/info.ts");
-/* harmony import */ var _map_map__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../map/map */ "./src/pages/map/map.ts");
-/* harmony import */ var _myroutes_myroutes__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../myroutes/myroutes */ "./src/pages/myroutes/myroutes.ts");
-/* harmony import */ var _quicklookup_quicklookup__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../quicklookup/quicklookup */ "./src/pages/quicklookup/quicklookup.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-
-
-
-
-
-
-var routes = [
-    {
-        path: "tabs",
-        component: _tabs_page__WEBPACK_IMPORTED_MODULE_2__["TabsPage"],
-        children: [
-            {
-                path: "",
-                redirectTo: "/tabs/(tab1:tab1)",
-                pathMatch: "full"
-            },
-            {
-                path: "addroute",
-                outlet: "addroute",
-                component: _addroute_addroute__WEBPACK_IMPORTED_MODULE_3__["AddRoutePage"]
-            },
-            {
-                path: "info",
-                outlet: "info",
-                component: _info_info__WEBPACK_IMPORTED_MODULE_4__["InfoPage"]
-            },
-            {
-                path: "map",
-                outlet: "map",
-                component: _map_map__WEBPACK_IMPORTED_MODULE_5__["MapPage"]
-            },
-            {
-                path: "myroutes",
-                outlet: "myroutes",
-                component: _myroutes_myroutes__WEBPACK_IMPORTED_MODULE_6__["MyRoutesPage"]
-            },
-            {
-                path: "quicklookup",
-                outlet: "quicklookup",
-                component: _quicklookup_quicklookup__WEBPACK_IMPORTED_MODULE_7__["QuickLookupPage"]
-            }
-        ]
-    },
-    {
-        path: "",
-        redirectTo: "/tabs/(addroute:addroute)",
-        pathMatch: "full"
-    }
-];
-var TabsPageRoutingModule = /** @class */ (function () {
-    function TabsPageRoutingModule() {
-    }
-    TabsPageRoutingModule = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
-            imports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild(routes)],
-            exports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]]
-        })
-    ], TabsPageRoutingModule);
-    return TabsPageRoutingModule;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/services/AdvisoryService.ts":
-/*!*****************************************!*\
-  !*** ./src/services/AdvisoryService.ts ***!
-  \*****************************************/
+/***/ "./src/app/services/AdvisoryService.ts":
+/*!*********************************************!*\
+  !*** ./src/app/services/AdvisoryService.ts ***!
+  \*********************************************/
 /*! exports provided: AdvisoryService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -7352,10 +7154,10 @@ var AdvisoryService = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/services/EstTimeDepartureService.ts":
-/*!*************************************************!*\
-  !*** ./src/services/EstTimeDepartureService.ts ***!
-  \*************************************************/
+/***/ "./src/app/services/EstTimeDepartureService.ts":
+/*!*****************************************************!*\
+  !*** ./src/app/services/EstTimeDepartureService.ts ***!
+  \*****************************************************/
 /*! exports provided: EstTimeDepartureService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -7438,10 +7240,10 @@ var EstTimeDepartureService = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/services/ScheduledDepartureDetailsService.ts":
-/*!**********************************************************!*\
-  !*** ./src/services/ScheduledDepartureDetailsService.ts ***!
-  \**********************************************************/
+/***/ "./src/app/services/ScheduledDepartureDetailsService.ts":
+/*!**************************************************************!*\
+  !*** ./src/app/services/ScheduledDepartureDetailsService.ts ***!
+  \**************************************************************/
 /*! exports provided: ScheduledDepartureDetailsService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -7517,10 +7319,10 @@ var ScheduledDepartureDetailsService = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/services/StationsLookupService.ts":
-/*!***********************************************!*\
-  !*** ./src/services/StationsLookupService.ts ***!
-  \***********************************************/
+/***/ "./src/app/services/StationsLookupService.ts":
+/*!***************************************************!*\
+  !*** ./src/app/services/StationsLookupService.ts ***!
+  \***************************************************/
 /*! exports provided: StationsLookupService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -7563,7 +7365,207 @@ var StationsLookupService = /** @class */ (function () {
 
 
 
+/***/ }),
+
+/***/ "./src/app/tabs/tabs.html":
+/*!********************************!*\
+  !*** ./src/app/tabs/tabs.html ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<ion-tabs>\n  <ion-tab tab=\"myroutes\">\n    <ion-router-outlet name=\"myroutes\"></ion-router-outlet>\n  </ion-tab>\n  <ion-tab tab=\"addroute\">\n    <ion-router-outlet name=\"addroute\"></ion-router-outlet>\n  </ion-tab>\n  <ion-tab tab=\"map\">\n    <ion-router-outlet name=\"map\"></ion-router-outlet>\n  </ion-tab>\n  <ion-tab tab=\"info\">\n    <ion-router-outlet name=\"info\"></ion-router-outlet>\n  </ion-tab>\n\n  <ion-tab-bar slot=\"bottom\">\n    <ion-tab-button tab=\"myroutes\" href=\"/tabs/(myroutes:myroutes)\">\n      <ion-icon name=\"flag\"></ion-icon>\n      <ion-label>My Routes</ion-label>\n    </ion-tab-button>\n\n    <ion-tab-button tab=\"addroute\" href=\"/tabs/(addroute:addroute)\">\n      <ion-icon name=\"add-circle\"></ion-icon>\n      <ion-label>Add Route</ion-label>\n    </ion-tab-button>\n\n    <ion-tab-button tab=\"map\" href=\"/tabs/(map:map)\">\n      <ion-icon name=\"map\"></ion-icon>\n      <ion-label>Bart Map</ion-label>\n    </ion-tab-button>\n\n    <ion-tab-button tab=\"info\" href=\"/tabs/(info:info)\">\n      <ion-icon name=\"information-circle\"></ion-icon>\n      <ion-label>Info</ion-label>\n    </ion-tab-button>\n  </ion-tab-bar>\n</ion-tabs>\n"
+
+/***/ }),
+
+/***/ "./src/app/tabs/tabs.module.ts":
+/*!*************************************!*\
+  !*** ./src/app/tabs/tabs.module.ts ***!
+  \*************************************/
+/*! exports provided: TabsPageModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TabsPageModule", function() { return TabsPageModule; });
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/index.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _tabs_router_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./tabs.router.module */ "./src/app/tabs/tabs.router.module.ts");
+/* harmony import */ var _tabs_page__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./tabs.page */ "./src/app/tabs/tabs.page.ts");
+/* harmony import */ var _addroute_addroute_module__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../addroute/addroute.module */ "./src/app/addroute/addroute.module.ts");
+/* harmony import */ var _info_info_module__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../info/info.module */ "./src/app/info/info.module.ts");
+/* harmony import */ var _map_map_module__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../map/map.module */ "./src/app/map/map.module.ts");
+/* harmony import */ var _myroutes_myroutes_module__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../myroutes/myroutes.module */ "./src/app/myroutes/myroutes.module.ts");
+/* harmony import */ var _quicklookup_quicklookup_module__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../quicklookup/quicklookup.module */ "./src/app/quicklookup/quicklookup.module.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+
+
+
+
+
+
+
+var TabsPageModule = /** @class */ (function () {
+    function TabsPageModule() {
+    }
+    TabsPageModule = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
+            imports: [
+                _ionic_angular__WEBPACK_IMPORTED_MODULE_0__["IonicModule"],
+                _angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"],
+                _tabs_router_module__WEBPACK_IMPORTED_MODULE_4__["TabsPageRoutingModule"],
+                _addroute_addroute_module__WEBPACK_IMPORTED_MODULE_6__["AddRouteModule"],
+                _info_info_module__WEBPACK_IMPORTED_MODULE_7__["InfoModule"],
+                _map_map_module__WEBPACK_IMPORTED_MODULE_8__["MapModule"],
+                _myroutes_myroutes_module__WEBPACK_IMPORTED_MODULE_9__["MyRoutesModule"],
+                _quicklookup_quicklookup_module__WEBPACK_IMPORTED_MODULE_10__["QuickLookupModule"]
+            ],
+            declarations: [_tabs_page__WEBPACK_IMPORTED_MODULE_5__["TabsPage"]]
+        })
+    ], TabsPageModule);
+    return TabsPageModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/tabs/tabs.page.ts":
+/*!***********************************!*\
+  !*** ./src/app/tabs/tabs.page.ts ***!
+  \***********************************/
+/*! exports provided: TabsPage */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TabsPage", function() { return TabsPage; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var TabsPage = /** @class */ (function () {
+    function TabsPage() {
+    }
+    TabsPage = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: "app-tabs",
+            template: __webpack_require__(/*! ./tabs.html */ "./src/app/tabs/tabs.html")
+        })
+    ], TabsPage);
+    return TabsPage;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/tabs/tabs.router.module.ts":
+/*!********************************************!*\
+  !*** ./src/app/tabs/tabs.router.module.ts ***!
+  \********************************************/
+/*! exports provided: TabsPageRoutingModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TabsPageRoutingModule", function() { return TabsPageRoutingModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _tabs_page__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tabs.page */ "./src/app/tabs/tabs.page.ts");
+/* harmony import */ var _addroute_addroute__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../addroute/addroute */ "./src/app/addroute/addroute.ts");
+/* harmony import */ var _info_info__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../info/info */ "./src/app/info/info.ts");
+/* harmony import */ var _map_map__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../map/map */ "./src/app/map/map.ts");
+/* harmony import */ var _myroutes_myroutes__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../myroutes/myroutes */ "./src/app/myroutes/myroutes.ts");
+/* harmony import */ var _quicklookup_quicklookup__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../quicklookup/quicklookup */ "./src/app/quicklookup/quicklookup.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+
+
+
+
+var routes = [
+    {
+        path: "tabs",
+        component: _tabs_page__WEBPACK_IMPORTED_MODULE_2__["TabsPage"],
+        children: [
+            {
+                path: "",
+                redirectTo: "/tabs/(tab1:tab1)",
+                pathMatch: "full"
+            },
+            {
+                path: "addroute",
+                outlet: "addroute",
+                component: _addroute_addroute__WEBPACK_IMPORTED_MODULE_3__["AddRoutePage"]
+            },
+            {
+                path: "info",
+                outlet: "info",
+                component: _info_info__WEBPACK_IMPORTED_MODULE_4__["InfoPage"]
+            },
+            {
+                path: "map",
+                outlet: "map",
+                component: _map_map__WEBPACK_IMPORTED_MODULE_5__["MapPage"]
+            },
+            {
+                path: "myroutes",
+                outlet: "myroutes",
+                component: _myroutes_myroutes__WEBPACK_IMPORTED_MODULE_6__["MyRoutesPage"]
+            },
+            {
+                path: "quicklookup",
+                outlet: "quicklookup",
+                component: _quicklookup_quicklookup__WEBPACK_IMPORTED_MODULE_7__["QuickLookupPage"]
+            }
+        ]
+    },
+    {
+        path: "",
+        redirectTo: "/tabs/(addroute:addroute)",
+        pathMatch: "full"
+    }
+];
+var TabsPageRoutingModule = /** @class */ (function () {
+    function TabsPageRoutingModule() {
+    }
+    TabsPageRoutingModule = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
+            imports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild(routes)],
+            exports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]]
+        })
+    ], TabsPageRoutingModule);
+    return TabsPageRoutingModule;
+}());
+
+
+
 /***/ })
 
 }]);
-//# sourceMappingURL=pages-tabs-tabs-module.js.map
+//# sourceMappingURL=tabs-tabs-module.js.map

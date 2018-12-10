@@ -2,14 +2,13 @@ import { Component } from "@angular/core";
 import { Platform } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
-import { BartHelperService } from "../services/BartHelperService";
+import { BartHelperService } from "./services/BartHelperService";
 import { Router } from "@angular/router";
 
 @Component({
   selector: "app-root",
   templateUrl: "app.component.html",
-  providers: [BartHelperService],
-  styleUrls: ["app.scss"]
+  providers: [BartHelperService]
 })
 export class BARTonic {
   constructor(

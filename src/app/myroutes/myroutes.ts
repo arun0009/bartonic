@@ -1,8 +1,8 @@
 import { Component, NgModule } from "@angular/core";
-import { MyRouteInfo } from "../../models/MyRouteInfo";
-import { ScheduledDepartureDetailsService } from "../../services/ScheduledDepartureDetailsService";
-import { EstTimeDepartureService } from "../../services/EstTimeDepartureService";
-import { BartHelperService } from "../../services/BartHelperService";
+import { MyRouteInfo } from "../models/MyRouteInfo";
+import { ScheduledDepartureDetailsService } from "../services/ScheduledDepartureDetailsService";
+import { EstTimeDepartureService } from "../services/EstTimeDepartureService";
+import { BartHelperService } from "../services/BartHelperService";
 import { range, of } from "rxjs";
 import { Platform } from "@ionic/angular";
 import { map, flatMap } from "rxjs/operators";

@@ -4,7 +4,7 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { MyRoutesPage } from "./myroutes";
-import { ComponentsModule } from "../../components/component.module";
+import { ComponentsModule } from "../components/component.module";
 
 @NgModule({
   imports: [

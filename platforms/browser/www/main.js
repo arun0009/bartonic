@@ -1536,9 +1536,9 @@ webpackContext.id = "./node_modules/@ionic/core/dist/ionic/svg sync ./!./!./node
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./../pages/tabs/tabs.module": [
-		"./src/pages/tabs/tabs.module.ts",
-		"pages-tabs-tabs-module"
+	"./tabs/tabs.module": [
+		"./src/app/tabs/tabs.module.ts",
+		"tabs-tabs-module"
 	]
 };
 function webpackAsyncContext(req) {
@@ -1584,7 +1584,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 var routes = [
-    { path: "", loadChildren: "./../pages/tabs/tabs.module#TabsPageModule" }
+    { path: "", loadChildren: "./tabs/tabs.module#TabsPageModule" }
 ];
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {
@@ -1627,7 +1627,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/index.js");
 /* harmony import */ var _ionic_native_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ionic-native/splash-screen/ngx */ "./node_modules/@ionic-native/splash-screen/ngx/index.js");
 /* harmony import */ var _ionic_native_status_bar_ngx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ionic-native/status-bar/ngx */ "./node_modules/@ionic-native/status-bar/ngx/index.js");
-/* harmony import */ var _services_BartHelperService__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../services/BartHelperService */ "./src/services/BartHelperService.ts");
+/* harmony import */ var _services_BartHelperService__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./services/BartHelperService */ "./src/app/services/BartHelperService.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1671,8 +1671,7 @@ var BARTonic = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: "app-root",
             template: __webpack_require__(/*! ./app.component.html */ "./src/app/app.component.html"),
-            providers: [_services_BartHelperService__WEBPACK_IMPORTED_MODULE_4__["BartHelperService"]],
-            styles: [__webpack_require__(/*! ./app.scss */ "./src/app/app.scss")]
+            providers: [_services_BartHelperService__WEBPACK_IMPORTED_MODULE_4__["BartHelperService"]]
         }),
         __metadata("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_1__["Platform"],
             _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"],
@@ -1755,76 +1754,10 @@ var AppModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/app.scss":
-/*!**************************!*\
-  !*** ./src/app/app.scss ***!
-  \**************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "ion-content {\n  background: url('background.jpg') no-repeat center fixed;\n  background-size: cover; }\n\nion-item {\n  background: transparent !important;\n  border-color: transparent !important;\n  color: #dddddd !important;\n  font-weight: bold !important; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9kZXZlbG9wbWVudC9naXRodWIuY29tL2JhcnRvbmljL3NyYy9hcHAvYXBwLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBZUE7RUFDRSx5REFBc0U7RUFDdEUsdUJBQXNCLEVBQ3ZCOztBQUVEO0VBQ0UsbUNBQWtDO0VBQ2xDLHFDQUFvQztFQUNwQywwQkFBeUI7RUFDekIsNkJBQTRCLEVBQzdCIiwiZmlsZSI6InNyYy9hcHAvYXBwLnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIvLyBodHRwOi8vaW9uaWNmcmFtZXdvcmsuY29tL2RvY3MvdjIvdGhlbWluZy9cblxuLy8gQXBwIEdsb2JhbCBTYXNzXG4vLyAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLVxuLy8gUHV0IHN0eWxlIHJ1bGVzIGhlcmUgdGhhdCB5b3Ugd2FudCB0byBhcHBseSBnbG9iYWxseS4gVGhlc2Vcbi8vIHN0eWxlcyBhcmUgZm9yIHRoZSBlbnRpcmUgYXBwIGFuZCBub3QganVzdCBvbmUgY29tcG9uZW50LlxuLy8gQWRkaXRpb25hbGx5LCB0aGlzIGZpbGUgY2FuIGJlIGFsc28gdXNlZCBhcyBhbiBlbnRyeSBwb2ludFxuLy8gdG8gaW1wb3J0IG90aGVyIFNhc3MgZmlsZXMgdG8gYmUgaW5jbHVkZWQgaW4gdGhlIG91dHB1dCBDU1MuXG4vL1xuLy8gU2hhcmVkIFNhc3MgdmFyaWFibGVzLCB3aGljaCBjYW4gYmUgdXNlZCB0byBhZGp1c3QgSW9uaWMnc1xuLy8gZGVmYXVsdCBTYXNzIHZhcmlhYmxlcywgYmVsb25nIGluIFwidGhlbWUvdmFyaWFibGVzLnNjc3NcIi5cbi8vXG4vLyBUbyBkZWNsYXJlIHJ1bGVzIGZvciBhIHNwZWNpZmljIG1vZGUsIGNyZWF0ZSBhIGNoaWxkIHJ1bGVcbi8vIGZvciB0aGUgLm1kLCAuaW9zLCBvciAud3AgbW9kZSBjbGFzc2VzLiBUaGUgbW9kZSBjbGFzcyBpc1xuLy8gYXV0b21hdGljYWxseSBhcHBsaWVkIHRvIHRoZSA8Ym9keT4gZWxlbWVudCBpbiB0aGUgYXBwLlxuaW9uLWNvbnRlbnQge1xuICBiYWNrZ3JvdW5kOiB1cmwoXCIuLi9hc3NldHMvaW1nL2JhY2tncm91bmQuanBnXCIpIG5vLXJlcGVhdCBjZW50ZXIgZml4ZWQ7XG4gIGJhY2tncm91bmQtc2l6ZTogY292ZXI7XG59XG5cbmlvbi1pdGVtIHtcbiAgYmFja2dyb3VuZDogdHJhbnNwYXJlbnQgIWltcG9ydGFudDtcbiAgYm9yZGVyLWNvbG9yOiB0cmFuc3BhcmVudCAhaW1wb3J0YW50O1xuICBjb2xvcjogI2RkZGRkZCAhaW1wb3J0YW50O1xuICBmb250LXdlaWdodDogYm9sZCAhaW1wb3J0YW50O1xufVxuIl19 */"
-
-/***/ }),
-
-/***/ "./src/environments/environment.ts":
-/*!*****************************************!*\
-  !*** ./src/environments/environment.ts ***!
-  \*****************************************/
-/*! exports provided: environment */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "environment", function() { return environment; });
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
-var environment = {
-    production: false
-};
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
-
-
-/***/ }),
-
-/***/ "./src/main.ts":
-/*!*********************!*\
-  !*** ./src/main.ts ***!
-  \*********************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/platform-browser-dynamic */ "./node_modules/@angular/platform-browser-dynamic/fesm5/platform-browser-dynamic.js");
-/* harmony import */ var _app_app_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./app/app.module */ "./src/app/app.module.ts");
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./environments/environment */ "./src/environments/environment.ts");
-
-
-
-
-if (_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].production) {
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["enableProdMode"])();
-}
-Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformBrowserDynamic"])()
-    .bootstrapModule(_app_app_module__WEBPACK_IMPORTED_MODULE_2__["AppModule"])
-    .catch(function (err) { return console.log(err); });
-
-
-/***/ }),
-
-/***/ "./src/services/BartHelperService.ts":
-/*!*******************************************!*\
-  !*** ./src/services/BartHelperService.ts ***!
-  \*******************************************/
+/***/ "./src/app/services/BartHelperService.ts":
+/*!***********************************************!*\
+  !*** ./src/app/services/BartHelperService.ts ***!
+  \***********************************************/
 /*! exports provided: BartHelperService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1895,6 +1828,61 @@ var BartHelperService = /** @class */ (function () {
     return BartHelperService;
 }());
 
+
+
+/***/ }),
+
+/***/ "./src/environments/environment.ts":
+/*!*****************************************!*\
+  !*** ./src/environments/environment.ts ***!
+  \*****************************************/
+/*! exports provided: environment */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "environment", function() { return environment; });
+// This file can be replaced during build by using the `fileReplacements` array.
+// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
+// The list of file replacements can be found in `angular.json`.
+var environment = {
+    production: false
+};
+/*
+ * For easier debugging in development mode, you can import the following file
+ * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
+ *
+ * This import should be commented out in production mode because it will have a negative impact
+ * on performance if an error is thrown.
+ */
+// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+
+
+/***/ }),
+
+/***/ "./src/main.ts":
+/*!*********************!*\
+  !*** ./src/main.ts ***!
+  \*********************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/platform-browser-dynamic */ "./node_modules/@angular/platform-browser-dynamic/fesm5/platform-browser-dynamic.js");
+/* harmony import */ var _app_app_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./app/app.module */ "./src/app/app.module.ts");
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./environments/environment */ "./src/environments/environment.ts");
+
+
+
+
+if (_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].production) {
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["enableProdMode"])();
+}
+Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformBrowserDynamic"])()
+    .bootstrapModule(_app_app_module__WEBPACK_IMPORTED_MODULE_2__["AppModule"])
+    .catch(function (err) { return console.log(err); });
 
 
 /***/ }),
