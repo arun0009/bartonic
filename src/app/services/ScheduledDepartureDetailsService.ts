@@ -1,14 +1,14 @@
-import { Http, URLSearchParams } from "@angular/http";
 import { Injectable } from "@angular/core";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable, interval } from "rxjs";
 import { startWith, switchMap } from "rxjs/operators";
 
 @Injectable()
 export class ScheduledDepartureDetailsService {
-  http: Http;
+  httpclient: HttpClient;
 
-  constructor(http: Http) {
-    this.http = http;
+  constructor(httpclient: HttpClient) {
+    this.httpclient = httpclient;
   }
 
   getScheduledDepartureDetailsObservable(
@@ -20,23 +20,23 @@ export class ScheduledDepartureDetailsService {
   ): Observable<any> {
     var b = cmd === "depart" ? "0" : "3";
     var a = cmd === "depart" ? "3" : "0";
-    const params = new URLSearchParams();
-    params.set("cmd", cmd);
-    params.set("a", a);
-    params.set("b", b);
-    params.set("orig", origin);
-    params.set("dest", destination);
-    params.set("time", time);
-    params.set("json", "y");
-    params.set("key", "ZMVD-UB67-IYVQ-DT35");
+    const params = new HttpParams()
+      .set("cmd", cmd)
+      .set("a", a)
+      .set("b", b)
+      .set("orig", origin)
+      .set("dest", destination)
+      .set("time", time)
+      .set("json", "y")
+      .set("key", "ZMVD-UB67-IYVQ-DT35");
     console.log(params.toString());
 
     return interval(10000)
       .pipe(startWith(0))
       .pipe(
         switchMap(() =>
-          this.http.get("http://api.bart.gov/api/sched.aspx", {
-            search: params
+          this.httpclient.get("http://api.bart.gov/api/sched.aspx", {
+            params
           })
         )
       );
@@ -45,17 +45,15 @@ export class ScheduledDepartureDetailsService {
   getTrainHeadStations(scheduledDepartureDetails) {
     var trainHeadStations = [];
     console.log("scheduledDepartureDetails is ??? ", scheduledDepartureDetails);
-    scheduledDepartureDetails._body.root.schedule.request.trip.forEach(
-      trips => {
-        var trainHeadStation =
-          trips.leg === Array
-            ? trips.leg[0]._trainHeadStation
-            : trips.leg._trainHeadStation;
-        if (trainHeadStations.indexOf(trainHeadStation) === -1) {
-          trainHeadStations.push(trainHeadStation);
-        }
+    scheduledDepartureDetails.root.schedule.request.trip.forEach(trips => {
+      var trainHeadStation =
+        trips.leg === Array
+          ? trips.leg[0]._trainHeadStation
+          : trips.leg._trainHeadStation;
+      if (trainHeadStations.indexOf(trainHeadStation) === -1) {
+        trainHeadStations.push(trainHeadStation);
       }
-    );
+    });
     return trainHeadStations;
   }
 }

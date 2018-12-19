@@ -4,6 +4,7 @@ import { EstTimeDepartureService } from "./EstTimeDepartureService";
 import { ScheduledDepartureDetailsService } from "./ScheduledDepartureDetailsService";
 import { QuickLookup } from "../models/QuickLookup";
 import { of, range } from "rxjs";
+import { map, flatMap } from "rxjs/operators";
 
 @Injectable()
 export class QuickLookupService {
@@ -19,81 +20,99 @@ export class QuickLookupService {
     var headStations = [];
     return this.stationsLookupService
       .getStations()
-      .map(function(response) {
-        stations = response.root.stations.station;
-        return stations;
-      })
-      .flatMap(_ => {
-        return this.estTimeDepartureService
-          .getEstTimeDeparture(origin)
-          .map(function(response) {
-            estTimeDeparture = response.root;
-            return estTimeDeparture;
-          });
-      })
-      .flatMap(_ => {
-        return this.scheduledDepartureDetailsService
-          .getScheduledDepartureDetailsObservable(
-            origin,
-            destination,
-            cmd,
-            date,
-            time
-          )
-          .flatMap(response => {
-            var scheduledDepartureDetails = response;
-            return of(scheduledDepartureDetails.root.schedule.request.trip);
-          });
-      })
-      .flatMap(trips => {
-        return range(0, trips.length).map(function(indx) {
-          var trip = trips[indx];
-          var quickLookup = quickLookupFunction(
-            indx,
-            destination,
-            trip,
-            stations
+      .pipe(
+        map(function(response) {
+          stations = response.root.stations.station;
+          return stations;
+        })
+      )
+      .pipe(
+        flatMap(_ => {
+          return this.estTimeDepartureService.getEstTimeDeparture(origin).pipe(
+            map(function(response) {
+              estTimeDeparture = response.root;
+              return estTimeDeparture;
+            })
           );
-          headStations.push(quickLookup.trainHeadStation);
-          var headStationCounter = headStations.filter(
-            h => h === quickLookup.trainHeadStation
-          ).length;
-          var estDepartureDetails =
-            estTimeDeparture.station.etd instanceof Array
-              ? estTimeDeparture.station.etd.filter(
-                  e => e.abbreviation === quickLookup.trainHeadStation
-                )
-              : estTimeDeparture.station.etd;
-          if (estDepartureDetails != null && estDepartureDetails.length > 0) {
-            if (estDepartureDetails instanceof Array) {
-              estDepartureDetails = estDepartureDetails[0];
-            }
-            if (
-              estDepartureDetails.estimate instanceof Array &&
-              estDepartureDetails.estimate[headStationCounter - 1] !== undefined
-            ) {
-              //$log.debug(angular.toJson(quickLookup) +  ":::::: " + angular.toJson(estDepartureDetails));
-              quickLookup.carLength =
-                estDepartureDetails.estimate[headStationCounter - 1].length;
-              quickLookup.estDepartureFlag = isNaN(
-                estDepartureDetails.estimate[headStationCounter - 1].minutes
-              )
-                ? 0
-                : parseInt(
+        })
+      )
+      .pipe(
+        flatMap(_ => {
+          return this.scheduledDepartureDetailsService
+            .getScheduledDepartureDetailsObservable(
+              origin,
+              destination,
+              cmd,
+              date,
+              time
+            )
+            .pipe(
+              flatMap(response => {
+                var scheduledDepartureDetails = response;
+                return of(scheduledDepartureDetails.root.schedule.request.trip);
+              })
+            );
+        })
+      )
+      .pipe(
+        flatMap(trips => {
+          return range(0, trips.length).pipe(
+            map(function(indx) {
+              var trip = trips[indx];
+              var quickLookup = quickLookupFunction(
+                indx,
+                destination,
+                trip,
+                stations
+              );
+              headStations.push(quickLookup.trainHeadStation);
+              var headStationCounter = headStations.filter(
+                h => h === quickLookup.trainHeadStation
+              ).length;
+              var estDepartureDetails =
+                estTimeDeparture.station.etd instanceof Array
+                  ? estTimeDeparture.station.etd.filter(
+                      e => e.abbreviation === quickLookup.trainHeadStation
+                    )
+                  : estTimeDeparture.station.etd;
+              if (
+                estDepartureDetails != null &&
+                estDepartureDetails.length > 0
+              ) {
+                if (estDepartureDetails instanceof Array) {
+                  estDepartureDetails = estDepartureDetails[0];
+                }
+                if (
+                  estDepartureDetails.estimate instanceof Array &&
+                  estDepartureDetails.estimate[headStationCounter - 1] !==
+                    undefined
+                ) {
+                  //$log.debug(angular.toJson(quickLookup) +  ":::::: " + angular.toJson(estDepartureDetails));
+                  quickLookup.carLength =
+                    estDepartureDetails.estimate[headStationCounter - 1].length;
+                  quickLookup.estDepartureFlag = isNaN(
                     estDepartureDetails.estimate[headStationCounter - 1].minutes
-                  ) * 60;
-              quickLookup.estDeparture = isNaN(
-                estDepartureDetails.estimate[headStationCounter - 1].minutes
-              )
-                ? "LEAVING_NOW"
-                : parseInt(
+                  )
+                    ? 0
+                    : parseInt(
+                        estDepartureDetails.estimate[headStationCounter - 1]
+                          .minutes
+                      ) * 60;
+                  quickLookup.estDeparture = isNaN(
                     estDepartureDetails.estimate[headStationCounter - 1].minutes
-                  ) * 60;
-            }
-          }
-          return quickLookup;
-        });
-      });
+                  )
+                    ? "LEAVING_NOW"
+                    : parseInt(
+                        estDepartureDetails.estimate[headStationCounter - 1]
+                          .minutes
+                      ) * 60;
+                }
+              }
+              return quickLookup;
+            })
+          );
+        })
+      );
   }
 }
 

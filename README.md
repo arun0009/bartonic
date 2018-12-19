@@ -5,3 +5,5 @@ This is a re-write of BARTonic in Ionic 4 & is very much a work in progress. For
 ##### Ionic 4 PWA
 
 https://medium.com/@ionictheme/create-a-pwa-in-ionic-4-using-angular-2aed5bc19f42
+
+https://medium.com/prototype-berlin/building-a-simple-logger-service-for-ionic-3-540d924fe615

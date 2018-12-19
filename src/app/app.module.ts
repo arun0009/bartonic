@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
 import { HttpModule } from "@angular/http";
-
+import { HttpClientModule } from "@angular/common/http";
 import { IonicModule, IonicRouteStrategy } from "@ionic/angular";
 import { AppRoutingModule } from "./app-routing.module";
 
@@ -18,6 +18,7 @@ import { StatusBar } from "@ionic-native/status-bar/ngx";
     BrowserModule,
     FormsModule,
     HttpModule,
+    HttpClientModule,
     IonicModule.forRoot(),
     AppRoutingModule
   ],

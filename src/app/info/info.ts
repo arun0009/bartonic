@@ -15,10 +15,13 @@ export class InfoPage {
   }
 
   ngOnInit() {
-    this.advisoryService
-      .advisoryResponse()
-      .subscribe(
-        advisoryInfo => (this.advisoryInfo = advisoryInfo.root.bsa.description)
+    this.advisoryService.advisoryResponse().subscribe(advisoryInfo => {
+      console.log(
+        "advisoryInfo root is ",
+        advisoryInfo.root.bsa[0].description
       );
+      this.advisoryInfo =
+        advisoryInfo.root.bsa[0].description["#cdata-section"];
+    });
   }
 }

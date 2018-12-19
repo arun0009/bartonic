@@ -1,14 +1,14 @@
-import { Http } from "@angular/http";
+import { HttpClient } from "@angular/common/http";
 import { HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
 @Injectable()
 export class EstTimeDepartureService {
-  http: Http;
+  httpclient: HttpClient;
 
-  constructor(http: Http) {
-    this.http = http;
+  constructor(httpclient: HttpClient) {
+    this.httpclient = httpclient;
   }
 
   getEstTimeDeparture(origin: string): Observable<any> {
@@ -18,7 +18,7 @@ export class EstTimeDepartureService {
       .set("key", "ZMVD-UB67-IYVQ-DT35")
       .set("json", "y");
 
-    return this.http.get("http://api.bart.gov/api/etd.aspx", {
+    return this.httpclient.get("http://api.bart.gov/api/etd.aspx", {
       params
     });
   }

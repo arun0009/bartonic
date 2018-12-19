@@ -10,7 +10,11 @@ import { Router } from "@angular/router";
 @Component({
   selector: "myroutes",
   templateUrl: "myroutes.html",
-  providers: [EstTimeDepartureService, ScheduledDepartureDetailsService]
+  providers: [
+    BartHelperService,
+    EstTimeDepartureService,
+    ScheduledDepartureDetailsService
+  ]
 })
 export class MyRoutesPage {
   favRoutes: RouteInfo[];
@@ -31,7 +35,6 @@ export class MyRoutesPage {
   }
 
   ionViewWillEnter() {
-    console.log("configured routes: ", this.router.config);
     this.myFavRoutes = [];
     this.getMyFavoriteRoutes(this.favRoutes).subscribe(
       (favRoute: RouteInfo) => {
@@ -171,8 +174,7 @@ export class MyRoutesPage {
   }
 
   deleteRoute(route) {
-    var favoriteRoutes =
-      JSON.parse(window.localStorage.getItem("favoriteRoutes")) || [];
+    var favoriteRoutes = this.bartHelperService.getFavoriteRoutes() || [];
     for (var i = 0; i < favoriteRoutes.length; i++) {
       if (
         favoriteRoutes[i].originName === route.originName &&
@@ -187,11 +189,8 @@ export class MyRoutesPage {
         }
       }
     }
-    window.localStorage.setItem(
-      "favoriteRoutes",
-      JSON.stringify(favoriteRoutes)
-    );
-    window.location.reload();
+    this.bartHelperService.addToFavoriteRoutes(favoriteRoutes);
+    this.router.navigateByUrl("/tabs(myroutes:myroutes)");
   }
 
   reorderRoutes(indexes) {
@@ -218,7 +217,7 @@ export class MyRoutesPage {
         }
       }
       this.bartHelperService.addToFavoriteRoutes(favoriteRoutes);
-      window.location.reload();
+      this.router.navigateByUrl("/tabs(myroutes:myroutes)");
     }
   }
 }
