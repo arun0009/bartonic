@@ -2,41 +2,38 @@
   <ion-toolbar> <ion-title>My Routes</ion-title> </ion-toolbar>
 </ion-header>
 <ion-content padding="false" has-bouncing="false">
-  <ion-list show-delete="data.showDelete" show-reorder="data.showReorder">
-    <ion-item
-      *ngFor="let myRoute of myFavRoutes"
-      (click)="myroutes.getRouteSchedules(myRoute)"
-    >
-      <ion-label>
-        <small>
-          {{ myRoute.originName }} <br />
-          <span *ngIf="myRoute.hasLink"> <i icon ion-link></i> </span> to
-          {{ myRoute.destinationName }}
-        </small>
-      </ion-label>
-      <ion-label text-right>
-        <span *ngIf="myRoute.estDeparture === 'LEAVING_NOW'">
-          <small>Leaving ({{ myRoute.carLength }} car)</small>
-        </span>
-        <span *ngIf="myRoute.estDeparture === 'No Service'">
-          <small>No Service</small>
-        </span>
-        <span *ngIf="myRoute.estDeparture > 0">
+  <ion-list>
+    <ion-reorder-group disabled="true" (ionItemReorder)="reorderRoutes($event)">
+      <ion-item
+        *ngFor="let myRoute of myFavRoutes"
+        [routerLink]="['/myrouteschedule']"
+      >
+        <ion-label>
           <small>
-            <bart-timer departureTime="{{myRoute.estDeparture}}"></bart-timer>
+            {{ myRoute.originName }} <br />
+            <span *ngIf="myRoute.hasLink"> <i icon ion-link></i> </span> to
+            {{ myRoute.destinationName }}
           </small>
-          <small *ngIf="myRoute.estDeparture !== 'No Service'">
-            ({{ myRoute.carLength }} car) <br />
-            ${{ myRoute.routeFare }}, Arr {{ myRoute.destTimeMin }}
-          </small>
-        </span>
-      </ion-label>
-      <!--
-        <ion-delete-button ion-minus-circled (click)="myroutes.deleteRoute(myRoute)"></ion-delete-button>
-      -->
-      <!--
-        <ion-reorder-button ion-navicon on-reorder="myroutes.reorderRoutes(myRoute, $fromIndex, $toIndex)"></ion-reorder-button>
-      -->
-    </ion-item>
+        </ion-label>
+        <ion-label text-right>
+          <span *ngIf="myRoute.estDeparture === 'LEAVING_NOW'">
+            <small>Leaving ({{ myRoute.carLength }} car)</small>
+          </span>
+          <span *ngIf="myRoute.estDeparture === 'No Service'">
+            <small>No Service</small>
+          </span>
+          <span *ngIf="myRoute.estDeparture > 0">
+            <small>
+              <bart-timer departureTime="{{myRoute.estDeparture}}"></bart-timer>
+            </small>
+            <small *ngIf="myRoute.estDeparture !== 'No Service'">
+              ({{ myRoute.carLength }} car) <br />
+              ${{ myRoute.routeFare }}, Arr {{ myRoute.destTimeMin }}
+            </small>
+          </span>
+        </ion-label>
+        <ion-reorder></ion-reorder>
+      </ion-item>
+    </ion-reorder-group>
   </ion-list>
 </ion-content>

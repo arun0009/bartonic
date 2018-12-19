@@ -7,17 +7,13 @@ import { InfoPage } from "../info/info";
 import { MapPage } from "../map/map";
 import { MyRoutesPage } from "../myroutes/myroutes";
 import { QuickLookupPage } from "../quicklookup/quicklookup";
+import { MyRouteSchedulePage } from "../myrouteschedule/myrouteschedule";
 
 const routes: Routes = [
   {
     path: "tabs",
     component: TabsPage,
     children: [
-      {
-        path: "",
-        redirectTo: "/tabs/(tab1:tab1)",
-        pathMatch: "full"
-      },
       {
         path: "addroute",
         outlet: "addroute",

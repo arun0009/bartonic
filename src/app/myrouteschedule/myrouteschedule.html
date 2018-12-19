@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Departures</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding="false" has-bouncing="false">
+  <ion-list>
+    <ion-item *ngFor="let quickLookup of quickLookups">
+      <ion-label>
+        <small>
+          <span><i class="icon ion-android-train"></i></span>
+          {{ quickLookup.firstStationName }}
+          <span *ngIf="quickLookup.hasLink">
+            <i class="icon ion-link"></i> {{ quickLookup.connectingStationName
+            }}<br />
+            <i class="icon ion-android-train"></i>
+            {{ quickLookup.destinationStationName }}
+          </span>
+          <span *ngIf="quickLookup.hasMoreLinks">
+            <i class="icon ion-link"></i>
+            {{ quickLookup.finalConnectingStationName }}
+            <i class="icon ion-android-train"></i>
+            {{ quickLookup.finalDestinationStationName }}
+          </span>
+        </small>
+      </ion-label>
+      <ion-label text-right>
+        <small>
+          <span *ngIf="quickLookup.estDeparture === 'LEAVING_NOW'">
+            <b>Leaving</b> ({{ quickLookup.carLength }} car)
+          </span>
+          <span *ngIf="quickLookup.estDeparture > 0">
+            <bart-timer
+              departureTime="{{quickLookup.estDeparture}}"
+            ></bart-timer>
+            ({{ quickLookup.carLength }} car)
+          </span>
+          <br />
+          {{ quickLookup.routeFare | currency }}, Arr
+          {{ quickLookup.destTimeMin }}
+        </small>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

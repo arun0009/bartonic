@@ -1,10 +1,7 @@
-import { Http, URLSearchParams } from "@angular/http";
+import { Http } from "@angular/http";
+import { HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import "rxjs/Rx";
 import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
-
-declare var X2JS: any;
 
 @Injectable()
 export class EstTimeDepartureService {
@@ -15,20 +12,15 @@ export class EstTimeDepartureService {
   }
 
   getEstTimeDeparture(origin: string): Observable<any> {
-    let params: URLSearchParams = new URLSearchParams();
-    params.set("cmd", "etd");
-    params.set("orig", origin);
-    params.set("key", "ZMVD-UB67-IYVQ-DT35");
-    return this.http
-      .get("http://api.bart.gov/api/etd.aspx", {
-        search: params
-      })
-      .pipe(
-        map(res => {
-          var x2js = new X2JS();
-          return x2js.xml_str2json(res.text());
-        })
-      );
+    const params = new HttpParams()
+      .set("cmd", "etd")
+      .set("orig", origin)
+      .set("key", "ZMVD-UB67-IYVQ-DT35")
+      .set("json", "y");
+
+    return this.http.get("http://api.bart.gov/api/etd.aspx", {
+      params
+    });
   }
 
   getEstimatedDeparturesForHeadStations(estTimeDeparture, trainHeadStations) {

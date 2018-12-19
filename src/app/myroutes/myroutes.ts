@@ -1,11 +1,11 @@
 import { Component, NgModule } from "@angular/core";
-import { MyRouteInfo } from "../models/MyRouteInfo";
+import { RouteInfo } from "../models/RouteInfo";
 import { ScheduledDepartureDetailsService } from "../services/ScheduledDepartureDetailsService";
 import { EstTimeDepartureService } from "../services/EstTimeDepartureService";
 import { BartHelperService } from "../services/BartHelperService";
 import { range, of } from "rxjs";
-import { Platform } from "@ionic/angular";
 import { map, flatMap } from "rxjs/operators";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "myroutes",
@@ -13,18 +13,17 @@ import { map, flatMap } from "rxjs/operators";
   providers: [EstTimeDepartureService, ScheduledDepartureDetailsService]
 })
 export class MyRoutesPage {
-  favRoutes: string[];
-  myFavRoutes: any[] = [];
+  favRoutes: RouteInfo[];
+  myFavRoutes: RouteInfo[] = [];
   originNames: string[] = [];
   destinationNames: string[] = [];
 
   constructor(
-    private platform: Platform,
     private bartHelperService: BartHelperService,
     private scheduledDepartureDetailsService: ScheduledDepartureDetailsService,
-    private estTimeDepartureService: EstTimeDepartureService
+    private estTimeDepartureService: EstTimeDepartureService,
+    private router: Router
   ) {
-    this.platform = platform;
     this.scheduledDepartureDetailsService = scheduledDepartureDetailsService;
     this.estTimeDepartureService = estTimeDepartureService;
     this.bartHelperService = bartHelperService;
@@ -32,9 +31,10 @@ export class MyRoutesPage {
   }
 
   ionViewWillEnter() {
+    console.log("configured routes: ", this.router.config);
     this.myFavRoutes = [];
     this.getMyFavoriteRoutes(this.favRoutes).subscribe(
-      (favRoute: MyRouteInfo) => {
+      (favRoute: RouteInfo) => {
         var myFavRoute = this.myFavRoutes.filter(
           myFavRoute => myFavRoute.id === favRoute.id
         )[0];
@@ -69,7 +69,7 @@ export class MyRoutesPage {
                   scheduledDepartureDetails
                 );
                 //$log.debug("train head stations are : " + angular.toJson(trainHeadStations));
-                var myRouteInfo = new MyRouteInfo();
+                var myRouteInfo = new RouteInfo();
                 myRouteInfo.index = favoriteRoutes[key].index;
                 myRouteInfo.id = key;
                 myRouteInfo.routeFare =
@@ -168,5 +168,57 @@ export class MyRoutesPage {
         return myRouteInfo;
       })
     );
+  }
+
+  deleteRoute(route) {
+    var favoriteRoutes =
+      JSON.parse(window.localStorage.getItem("favoriteRoutes")) || [];
+    for (var i = 0; i < favoriteRoutes.length; i++) {
+      if (
+        favoriteRoutes[i].originName === route.originName &&
+        favoriteRoutes[i].destinationName === route.destinationName
+      ) {
+        favoriteRoutes.splice(i, 1);
+        for (i = route.index; i < route.length; i++) {
+          var favoriteRoute = favoriteRoutes[i];
+          favoriteRoute.index = parseInt(favoriteRoute.index) - 1;
+          favoriteRoutes.splice(i, 1);
+          favoriteRoutes.splice(i, 0, favoriteRoute);
+        }
+      }
+    }
+    window.localStorage.setItem(
+      "favoriteRoutes",
+      JSON.stringify(favoriteRoutes)
+    );
+    window.location.reload();
+  }
+
+  reorderRoutes(indexes) {
+    console.log("reordering routes");
+    if (indexes.from != indexes.to) {
+      var favoriteRoutes: Array<RouteInfo> = this.favRoutes;
+      var routeReordered: RouteInfo = favoriteRoutes[indexes.from];
+      routeReordered.index = favoriteRoutes[indexes.to].index;
+      favoriteRoutes.splice(indexes.from, 1);
+      favoriteRoutes.splice(indexes.to, 0, routeReordered);
+      if (indexes.to < indexes.from) {
+        for (var i = indexes.to + 1; i <= indexes.from; i++) {
+          var favoriteRoute: RouteInfo = favoriteRoutes[i];
+          favoriteRoute.index = favoriteRoute.index + 1;
+          favoriteRoutes.splice(i, 1);
+          favoriteRoutes.splice(i, 0, favoriteRoute);
+        }
+      } else {
+        for (var i = indexes.from; i < indexes.to; i++) {
+          var favoriteRoute = favoriteRoutes[i];
+          favoriteRoute.index = favoriteRoute.index - 1;
+          favoriteRoutes.splice(i, 1);
+          favoriteRoutes.splice(i, 0, favoriteRoute);
+        }
+      }
+      this.bartHelperService.addToFavoriteRoutes(favoriteRoutes);
+      window.location.reload();
+    }
   }
 }

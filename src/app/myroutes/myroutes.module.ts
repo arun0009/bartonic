@@ -1,10 +1,16 @@
 import { IonicModule } from "@ionic/angular";
-import { RouterModule } from "@angular/router";
+import { RouterModule, Routes } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { MyRoutesPage } from "./myroutes";
 import { ComponentsModule } from "../components/component.module";
+import { MyRouteSchedulePage } from "../myrouteschedule/myrouteschedule";
+
+const routes: Routes = [
+  { path: "myrouteschedule", component: MyRouteSchedulePage },
+  { path: "", component: MyRoutesPage }
+];
 
 @NgModule({
   imports: [
@@ -12,7 +18,7 @@ import { ComponentsModule } from "../components/component.module";
     CommonModule,
     ComponentsModule,
     FormsModule,
-    RouterModule.forChild([{ path: "", component: MyRoutesPage }])
+    RouterModule.forChild(routes)
   ],
   declarations: [MyRoutesPage]
 })

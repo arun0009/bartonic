@@ -10,6 +10,7 @@ import { AddRouteModule } from "../addroute/addroute.module";
 import { InfoModule } from "../info/info.module";
 import { MapModule } from "../map/map.module";
 import { MyRoutesModule } from "../myroutes/myroutes.module";
+import { MyRouteScheduleModule } from "../myrouteschedule/myrouteschedule.module";
 import { QuickLookupModule } from "../quicklookup/quicklookup.module";
 
 @NgModule({
@@ -22,6 +23,7 @@ import { QuickLookupModule } from "../quicklookup/quicklookup.module";
     InfoModule,
     MapModule,
     MyRoutesModule,
+    MyRouteScheduleModule,
     QuickLookupModule
   ],
   declarations: [TabsPage]
