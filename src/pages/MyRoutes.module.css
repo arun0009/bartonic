@@ -1,0 +1,176 @@
+.page {
+  padding: 1rem 1.25rem 1.5rem;
+}
+
+.header {
+  margin-bottom: 1.25rem;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.subtitle {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.loading {
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.card {
+  position: relative;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(2, 6, 23, 0.18);
+}
+
+.cardInner {
+  width: 100%;
+  padding: 1rem 3rem 1rem 1rem;
+  text-align: left;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.cardInner:hover {
+  background: var(--surface-elevated);
+  transform: translateY(-1px);
+}
+
+.route {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.routeOrigin {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.routeTo {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.meta {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  align-items: center;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.countdown {
+  font-variant-numeric: tabular-nums;
+}
+
+.leaving {
+  color: var(--success);
+}
+
+.noService {
+  color: var(--text-muted);
+}
+
+.noEtd {
+  color: var(--text-muted);
+}
+
+.cars {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.trainAt {
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.fare {
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.deleteBtn {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface-elevated);
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  line-height: 1;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.deleteBtn:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.empty {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.emptyTitle {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.emptySub {
+  margin: 0.5rem 0 1.5rem;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.primaryButton {
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: filter 0.15s;
+}
+
+.primaryButton:hover {
+  filter: brightness(1.1);
+}

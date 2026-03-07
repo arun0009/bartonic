@@ -1,0 +1,118 @@
+.page {
+  padding: 1rem 1.25rem 1.5rem;
+}
+
+.header {
+  margin-bottom: 1.25rem;
+}
+
+.back {
+  padding: 0.35rem 0;
+  margin-bottom: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 0.95rem;
+}
+
+.back:hover {
+  text-decoration: underline;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.subtitle {
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.trainPosition {
+  margin: 0.75rem 0 1rem;
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-sm);
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.trainPositionLabel {
+  color: var(--text-muted);
+}
+
+.stopsAway {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.error {
+  color: var(--danger);
+  margin: 0 0 1rem;
+}
+
+.loading,
+.noService {
+  color: var(--text-muted);
+  margin: 0 0 1rem;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.card {
+  padding: 1rem;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.route {
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.connecting,
+.dest {
+  color: var(--text-muted);
+}
+
+.meta {
+  margin-top: 0.5rem;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.countdown {
+  font-variant-numeric: tabular-nums;
+}
+
+.leaving {
+  color: var(--success);
+}
+
+.noEtd {
+  color: var(--text-muted);
+}
+
+.cars {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.fare {
+  margin-top: 0.35rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}

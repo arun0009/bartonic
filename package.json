@@ -1,34 +1,41 @@
 {
   "name": "bartonic",
-  "version": "1.0.0",
-  "description": "Bart Real Time Schedule - BRTS",
-  "devDependencies": {
-    "ava": "^0.14.0",
-    "globby": "^4.0.0",
-    "gulp": "^3.9.0",
-    "gulp-concat": "^2.6.0",
-    "gulp-extend": "^0.2.0",
-    "gulp-include-source": "0.0.5",
-    "gulp-minify-css": "^1.2.2",
-    "gulp-ng-constant": "^1.1.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-sass": "^2.1.1",
-    "gulp-uncss": "^1.0.4",
-    "gulp-util": "^3.0.7",
-    "shelljs": "^0.5.3"
-  },
-  "cordovaPlugins": [
-    "cordova-plugin-device",
-    "cordova-plugin-console",
-    "cordova-plugin-splashscreen",
-    "cordova-plugin-google-analytics",
-    "cordova-plugin-whitelist"
-  ],
-  "cordovaPlatforms": [
-    "ios",
-    "android"
-  ],
+  "version": "2.0.0",
+  "description": "BART real-time schedule, favorites & map — PWA",
+  "type": "module",
   "scripts": {
-    "test": "ava"
+    "dev": "vite",
+    "icons": "node scripts/generate-icons.mjs",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "test": "vitest run",
+    "test:live": "LIVE_VALIDATE=1 vitest run src/test/live-audit.test.ts",
+    "test:live:all": "node scripts/live-audit-all.mjs"
+  },
+  "dependencies": {
+    "gtfs-realtime-bindings": "^1.1.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-router-dom": "^7.13.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.4",
+    "eslint": "^9.39.4",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.4.0",
+    "sharp": "^0.34.5",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.1",
+    "vite": "^7.3.1",
+    "vite-plugin-pwa": "^1.2.0",
+    "vitest": "^4.0.18"
+  },
+  "overrides": {
+    "serialize-javascript": "7.0.4"
   }
 }

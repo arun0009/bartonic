@@ -1,11 +1,29 @@
 # Specifies intentionally untracked files to ignore when using Git
 # http://git-scm.com/docs/gitignore
 
+# Dependencies / build output
 node_modules/
+dist/
+
+# Legacy Cordova/Ionic artifacts
 platforms/
 plugins/
 bower_components/
 hooks/
+!src/hooks/
+!src/hooks/*.ts
+
+# Local environment files
+.env
+.env.local
+.env.*.local
+
+# TypeScript / tooling cache
+*.tsbuildinfo
+coverage/
+
+# OS / editor files
+.DS_Store
 *.iml
 *.ipr
 *.iws

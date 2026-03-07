@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bartonic.arun0009.workers.dev/sitemap.xml

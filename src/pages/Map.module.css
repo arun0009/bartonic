@@ -1,0 +1,116 @@
+.page {
+  padding: 1rem 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+  background: var(--bg);
+}
+
+.header {
+  margin-bottom: 1rem;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.subtitle {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.card {
+  flex: 1;
+  min-height: 320px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.zoomBar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.zoomBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-elevated);
+  color: var(--text);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.zoomBtn:hover {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+
+.resetBtn {
+  margin-left: 0.25rem;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-elevated);
+  color: var(--text);
+  padding: 0 0.75rem;
+  font-size: 0.85rem;
+}
+
+.zoomLevel {
+  margin-left: auto;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.viewport {
+  flex: 1;
+  overflow: auto;
+  padding: 0.75rem;
+  min-height: 200px;
+  touch-action: pan-x pan-y pinch-zoom;
+  -webkit-overflow-scrolling: touch;
+  background: #0b1220;
+}
+
+.canvas {
+  position: relative;
+  flex-shrink: 0;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(2, 6, 23, 0.28);
+}
+
+.bartMap {
+  display: block;
+  cursor: move;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.attribution {
+  margin: 0.75rem 0 0;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.attribution a {
+  color: var(--accent);
+}

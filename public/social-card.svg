@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="100" y1="40" x2="1110" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#081526"/>
+      <stop offset="1" stop-color="#0B213B"/>
+    </linearGradient>
+    <linearGradient id="hero" x1="136" y1="96" x2="456" y2="416" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A5F3FC"/>
+      <stop offset="1" stop-color="#22D3EE"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" rx="48" fill="url(#bg)"/>
+  <rect x="24" y="24" width="1152" height="582" rx="36" stroke="#20334D" stroke-width="2"/>
+
+  <rect x="88" y="88" width="388" height="454" rx="48" fill="#0A1A30" fill-opacity="0.74"/>
+  <rect x="126" y="126" width="312" height="312" rx="82" fill="url(#hero)"/>
+  <rect x="151" y="151" width="262" height="262" rx="70" fill="#0B1D30"/>
+  <path d="M188 208C224 172 252 154 282 154C312 154 340 172 376 208" stroke="#2AA1D8" stroke-opacity="0.9" stroke-width="14" stroke-linecap="round"/>
+  <rect x="180" y="210" width="204" height="156" rx="46" fill="url(#hero)"/>
+  <rect x="197" y="228" width="170" height="74" rx="30" fill="#0B1D30"/>
+  <rect x="214" y="246" width="54" height="36" rx="12" fill="#69DAFF"/>
+  <rect x="297" y="246" width="54" height="36" rx="12" fill="#69DAFF"/>
+  <circle cx="230" cy="339" r="11" fill="#081425"/>
+  <circle cx="334" cy="339" r="11" fill="#081425"/>
+  <rect x="190" y="378" width="184" height="10" rx="5" fill="#2AA1D8"/>
+  <rect x="190" y="392" width="184" height="10" rx="5" fill="#F1C40F"/>
+  <rect x="190" y="406" width="184" height="10" rx="5" fill="#2ECC71"/>
+  <rect x="190" y="420" width="184" height="10" rx="5" fill="#F39C12"/>
+  <rect x="126" y="458" width="312" height="48" rx="20" fill="#0A2038"/>
+  <text x="282" y="490" text-anchor="middle" fill="#8FD8F7" font-size="22" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif">BARTonic</text>
+
+  <text x="530" y="214" fill="#E9F5FF" font-size="72" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-weight="800">BARTonic</text>
+  <text x="530" y="278" fill="#8DC1E8" font-size="32" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif">Live BART departures and route tracking.</text>
+  <text x="530" y="324" fill="#8DC1E8" font-size="32" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif">Installable PWA for Bay Area commuters.</text>
+
+  <rect x="530" y="392" width="548" height="74" rx="18" fill="#0A1A30" fill-opacity="0.72" stroke="#234161" stroke-width="1"/>
+  <text x="560" y="438" fill="#A5F3FC" font-size="28" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif">bartonic.arun0009.workers.dev</text>
+</svg>

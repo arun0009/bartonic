@@ -1,0 +1,69 @@
+.banner {
+  position: fixed;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: calc(env(safe-area-inset-bottom) + 84px);
+  z-index: 120;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.94);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 28px rgba(2, 6, 23, 0.35);
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.text {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.sub {
+  margin: 0.25rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.install {
+  border: none;
+  border-radius: 10px;
+  padding: 0.45rem 0.7rem;
+  background: var(--accent);
+  color: #041423;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.dismiss {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.42rem 0.65rem;
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+@media (min-width: 720px) {
+  .banner {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: min(620px, calc(100vw - 1.5rem));
+  }
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="BARTonic" />
+    <meta name="description" content="BART real-time departures, schedules, and station map for San Francisco Bay Area riders. Save routes, track next trains, and install as a fast PWA." />
+    <meta name="keywords" content="BART, BART schedule, BART departures, San Francisco transit, Bay Area commute, BART app, train times" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="BARTonic" />
+    <meta property="og:title" content="BARTonic — Live BART Departures & Schedules" />
+    <meta property="og:description" content="Live BART departures, saved routes, train-position hints, and map-first commute planning for Bay Area riders." />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://bartonic.arun0009.workers.dev" />
+    <meta property="og:image" content="https://bartonic.arun0009.workers.dev/social-card.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="BARTonic app preview card with icon and tagline." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="BARTonic — Live BART Departures & Schedules" />
+    <meta name="twitter:description" content="Live BART departures, saved routes, train-position hints, and map-first commute planning for Bay Area riders." />
+    <meta name="twitter:image" content="https://bartonic.arun0009.workers.dev/social-card.png" />
+    <meta name="twitter:image:alt" content="BARTonic preview card showing app icon and tagline." />
+    <link rel="canonical" href="https://bartonic.arun0009.workers.dev" />
+    <title>BARTonic — Live BART Departures, Schedules, and Map</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "BARTonic",
+        "url": "https://bartonic.arun0009.workers.dev",
+        "description": "Live BART departures, saved routes, train-position hints, and map-first commute planning for San Francisco Bay Area riders.",
+        "applicationCategory": "TravelApplication",
+        "operatingSystem": "iOS, Android, Web",
+        "browserRequirements": "Requires JavaScript and modern browser support for PWA installation.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://api.bart.gov" />
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"96bf14b56a74453db187398d7d86a733"}'></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
