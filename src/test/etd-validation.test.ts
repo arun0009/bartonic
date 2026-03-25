@@ -5,6 +5,7 @@ import {
   type BartEtdRoot,
   type BartScheduleRoot
 } from '../api/bart'
+import { isTripLiveMatchEligible, minutesUntilScheduledDeparture } from '../hooks/useEtd'
 import { getBestEtdMatch, selectEstimate, toSeconds } from '../lib/etdMatching'
 import {
   antcEtdFixture,
@@ -135,5 +136,19 @@ describe('BART data validation', () => {
     )
     const third = selectEstimate(match?.etd ?? null, 2)
     expect(third.minutes).toBeNull()
+  })
+
+  it('treats far-future morning schedule as not live-match eligible at midnight', () => {
+    const now = new Date('2026-03-08T00:10:00')
+    const delta = minutesUntilScheduledDeparture('06:11 AM', now)
+    expect(delta).not.toBeNull()
+    expect(delta!).toBeGreaterThan(300)
+    expect(isTripLiveMatchEligible('06:11 AM', now)).toBe(false)
+  })
+
+  it('supports next-day rollover around midnight for live matching', () => {
+    const now = new Date('2026-03-08T23:55:00')
+    const delta = minutesUntilScheduledDeparture('12:10 AM', now)
+    expect(delta).toBe(15)
   })
 })

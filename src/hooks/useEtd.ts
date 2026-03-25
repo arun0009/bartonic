@@ -22,6 +22,42 @@ type FavoriteInput = {
   index?: number
 }
 
+const LIVE_MATCH_MAX_AHEAD_MIN = 90
+const LIVE_MATCH_MAX_BEHIND_MIN = 5
+
+export function minutesUntilScheduledDeparture(
+  timeMin: string | undefined,
+  nowDate: Date = new Date()
+): number | null {
+  const raw = String(timeMin ?? '').trim()
+  const match = raw.match(/^(\d{1,2}):(\d{2})\s*([AP]M)$/i)
+  if (!match) return null
+
+  const hour12 = parseInt(match[1], 10)
+  const minute = parseInt(match[2], 10)
+  const meridiem = match[3].toUpperCase()
+  if (Number.isNaN(hour12) || Number.isNaN(minute)) return null
+
+  let hour24 = hour12 % 12
+  if (meridiem === 'PM') hour24 += 12
+
+  const nowMinutes = nowDate.getHours() * 60 + nowDate.getMinutes()
+  let delta = hour24 * 60 + minute - nowMinutes
+
+  // Around midnight BART can return next-day departures. Roll forward if needed.
+  if (delta < -180) delta += 24 * 60
+  return delta
+}
+
+export function isTripLiveMatchEligible(
+  origTimeMin: string | undefined,
+  nowDate: Date = new Date()
+): boolean {
+  const minutes = minutesUntilScheduledDeparture(origTimeMin, nowDate)
+  if (minutes == null) return false
+  return minutes >= -LIVE_MATCH_MAX_BEHIND_MIN && minutes <= LIVE_MATCH_MAX_AHEAD_MIN
+}
+
 function getEstimateList(
   etd: ReturnType<typeof getEtdForDestination>
 ): NonNullable<ReturnType<typeof getEtdForDestination>>['estimate'][] {
@@ -45,7 +81,9 @@ async function buildRouteDepartures(originAbbr: string, destinationAbbr: string)
       const legList = Array.isArray(trip.leg) ? trip.leg : [trip.leg]
       const firstLegDestination = legList[0]?._destination
 
-      const match = getBestEtdMatch(etdRoot, destinationAbbr, head, firstLegDestination)
+      const match = isTripLiveMatchEligible(trip._origTimeMin)
+        ? getBestEtdMatch(etdRoot, destinationAbbr, head, firstLegDestination)
+        : null
       const etdMatched = match?.etd ?? null
       const sequenceIndex = match ? (etdUsageByAbbr.get(match.abbr) ?? 0) : 0
       if (match) etdUsageByAbbr.set(match.abbr, sequenceIndex + 1)
@@ -90,14 +128,12 @@ function buildFavoriteRoute(item: FavoriteInput, scheduleRoot: Awaited<ReturnTyp
   const firstTrip = scheduleTrips[0] ?? null
 
   let selectedTrip = firstTrip
-  let selectedHead = selectedTrip ? getTrainHeadStation(selectedTrip) || item.destinationAbbr : item.destinationAbbr
-  let selectedFirstLegDest = selectedTrip
-    ? (Array.isArray(selectedTrip.leg) ? selectedTrip.leg[0]?._destination : selectedTrip.leg?._destination)
-    : undefined
-  let selectedEtd = getBestEtdForRoute(etdRoot, item.destinationAbbr, selectedHead, selectedFirstLegDest)
-  let selectedMinutes = selectedEtd ? getFirstEstimateMinutes(selectedEtd) : null
+  let selectedHead = item.destinationAbbr
+  let selectedEtd = null
+  let selectedMinutes: number | null = null
 
   for (const trip of scheduleTrips) {
+    if (!isTripLiveMatchEligible(trip._origTimeMin)) continue
     const head = getTrainHeadStation(trip) || item.destinationAbbr
     const firstLegDest = Array.isArray(trip.leg) ? trip.leg[0]?._destination : trip.leg?._destination
     const etd = getBestEtdForRoute(etdRoot, item.destinationAbbr, head, firstLegDest)
@@ -106,7 +142,6 @@ function buildFavoriteRoute(item: FavoriteInput, scheduleRoot: Awaited<ReturnTyp
     if (selectedMinutes == null || minutes < selectedMinutes) {
       selectedTrip = trip
       selectedHead = head
-      selectedFirstLegDest = firstLegDest
       selectedEtd = etd
       selectedMinutes = minutes
     }
