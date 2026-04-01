@@ -24,6 +24,8 @@ type FavoriteInput = {
 
 const LIVE_MATCH_MAX_AHEAD_MIN = 90
 const LIVE_MATCH_MAX_BEHIND_MIN = 5
+const LIVE_EARLY_MISMATCH_TOLERANCE_MIN = 4
+const LIVE_NEAR_NOW_STRICT_MIN = 5
 
 export function minutesUntilScheduledDeparture(
   timeMin: string | undefined,
@@ -58,6 +60,14 @@ export function isTripLiveMatchEligible(
   return minutes >= -LIVE_MATCH_MAX_BEHIND_MIN && minutes <= LIVE_MATCH_MAX_AHEAD_MIN
 }
 
+function isLiveEstimateTooEarlyForSchedule(minutes: number | null, origTimeMin: string | undefined): boolean {
+  if (minutes == null) return false
+  if (minutes > LIVE_NEAR_NOW_STRICT_MIN) return false
+  const scheduledDelta = minutesUntilScheduledDeparture(origTimeMin)
+  if (scheduledDelta == null) return false
+  return minutes < scheduledDelta - LIVE_EARLY_MISMATCH_TOLERANCE_MIN
+}
+
 function getEstimateList(
   etd: ReturnType<typeof getEtdForDestination>
 ): NonNullable<ReturnType<typeof getEtdForDestination>>['estimate'][] {
@@ -86,14 +96,16 @@ async function buildRouteDepartures(originAbbr: string, destinationAbbr: string)
         : null
       const etdMatched = match?.etd ?? null
       const sequenceIndex = match ? (etdUsageByAbbr.get(match.abbr) ?? 0) : 0
-      if (match) etdUsageByAbbr.set(match.abbr, sequenceIndex + 1)
-
       const { minutes: mins, carLength } = selectEstimate(etdMatched, sequenceIndex)
+      const minutesForUi = isLiveEstimateTooEarlyForSchedule(mins, trip._origTimeMin) ? null : mins
+      if (match && minutesForUi != null) {
+        etdUsageByAbbr.set(match.abbr, sequenceIndex + 1)
+      }
       return {
         destination: destinationAbbr,
-        estDepartureSeconds: toSeconds(mins) ?? 'LEAVING_NOW',
-        noEtd: etdMatched == null || mins == null,
-        carLength,
+        estDepartureSeconds: toSeconds(minutesForUi) ?? 'LEAVING_NOW',
+        noEtd: etdMatched == null || minutesForUi == null,
+        carLength: minutesForUi == null ? undefined : carLength,
         routeFare: trip._fare,
         destTimeMin: trip._destTimeMin,
         origTimeMin: trip._origTimeMin,
@@ -138,6 +150,7 @@ function buildFavoriteRoute(item: FavoriteInput, scheduleRoot: Awaited<ReturnTyp
     const firstLegDest = Array.isArray(trip.leg) ? trip.leg[0]?._destination : trip.leg?._destination
     const etd = getBestEtdForRoute(etdRoot, item.destinationAbbr, head, firstLegDest)
     const minutes = etd ? getFirstEstimateMinutes(etd) : null
+    if (isLiveEstimateTooEarlyForSchedule(minutes, trip._origTimeMin)) continue
     if (minutes == null) continue
     if (selectedMinutes == null || minutes < selectedMinutes) {
       selectedTrip = trip

@@ -18,7 +18,6 @@ const STATION_ALIASES: Record<string, string> = {
   berryessa: 'BERY',
   'north san jose': 'BERY',
   'berryessa north san jose': 'BERY',
-  sf: 'SFIA',
   sfo: 'SFIA',
   'sf airport': 'SFIA',
   'daly city': 'DALY',
@@ -97,30 +96,13 @@ export function getBestEtdMatch(
     .flatMap(expandEtdAbbrCandidates)
     .filter((abbr, index, list) => abbr.length > 0 && list.indexOf(abbr) === index)
 
-  let best: BartEtdDestination | null = null
-  let bestAbbr = ''
-  let bestMinutes: number | null = null
-
   for (const abbr of candidateAbbrs) {
     const etd = getEtdForDestination(etdRoot, abbr)
     if (!etd) continue
-    const minutes = getFirstEstimateMinutes(etd)
-    if (minutes == null) {
-      if (!best) {
-        best = etd
-        bestAbbr = abbr
-      }
-      continue
-    }
-    if (bestMinutes == null || minutes < bestMinutes) {
-      best = etd
-      bestAbbr = abbr
-      bestMinutes = minutes
-    }
+    return { etd, abbr }
   }
 
-  if (!best) return null
-  return { etd: best, abbr: bestAbbr }
+  return null
 }
 
 export function getBestEtdForRoute(

@@ -125,6 +125,39 @@ describe('BART data validation', () => {
     expect(selectEstimate(match?.etd ?? null, 0).minutes).toBe(6)
   })
 
+  it('prefers destination candidate order over faster unrelated ETD', () => {
+    const etdRoot = {
+      root: {
+        station: {
+          name: '16th St. Mission',
+          abbr: '16TH',
+          etd: [
+            {
+              abbreviation: 'DUBL',
+              destination: 'Dublin/Pleasanton',
+              estimate: [{ minutes: '11', length: '6' }]
+            },
+            {
+              abbreviation: 'OAKL',
+              destination: 'Oakland International Airport',
+              estimate: [{ minutes: '1', length: '3' }]
+            }
+          ]
+        }
+      }
+    } as unknown as BartEtdRoot
+
+    const match = getBestEtdMatch(
+      etdRoot,
+      'DUBL',
+      'SF / OAK Airport / Dublin/Pleasanton',
+      'DUBL'
+    )
+
+    expect(match?.abbr).toBe('DUBL')
+    expect(selectEstimate(match?.etd ?? null, 0).minutes).toBe(11)
+  })
+
   it('does not duplicate ETD when sequence overflows', () => {
     const trips = getTrips(dublToEmbrScheduleFixture as unknown as BartScheduleRoot)
     const firstLeg = Array.isArray(trips[0].leg) ? trips[0].leg[0] : trips[0].leg
