@@ -1,5 +1,5 @@
 /**
- * Browser always uses a same-origin proxy (Vite in local, Cloudflare Pages in prod)
+ * Browser always uses a same-origin proxy (Vite in local, Cloudflare Worker in prod)
  * so GTFS-RT works despite missing CORS on api.bart.gov/gtfsrt.
  * Node / Vitest hit BART directly.
  */

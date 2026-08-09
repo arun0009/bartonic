@@ -93,16 +93,19 @@ Open [http://localhost:5173](http://localhost:5173).
 - React 19 + TypeScript + Vite
 - PWA via `vite-plugin-pwa`
 - Data from [BART API](https://api.bart.gov/) and [BART GTFS-Realtime](https://www.bart.gov/schedules/developers/gtfs-realtime)
-- Same-origin `/api/bart` proxy (Vite locally, Cloudflare Pages Function in prod) so GTFS-RT works in the browser
+- Same-origin `/api/bart` proxy (Vite locally, Cloudflare Worker in prod) so GTFS-RT works in the browser
 
-### Deploy note
+### Deploy (Cloudflare Workers)
 
-Production needs the Pages Function in `functions/api/bart/` (not a static `dist/` upload alone). Example:
+Dashboard / CI deploy command should be **`npx wrangler deploy`** (not `pages deploy`).  
+Build command: `npm run build` · output: `dist/` (configured in `wrangler.toml`).
 
 ```bash
-npm run build
-npx wrangler pages deploy dist --project-name=bartonic
+npm run deploy
+# or: npm run build && npx wrangler deploy
 ```
+
+`worker.js` proxies `/api/bart/*` → `api.bart.gov`; the SPA is served from `dist` via Workers Static Assets.
 
 </details>
 

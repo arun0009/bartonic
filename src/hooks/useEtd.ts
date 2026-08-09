@@ -287,6 +287,10 @@ function buildFavoriteRoute(
 }
 
 export function useEtdForRoute(originAbbr: string, destinationAbbr: string) {
+  const origin = String(originAbbr ?? '').trim().toUpperCase()
+  const dest = String(destinationAbbr ?? '').trim().toUpperCase()
+  const enabled = Boolean(origin && dest && origin !== dest)
+
   const [departures, setDepartures] = useState<QuickLookupTrip[]>([])
   const [loading, setLoading] = useState(false)
   const [stale, setStale] = useState(false)
@@ -299,14 +303,8 @@ export function useEtdForRoute(originAbbr: string, destinationAbbr: string) {
   }, [])
 
   useEffect(() => {
-    const origin = String(originAbbr ?? '').trim().toUpperCase()
-    const dest = String(destinationAbbr ?? '').trim().toUpperCase()
-    if (!origin || !dest || origin === dest) {
-      setDepartures([])
+    if (!enabled) {
       lastGoodRef.current = []
-      setStale(false)
-      setUpdatedAt(null)
-      setLoading(false)
       return
     }
 
@@ -352,7 +350,18 @@ export function useEtdForRoute(originAbbr: string, destinationAbbr: string) {
       window.clearInterval(timer)
       unsub()
     }
-  }, [originAbbr, destinationAbbr, tick])
+  }, [enabled, origin, dest, tick])
+
+  if (!enabled) {
+    return {
+      departures: [] as QuickLookupTrip[],
+      loading: false,
+      stale: false,
+      updatedAt: null,
+      error: null as string | null,
+      refresh
+    }
+  }
 
   return { departures, loading, stale, updatedAt, error: null as string | null, refresh }
 }
@@ -376,11 +385,7 @@ export function useEtdForFavorites(input: FavoriteInput[]) {
 
   useEffect(() => {
     if (normalized.length === 0) {
-      setRoutes([])
       lastGoodRef.current = []
-      setStale(false)
-      setUpdatedAt(null)
-      setLoading(false)
       return
     }
 
@@ -458,6 +463,15 @@ export function useEtdForFavorites(input: FavoriteInput[]) {
       unsub()
     }
   }, [normalized])
+
+  if (normalized.length === 0) {
+    return {
+      routes: [] as DepartureInfo[],
+      loading: false,
+      stale: false,
+      updatedAt: null
+    }
+  }
 
   return { routes, loading, stale, updatedAt }
 }
