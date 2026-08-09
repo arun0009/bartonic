@@ -85,7 +85,7 @@
   overflow: auto;
   padding: 0.75rem;
   min-height: 200px;
-  touch-action: pan-x pan-y pinch-zoom;
+  touch-action: none;
   -webkit-overflow-scrolling: touch;
   background: #0b1220;
 }

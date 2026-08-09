@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useSyncExternalStore } from 'react'
+import { getStation } from '../data/stations'
 import type { FavoriteRoute } from '../types'
 
 const STORAGE_KEY = 'bartonic.favorites.v1'
@@ -36,12 +37,19 @@ function readFavorites(): FavoriteRoute[] {
           typeof item.destinationName === 'string'
         )
       })
-      .map((item, i) => ({
-        ...item,
-        index: Number.isFinite(item.index) ? Number(item.index) : i,
-        originAbbr: item.originAbbr.toUpperCase(),
-        destinationAbbr: item.destinationAbbr.toUpperCase()
-      }))
+      .map((item, i) => {
+        const originAbbr = item.originAbbr.toUpperCase()
+        const destinationAbbr = item.destinationAbbr.toUpperCase()
+        return {
+          ...item,
+          index: Number.isFinite(item.index) ? Number(item.index) : i,
+          originAbbr,
+          destinationAbbr,
+          // Prefer canonical station names so abbr/label fixes (e.g. PITT/PCTR) apply.
+          originName: getStation(originAbbr)?.name ?? item.originName,
+          destinationName: getStation(destinationAbbr)?.name ?? item.destinationName
+        }
+      })
       .sort((a, b) => a.index - b.index)
       .map((item, i) => ({ ...item, index: i }))
     cachedRaw = raw

@@ -46,7 +46,7 @@
 
 .cardInner {
   width: 100%;
-  padding: 1rem 3rem 1rem 1rem;
+  padding: 1rem 5.5rem 1rem 1rem;
   text-align: left;
   background: none;
   border: none;
@@ -115,10 +115,34 @@
   color: var(--text-muted);
 }
 
+.meetHint {
+  color: var(--accent);
+}
+
 .fare {
   margin-top: 0.35rem;
   font-size: 0.8rem;
   color: var(--text-muted);
+}
+
+.reverseBtn {
+  position: absolute;
+  top: 50%;
+  right: 2.85rem;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface-elevated);
+  color: var(--accent);
+  font-size: 0.95rem;
+  line-height: 1;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.reverseBtn:hover {
+  border-color: var(--accent);
 }
 
 .deleteBtn {

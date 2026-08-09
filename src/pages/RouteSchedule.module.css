@@ -19,6 +19,13 @@
   text-decoration: underline;
 }
 
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
 .title {
   margin: 0;
   font-size: 1.35rem;
@@ -26,10 +33,35 @@
   color: var(--text);
 }
 
+.refresh {
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-elevated);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
 .subtitle {
   margin: 0.25rem 0 0;
   font-size: 0.9rem;
   color: var(--text-muted);
+}
+
+.reverseLink {
+  margin-top: 0.55rem;
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+.reverseLink:hover {
+  text-decoration: underline;
 }
 
 .trainPosition {
@@ -49,6 +81,18 @@
 .stopsAway {
   color: var(--text-muted);
   font-weight: 400;
+}
+
+.meetHint {
+  margin: 0.45rem 0 0;
+  font-size: 0.82rem;
+  color: var(--accent);
+}
+
+.positionError {
+  margin: 0 0 1rem;
+  font-size: 0.82rem;
+  color: var(--text-muted);
 }
 
 .error {
@@ -115,4 +159,37 @@
   margin-top: 0.35rem;
   font-size: 0.85rem;
   color: var(--text-muted);
+}
+
+.opposite {
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.oppositeHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.oppositeTitle {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.oppositeSub {
+  margin: 0.3rem 0 0.85rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.cardMuted {
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px dashed var(--border);
 }

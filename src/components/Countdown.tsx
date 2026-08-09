@@ -1,34 +1,55 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { mergeDepartAtMs, secondsUntil } from '../lib/departureTime'
 
 interface CountdownProps {
-  seconds: number
+  /** Absolute epoch ms when this train should depart. */
+  departAtMs: number
+  /** Stable identity for this trip; changing it resets the anchor. */
+  tripKey: string
   className?: string
+  leavingClassName?: string
 }
 
-export default function Countdown({ seconds, className }: CountdownProps) {
-  const [left, setLeft] = useState(seconds)
+/**
+ * Deadline-based countdown.
+ * Anchors on first sight of a trip, never jumps upward on minute-bucket refreshes,
+ * and prefers earlier updates (train advanced) or large delay jumps.
+ */
+export default function Countdown({
+  departAtMs,
+  tripKey,
+  className,
+  leavingClassName
+}: CountdownProps) {
+  const anchorRef = useRef<{ tripKey: string; departAtMs: number }>({
+    tripKey,
+    departAtMs
+  })
+  const [left, setLeft] = useState(() => secondsUntil(departAtMs))
 
   useEffect(() => {
-    setLeft(seconds)
-  }, [seconds])
+    const prev = anchorRef.current
+    if (prev.tripKey !== tripKey) {
+      anchorRef.current = { tripKey, departAtMs }
+    } else {
+      anchorRef.current = {
+        tripKey,
+        departAtMs: mergeDepartAtMs(prev.departAtMs, departAtMs)
+      }
+    }
 
-  useEffect(() => {
-    if (left <= 0) return
-    const t = window.setInterval(() => {
-      setLeft((s) => {
-        if (s <= 1) {
-          window.clearInterval(t)
-          return 0
-        }
-        return s - 1
-      })
-    }, 1000)
-    return () => clearInterval(t)
-  }, [left])
+    const tick = () => setLeft(secondsUntil(anchorRef.current.departAtMs))
+    tick()
+    // Sub-second tick keeps the display honest near departure.
+    const timer = window.setInterval(tick, 250)
+    return () => window.clearInterval(timer)
+  }, [departAtMs, tripKey])
+
+  if (left <= 0) {
+    return <span className={leavingClassName ?? className}>Leaving</span>
+  }
 
   const m = Math.floor(left / 60)
   const s = left % 60
-  const str = `${m}m ${s}s`
-
-  return <span className={className}>{str}</span>
+  return <span className={className}>{`${m}m ${s.toString().padStart(2, '0')}s`}</span>
 }

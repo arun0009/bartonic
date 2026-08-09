@@ -3,17 +3,35 @@ import { BART_BASE, BART_API_KEY } from './constants'
 const q = (params: Record<string, string>) =>
   new URLSearchParams({ ...params, key: BART_API_KEY, json: 'y' }).toString()
 
-// Keep this below UI refresh interval (15s) so countdowns feel live.
-const CACHE_MS = 10_000
+/** Short TTL so 15s UI refresh usually hits the network; still soft-dedupes bursts. */
+const CACHE_MS = 4_000
+const MAX_CACHE_ENTRIES = 80
 const cache = new Map<string, { data: unknown; at: number }>()
 
-async function fetchJson<T>(url: string): Promise<T> {
-  const hit = cache.get(url)
-  if (hit && Date.now() - hit.at < CACHE_MS) return hit.data as T
+export type BartFetchOptions = {
+  bypassCache?: boolean
+}
+
+export function invalidateBartCache(): void {
+  cache.clear()
+}
+
+function remember(url: string, data: unknown): void {
+  cache.set(url, { data, at: Date.now() })
+  if (cache.size <= MAX_CACHE_ENTRIES) return
+  const oldest = cache.keys().next().value
+  if (oldest != null) cache.delete(oldest)
+}
+
+async function fetchJson<T>(url: string, options?: BartFetchOptions): Promise<T> {
+  if (!options?.bypassCache) {
+    const hit = cache.get(url)
+    if (hit && Date.now() - hit.at < CACHE_MS) return hit.data as T
+  }
   const res = await fetch(url)
   if (!res.ok) throw new Error(`BART API: ${res.status}`)
   const data = (await res.json()) as T
-  cache.set(url, { data, at: Date.now() })
+  remember(url, data)
   return data
 }
 
@@ -28,9 +46,9 @@ export interface BartStationsRoot {
   root: { stations: { station: BartStation | BartStation[] } }
 }
 
-export async function fetchStations(): Promise<BartStation[]> {
+export async function fetchStations(options?: BartFetchOptions): Promise<BartStation[]> {
   const url = `${BART_BASE}/stn.aspx?${q({ cmd: 'stns' })}`
-  const data = await fetchJson<BartStationsRoot>(url)
+  const data = await fetchJson<BartStationsRoot>(url, options)
   const station = data.root.stations.station
   return Array.isArray(station) ? station : [station]
 }
@@ -44,6 +62,9 @@ export interface BartEtdEstimate {
   hexcolor: string
   bikeflag: string
   delay?: string
+  /** "1" when this estimate is for a cancelled run */
+  cancelflag?: string
+  dynamicflag?: string
 }
 
 export interface BartEtdDestination {
@@ -64,16 +85,20 @@ export interface BartEtdRoot {
   }
 }
 
-export async function fetchEtd(origin: string): Promise<BartEtdRoot> {
+export async function fetchEtd(origin: string, options?: BartFetchOptions): Promise<BartEtdRoot> {
   const orig = String(origin ?? '').trim().toUpperCase()
   const url = `${BART_BASE}/etd.aspx?${q({ cmd: 'etd', orig })}`
-  return fetchJson<BartEtdRoot>(url)
+  return fetchJson<BartEtdRoot>(url, options)
 }
 
 export interface BartScheduleLeg {
   _origin: string
   _destination: string
   _trainHeadStation: string
+  _originPlatform?: string
+  _destinationPlatform?: string
+  _line?: string
+  _load?: string
 }
 
 export interface BartScheduleTrip {
@@ -96,14 +121,15 @@ export async function fetchSchedule(
   destination: string,
   date: string = 'now',
   time: string = 'now',
-  cmd: 'depart' | 'arrive' = 'depart'
+  cmd: 'depart' | 'arrive' = 'depart',
+  options?: BartFetchOptions
 ): Promise<BartScheduleRoot> {
   const b = cmd === 'depart' ? '0' : '3'
   const a = cmd === 'depart' ? '3' : '0'
   const orig = String(origin ?? '').trim().toUpperCase()
   const dest = String(destination ?? '').trim().toUpperCase()
   const url = `${BART_BASE}/sched.aspx?${q({ cmd, orig, dest, date, time, a, b, l: '1' })}`
-  return fetchJson<BartScheduleRoot>(url)
+  return fetchJson<BartScheduleRoot>(url, options)
 }
 
 export interface BartAdvisoryRoot {
@@ -123,9 +149,9 @@ export interface BartAdvisoryRoot {
   }
 }
 
-export async function fetchAdvisories(): Promise<BartAdvisoryRoot> {
+export async function fetchAdvisories(options?: BartFetchOptions): Promise<BartAdvisoryRoot> {
   const url = `${BART_BASE}/bsa.aspx?${q({ cmd: 'bsa', date: 'today' })}`
-  return fetchJson<BartAdvisoryRoot>(url)
+  return fetchJson<BartAdvisoryRoot>(url, options)
 }
 
 export interface AdvisoryParsed {
@@ -225,7 +251,11 @@ function normalizeLeg(rawLeg: unknown): BartScheduleLeg {
   return {
     _origin: pickAttr(source, 'origin'),
     _destination: pickAttr(source, 'destination'),
-    _trainHeadStation: pickAttr(source, 'trainHeadStation')
+    _trainHeadStation: pickAttr(source, 'trainHeadStation'),
+    _originPlatform: pickAttr(source, 'originPlatform') || undefined,
+    _destinationPlatform: pickAttr(source, 'destinationPlatform') || undefined,
+    _line: pickAttr(source, 'line') || undefined,
+    _load: pickAttr(source, 'load') || undefined
   }
 }
 

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useFavorites, useFavoritesActions } from '../hooks/useFavorites'
 import { useEtdForFavorites } from '../hooks/useEtd'
 import { useTrainPositions, getPositionForYourTrain } from '../hooks/useTrainPosition'
-import Countdown from '../components/Countdown'
+import DepartureMeta from '../components/DepartureMeta'
 import styles from './MyRoutes.module.css'
 
 export default function MyRoutes() {
@@ -21,12 +21,12 @@ export default function MyRoutes() {
       })),
     [favorites]
   )
-  const { routes, loading } = useEtdForFavorites(favoriteInput)
-  const tripPositions = useTrainPositions()
+  const { routes, loading, stale, updatedAt } = useEtdForFavorites(favoriteInput)
+  const { trips: tripPositions } = useTrainPositions()
   const favById = useMemo(() => {
     const m = new Map<string, (typeof favorites)[0]>()
     for (const f of favorites) {
-      m.set(`${f.originName}\0${f.destinationName}`, f)
+      m.set(`${f.originAbbr.toUpperCase()}\0${f.destinationAbbr.toUpperCase()}`, f)
     }
     return m
   }, [favorites])
@@ -51,17 +51,36 @@ export default function MyRoutes() {
     <div className={styles.page}>
       <header className={styles.header}>
         <h1 className={styles.title}>My Routes</h1>
-        <p className={styles.subtitle}>Next departures · updates every 15s</p>
+        <p className={styles.subtitle}>
+          {stale
+            ? 'Showing last known times · reconnecting…'
+            : updatedAt
+              ? 'Next departures · live'
+              : 'Next departures · updates every 15s'}
+        </p>
       </header>
       {loading && routes.length === 0 ? (
         <div className={styles.loading}>Loading…</div>
       ) : (
         <ul className={styles.list}>
           {routes.map((route) => {
-            const fav = favById.get(`${route.originName}\0${route.destinationName}`)
-            const trainPos = fav ? getPositionForYourTrain(tripPositions, fav.originAbbr, fav.destinationAbbr) : undefined
+            const originAbbr = (route.originAbbr ?? '').toUpperCase()
+            const destinationAbbr = (route.destinationAbbr ?? '').toUpperCase()
+            const fav =
+              favById.get(`${originAbbr}\0${destinationAbbr}`) ??
+              favorites.find(
+                (f) => f.originName === route.originName && f.destinationName === route.destinationName
+              )
+            const trainPos = fav
+              ? getPositionForYourTrain(
+                  tripPositions,
+                  fav.originAbbr,
+                  fav.destinationAbbr,
+                  route.departAtMs ?? undefined
+                )
+              : undefined
             return (
-              <li key={fav?.id ?? `${route.originName}-${route.destinationName}`} className={styles.card}>
+              <li key={fav?.id ?? `${originAbbr}-${destinationAbbr}`} className={styles.card}>
                 <button
                   type="button"
                   className={styles.cardInner}
@@ -76,37 +95,32 @@ export default function MyRoutes() {
                     <span className={styles.routeOrigin}>{route.originName}</span>
                     <span className={styles.routeTo}>→ {route.destinationName}</span>
                   </div>
-                  <div className={styles.meta}>
-                    {route.estDepartureSeconds === null && !route.noEtd && (
-                      <span className={styles.noService}>No service</span>
-                    )}
-                    {route.noEtd && (
-                      <span className={styles.noEtd}>
-                        {route.origTimeMin != null
-                          ? `Scheduled departure at ${route.origTimeMin}`
-                          : 'No live ETD'}
-                      </span>
-                    )}
-                    {!route.noEtd && route.estDepartureSeconds === 'LEAVING_NOW' && (
-                      <span className={styles.leaving}>
-                        Leaving {route.carLength != null ? `(${route.carLength} car)` : ''}
-                      </span>
-                    )}
-                    {!route.noEtd && typeof route.estDepartureSeconds === 'number' && (
-                      <Countdown
-                        seconds={route.estDepartureSeconds}
-                        className={styles.countdown}
-                      />
-                    )}
-                    {!route.noEtd && route.estDepartureSeconds !== null && route.carLength != null && typeof route.estDepartureSeconds === 'number' && (
-                      <span className={styles.cars}> ({route.carLength} car)</span>
-                    )}
-                  </div>
+                  <DepartureMeta
+                    noEtd={route.noEtd}
+                    estDepartureSeconds={route.estDepartureSeconds}
+                    departAtMs={route.departAtMs}
+                    tripKey={route.tripKey}
+                    originAbbr={route.originAbbr ?? fav?.originAbbr}
+                    destinationAbbr={route.destinationAbbr ?? fav?.destinationAbbr}
+                    useGtfsPrecision
+                    carLength={route.carLength}
+                    platform={route.platform}
+                    delaySeconds={route.delaySeconds}
+                    hexcolor={route.hexcolor}
+                    origTimeMin={route.origTimeMin}
+                    className={styles.meta}
+                    countdownClassName={styles.countdown}
+                    leavingClassName={styles.leaving}
+                    mutedClassName={styles.cars}
+                  />
                   {trainPos && (
                     <div className={styles.trainAt}>
-                      Train at {trainPos.currentStationName}
+                      Your train at {trainPos.currentStationName}
                       {trainPos.stopsAway != null && trainPos.stopsAway > 0 && (
-                        <span> · {trainPos.stopsAway} stop{trainPos.stopsAway !== 1 ? 's' : ''} away</span>
+                        <span>
+                          {' '}
+                          · {trainPos.stopsAway} stop{trainPos.stopsAway !== 1 ? 's' : ''} away
+                        </span>
                       )}
                     </div>
                   )}
@@ -123,6 +137,22 @@ export default function MyRoutes() {
                     </div>
                   )}
                 </button>
+                {fav && (
+                  <button
+                    type="button"
+                    className={styles.reverseBtn}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      navigate(
+                        `/schedule/${encodeURIComponent(fav.destinationAbbr)}/${encodeURIComponent(fav.originAbbr)}`
+                      )
+                    }}
+                    aria-label="Other direction"
+                    title="Other direction"
+                  >
+                    ⇄
+                  </button>
+                )}
                 <button
                   type="button"
                   className={styles.deleteBtn}

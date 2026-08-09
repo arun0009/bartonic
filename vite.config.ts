@@ -2,16 +2,21 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
+const bartProxy = {
+  '/api/bart': {
+    target: 'https://api.bart.gov',
+    changeOrigin: true,
+    secure: true,
+    rewrite: (path: string) => path.replace(/^\/api\/bart/, ''),
+  },
+} as const
+
 export default defineConfig({
   server: {
-    proxy: {
-      '/api/bart': {
-        target: 'https://api.bart.gov',
-        changeOrigin: true,
-        secure: true,
-        rewrite: (path) => path.replace(/^\/api\/bart/, ''),
-      },
-    },
+    proxy: { ...bartProxy },
+  },
+  preview: {
+    proxy: { ...bartProxy },
   },
   plugins: [
     react(),

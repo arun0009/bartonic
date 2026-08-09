@@ -3,6 +3,7 @@ import {
   getFirstEstimateLength,
   getFirstEstimateMinutes,
   type BartEtdDestination,
+  type BartEtdEstimate,
   type BartEtdRoot
 } from '../api/bart'
 import { BART_STATIONS, getStation } from '../data/stations'
@@ -30,10 +31,10 @@ export function toSeconds(minutes: number | null): number | 'LEAVING_NOW' | null
   return minutes * 60
 }
 
-function getEstimateList(etd: BartEtdDestination | null): BartEtdDestination['estimate'][] {
+function getEstimateList(etd: BartEtdDestination | null): BartEtdEstimate[] {
   if (!etd) return []
   const list = Array.isArray(etd.estimate) ? etd.estimate : [etd.estimate]
-  return list.filter((item) => item != null)
+  return list.filter((item): item is BartEtdEstimate => item != null)
 }
 
 function normalizeStationName(value: string): string {
@@ -114,12 +115,19 @@ export function getBestEtdForRoute(
   return getBestEtdMatch(etdRoot, destinationAbbr, trainHeadStation, firstLegDestinationAbbr)?.etd ?? null
 }
 
-export function selectEstimate(
-  etd: BartEtdDestination | null,
-  sequenceIndex: number
-): { minutes: number | null; carLength?: number } {
+export type SelectedEstimate = {
+  minutes: number | null
+  carLength?: number
+  platform?: string
+  delaySeconds?: number
+  hexcolor?: string
+  direction?: string
+}
+
+export function selectEstimate(etd: BartEtdDestination | null, sequenceIndex: number): SelectedEstimate {
   if (!etd) return { minutes: null }
-  const estimateList = getEstimateList(etd)
+  // Skip cancelled runs so sequence indexes land on real trains.
+  const estimateList = getEstimateList(etd).filter((item) => String(item.cancelflag ?? '0') !== '1')
   const selectedEstimate = estimateList[sequenceIndex] ?? null
   if (!selectedEstimate) return { minutes: null }
 
@@ -127,5 +135,10 @@ export function selectEstimate(
   const carLength =
     parseInt(String(selectedEstimate.length ?? ''), 10) ||
     getFirstEstimateLength({ ...etd, estimate: selectedEstimate })
-  return { minutes, carLength }
+  const platform = String(selectedEstimate.platform ?? '').trim() || undefined
+  const delayRaw = parseInt(String(selectedEstimate.delay ?? ''), 10)
+  const delaySeconds = Number.isFinite(delayRaw) && delayRaw > 0 ? delayRaw : undefined
+  const hexcolor = String(selectedEstimate.hexcolor ?? '').trim() || undefined
+  const direction = String(selectedEstimate.direction ?? '').trim() || undefined
+  return { minutes, carLength, platform, delaySeconds, hexcolor, direction }
 }

@@ -5,44 +5,60 @@ const MIN_SCALE = 0.06
 const MAX_SCALE = 2.5
 const DEFAULT_SCALE = 1
 
+function pointerDistance(
+  a: { x: number; y: number },
+  b: { x: number; y: number }
+): number {
+  const dx = a.x - b.x
+  const dy = a.y - b.y
+  return Math.hypot(dx, dy)
+}
+
 export default function Map() {
   const [scale, setScale] = useState(DEFAULT_SCALE)
   const [imgSize, setImgSize] = useState<{ w: number; h: number } | null>(null)
   const [useHiResMap, setUseHiResMap] = useState(false)
   const viewportRef = useRef<HTMLDivElement>(null)
   const dragRef = useRef<{ x: number; y: number; left: number; top: number } | null>(null)
+  const pointersRef = useRef(new globalThis.Map<number, { x: number; y: number }>())
+  const pinchRef = useRef<{ distance: number; scale: number } | null>(null)
+  const scaleRef = useRef(scale)
   const didAutoFitRef = useRef(false)
 
-  const zoomTo = useCallback(
-    (nextScale: number) => {
-      const next = Math.min(MAX_SCALE, Math.max(MIN_SCALE, nextScale))
-      if (next === scale) return
-      const viewport = viewportRef.current
-      if (!viewport) {
-        setScale(next)
-        return
-      }
+  useEffect(() => {
+    scaleRef.current = scale
+  }, [scale])
 
-      const centerX = viewport.scrollLeft + viewport.clientWidth / 2
-      const centerY = viewport.scrollTop + viewport.clientHeight / 2
-      const ratio = next / scale
+  const zoomTo = useCallback((nextScale: number) => {
+    const next = Math.min(MAX_SCALE, Math.max(MIN_SCALE, nextScale))
+    const current = scaleRef.current
+    if (next === current) return
+    const viewport = viewportRef.current
+    if (!viewport) {
       setScale(next)
-      requestAnimationFrame(() => {
-        viewport.scrollLeft = centerX * ratio - viewport.clientWidth / 2
-        viewport.scrollTop = centerY * ratio - viewport.clientHeight / 2
-      })
-    },
-    [scale]
-  )
+      return
+    }
+
+    const centerX = viewport.scrollLeft + viewport.clientWidth / 2
+    const centerY = viewport.scrollTop + viewport.clientHeight / 2
+    const ratio = next / current
+    setScale(next)
+    requestAnimationFrame(() => {
+      viewport.scrollLeft = centerX * ratio - viewport.clientWidth / 2
+      viewport.scrollTop = centerY * ratio - viewport.clientHeight / 2
+    })
+  }, [])
 
   const zoomIn = useCallback(() => {
-    const step = scale < 0.3 ? 0.06 : 0.2
-    zoomTo(scale + step)
-  }, [scale, zoomTo])
+    const current = scaleRef.current
+    const step = current < 0.3 ? 0.06 : 0.2
+    zoomTo(current + step)
+  }, [zoomTo])
   const zoomOut = useCallback(() => {
-    const step = scale <= 0.3 ? 0.06 : 0.2
-    zoomTo(scale - step)
-  }, [scale, zoomTo])
+    const current = scaleRef.current
+    const step = current <= 0.3 ? 0.06 : 0.2
+    zoomTo(current - step)
+  }, [zoomTo])
 
   const fitToScreen = useCallback(() => {
     if (!imgSize) return
@@ -95,7 +111,7 @@ export default function Map() {
     <div className={styles.page}>
       <header className={styles.header}>
         <h1 className={styles.title}>BART system map</h1>
-        <p className={styles.subtitle}>Use +/− to zoom, drag to pan. Tap Reset to fit.</p>
+        <p className={styles.subtitle}>Pinch or use +/− to zoom, drag to pan. Tap Reset to fit.</p>
       </header>
       <div className={styles.card}>
         <div className={styles.zoomBar}>
@@ -114,33 +130,62 @@ export default function Map() {
           className={styles.viewport}
           ref={viewportRef}
           onWheel={(e) => {
-            if (!e.ctrlKey) return
+            if (!e.ctrlKey && !e.metaKey) return
             e.preventDefault()
-            zoomTo(scale + (e.deltaY > 0 ? -0.1 : 0.1))
+            zoomTo(scaleRef.current + (e.deltaY > 0 ? -0.1 : 0.1))
           }}
           onPointerDown={(e) => {
             const viewport = viewportRef.current
             if (!viewport) return
+            pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
+            ;(e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId)
+
+            if (pointersRef.current.size === 2) {
+              const [a, b] = [...pointersRef.current.values()]
+              pinchRef.current = {
+                distance: pointerDistance(a, b),
+                scale: scaleRef.current
+              }
+              dragRef.current = null
+              return
+            }
+
             dragRef.current = {
               x: e.clientX,
               y: e.clientY,
               left: viewport.scrollLeft,
               top: viewport.scrollTop
             }
-            ;(e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId)
           }}
           onPointerMove={(e) => {
+            if (!pointersRef.current.has(e.pointerId)) return
+            pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
+
+            if (pointersRef.current.size >= 2 && pinchRef.current) {
+              const [a, b] = [...pointersRef.current.values()]
+              const distance = pointerDistance(a, b)
+              if (pinchRef.current.distance > 0) {
+                const ratio = distance / pinchRef.current.distance
+                zoomTo(pinchRef.current.scale * ratio)
+              }
+              return
+            }
+
             const drag = dragRef.current
             const viewport = viewportRef.current
             if (!drag || !viewport) return
             viewport.scrollLeft = drag.left - (e.clientX - drag.x)
             viewport.scrollTop = drag.top - (e.clientY - drag.y)
           }}
-          onPointerUp={() => {
-            dragRef.current = null
+          onPointerUp={(e) => {
+            pointersRef.current.delete(e.pointerId)
+            if (pointersRef.current.size < 2) pinchRef.current = null
+            if (pointersRef.current.size === 0) dragRef.current = null
           }}
-          onPointerCancel={() => {
-            dragRef.current = null
+          onPointerCancel={(e) => {
+            pointersRef.current.delete(e.pointerId)
+            if (pointersRef.current.size < 2) pinchRef.current = null
+            if (pointersRef.current.size === 0) dragRef.current = null
           }}
         >
           <div

@@ -108,6 +108,31 @@
   color: var(--accent);
 }
 
+.swapRow {
+  display: flex;
+  justify-content: center;
+  margin: 0.15rem 0;
+}
+
+.swapBtn {
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.swapBtn:disabled {
+  opacity: 0.5;
+}
+
+.resultActions {
+  display: flex;
+  gap: 0.4rem;
+}
+
 .lookupBtn {
   width: 100%;
   padding: 0.85rem;

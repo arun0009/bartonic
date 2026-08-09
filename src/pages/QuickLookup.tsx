@@ -1,13 +1,15 @@
 import { useState, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { BART_STATIONS } from '../data/stations'
 import { useEtdForRoute } from '../hooks/useEtd'
 import { useNearestStations } from '../hooks/useNearestStations'
 import { useRecentStations } from '../hooks/useRecentStations'
 import { getPopularFirstDestinations } from '../lib/stationSuggestions'
-import Countdown from '../components/Countdown'
+import DepartureMeta from '../components/DepartureMeta'
 import styles from './QuickLookup.module.css'
 
 export default function QuickLookup() {
+  const navigate = useNavigate()
   const [origin, setOrigin] = useState<{ abbr: string; name: string } | null>(null)
   const [destination, setDestination] = useState<{ abbr: string; name: string } | null>(null)
   const [searchOrigin, setSearchOrigin] = useState('')
@@ -63,6 +65,15 @@ export default function QuickLookup() {
     if (origin && destination && origin.abbr !== destination.abbr) setSubmitted(true)
   }
 
+  const swapStations = () => {
+    if (!origin && !destination) return
+    setOrigin(destination)
+    setDestination(origin)
+    setSearchOrigin('')
+    setSearchDest('')
+    if (submitted) setSubmitted(true)
+  }
+
   return (
     <div className={styles.page}>
       <header className={styles.header}>
@@ -85,7 +96,7 @@ export default function QuickLookup() {
           className={styles.input}
         />
         <div className={styles.stationList}>
-          {filteredOrigin.slice(0, 6).map((s) => (
+          {filteredOrigin.slice(0, 8).map((s) => (
             <button
               key={s.abbr}
               type="button"
@@ -99,6 +110,11 @@ export default function QuickLookup() {
             </button>
           ))}
         </div>
+        <div className={styles.swapRow}>
+          <button type="button" className={styles.swapBtn} onClick={swapStations} disabled={!origin && !destination}>
+            ⇄ Swap direction
+          </button>
+        </div>
         <label className={styles.label}>To</label>
         <input
           type="text"
@@ -108,7 +124,7 @@ export default function QuickLookup() {
           className={styles.input}
         />
         <div className={styles.stationList}>
-          {filteredDest.slice(0, 6).map((s) => (
+          {filteredDest.slice(0, 8).map((s) => (
             <button
               key={s.abbr}
               type="button"
@@ -137,9 +153,22 @@ export default function QuickLookup() {
             <h2 className={styles.resultTitle}>
               {origin.name} → {destination.name}
             </h2>
-            <button type="button" className={styles.refresh} onClick={() => refresh()}>
-              Refresh
-            </button>
+            <div className={styles.resultActions}>
+              <button
+                type="button"
+                className={styles.refresh}
+                onClick={() =>
+                  navigate(
+                    `/schedule/${encodeURIComponent(origin.abbr)}/${encodeURIComponent(destination.abbr)}`
+                  )
+                }
+              >
+                Full view
+              </button>
+              <button type="button" className={styles.refresh} onClick={() => refresh()}>
+                Refresh
+              </button>
+            </div>
           </div>
           {error && <p className={styles.error}>{error}</p>}
           {loading && departures.length === 0 && <p className={styles.loading}>Loading…</p>}
@@ -147,8 +176,11 @@ export default function QuickLookup() {
             <p className={styles.noService}>No departures</p>
           )}
           <ul className={styles.departureList}>
-            {departures.map((d, i) => (
-              <li key={i} className={styles.departureCard}>
+            {departures.map((d, i) => {
+              const key =
+                d.tripKey ?? `${d.origTimeMin ?? ''}-${d.trainHeadStation ?? ''}-${d.destination}`
+              return (
+              <li key={key} className={styles.departureCard}>
                 <div className={styles.departureRoute}>
                   {d.firstStationName && <span>{d.firstStationName}</span>}
                   {d.connectingStationName && (
@@ -158,31 +190,32 @@ export default function QuickLookup() {
                     <span className={styles.dest}> → {d.destinationStationName}</span>
                   )}
                 </div>
-                <div className={styles.departureMeta}>
-                  {d.noEtd ? (
-                    <span className={styles.cars}>
-                      {d.origTimeMin != null
-                        ? `Scheduled departure at ${d.origTimeMin}`
-                        : 'No live ETD'}
-                    </span>
-                  ) : d.estDepartureSeconds === 'LEAVING_NOW' ? (
-                    <span className={styles.leaving}>
-                      Leaving {d.carLength != null ? `(${d.carLength} car)` : ''}
-                    </span>
-                  ) : (
-                    <Countdown seconds={d.estDepartureSeconds} className={styles.countdown} />
-                  )}
-                  {typeof d.estDepartureSeconds === 'number' && d.carLength != null && (
-                    <span className={styles.cars}> ({d.carLength} car)</span>
-                  )}
-                </div>
+                <DepartureMeta
+                  noEtd={d.noEtd}
+                  estDepartureSeconds={d.estDepartureSeconds}
+                  departAtMs={d.departAtMs}
+                  tripKey={key}
+                  originAbbr={origin.abbr}
+                  destinationAbbr={destination.abbr}
+                  useGtfsPrecision={i === 0}
+                  carLength={d.carLength}
+                  platform={d.platform}
+                  delaySeconds={d.delaySeconds}
+                  hexcolor={d.hexcolor}
+                  origTimeMin={d.origTimeMin}
+                  className={styles.departureMeta}
+                  countdownClassName={styles.countdown}
+                  leavingClassName={styles.leaving}
+                  mutedClassName={styles.cars}
+                />
                 <div className={styles.departureFare}>
                   {d.routeFare != null && `$${d.routeFare}`}
                   {d.noEtd && d.origTimeMin != null && ` · Dep ${d.origTimeMin} (scheduled)`}
                   {d.destTimeMin != null && ` · Arr ${d.destTimeMin}`}
                 </div>
               </li>
-            ))}
+              )
+            })}
           </ul>
         </section>
       )}

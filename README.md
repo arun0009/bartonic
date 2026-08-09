@@ -54,6 +54,8 @@ BARTonic is designed for the everyday Bay Area rider: open the app, check your n
 - **Add Route** - Create one-way or return routes with quick station search.
 - **Quick Lookup** - Check any origin to destination with transfer-aware departures.
 - **Train Position** - See where your train is right now using GTFS-Realtime hints.
+- **Other Direction** - Quickly check the reverse of a saved trip from the schedule view.
+- **Platform & delays** - Live platform, line color, and delay when BART reports them.
 - **System Map** - Pinch/zoom and drag the BART map with a clean mobile UI.
 - **Installable PWA** - Add to home screen on iOS/Android/desktop.
 
@@ -91,6 +93,16 @@ Open [http://localhost:5173](http://localhost:5173).
 - React 19 + TypeScript + Vite
 - PWA via `vite-plugin-pwa`
 - Data from [BART API](https://api.bart.gov/) and [BART GTFS-Realtime](https://www.bart.gov/schedules/developers/gtfs-realtime)
+- Same-origin `/api/bart` proxy (Vite locally, Cloudflare Pages Function in prod) so GTFS-RT works in the browser
+
+### Deploy note
+
+Production needs the Pages Function in `functions/api/bart/` (not a static `dist/` upload alone). Example:
+
+```bash
+npm run build
+npx wrangler pages deploy dist --project-name=bartonic
+```
 
 </details>
 

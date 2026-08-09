@@ -1,166 +1,275 @@
 /**
- * BART GTFS-Realtime trip updates: where is your train?
- * "Your next Dublin/Pleasanton train is at West Oakland" so you can
- * run back a few stations or wait for the next one.
+ * BART GTFS-Realtime trip updates.
+ *
+ * Feed notes (2025+ platform GTFS):
+ * - Protobuf JSON uses camelCase (tripUpdate, tripId, stopTimeUpdate, stopId)
+ * - Trips identify via tripId; routeId is often absent
+ * - stopId values are platform codes (e.g. M16-1) → map to station abbr via GTFS stops
  */
 import { TRIP_UPDATE_URL } from './constants'
+import { stationAbbrFromStopId } from '../data/gtfsPlatformStops'
 import { getStation } from '../data/stations'
+import { GTFS_MATCH_TOLERANCE_MS } from '../lib/departureTime'
 
-const CACHE_MS = 30_000
+const CACHE_MS = 15_000
 let cache: { at: number; trips: TripPosition[] } | null = null
+let lastError: string | null = null
+let lastSuccessAt: number | null = null
 
 export interface TrainPosition {
+  tripId?: string
   destinationAbbr: string
   destinationName: string
   currentStopId: string
   currentStationName: string
-  /** How many stops until your station (if known) */
+  /** Unix seconds departure at origin when matched */
+  departAtOriginEpoch?: number
   stopsAway?: number
 }
 
 export interface TripPosition extends TrainPosition {
-  /** Stop IDs this trip will serve (in order), with departure times */
-  stopTimes: Array<{ stopId: string; departureTime: number }>
+  tripId: string
+  stopTimes: Array<{ stopId: string; departureTime: number; platformStopId?: string }>
 }
 
-interface StopTimeUpdate {
-  stop_sequence?: number
-  stop_id?: string
-  arrival?: { time?: string | number }
-  departure?: { time?: string | number }
-}
-
-interface TripUpdateEntity {
-  trip_update?: {
-    trip?: { route_id?: string }
-    stop_time_update?: StopTimeUpdate[]
+function toEpochSeconds(value: unknown): number {
+  if (value == null) return Infinity
+  if (typeof value === 'number' && Number.isFinite(value)) return value
+  if (typeof value === 'string') {
+    const n = parseInt(value, 10)
+    return Number.isNaN(n) ? Infinity : n
   }
-}
-
-function getStopTime(stu: StopTimeUpdate): number {
-  const dep = stu.departure?.time
-  const arr = stu.arrival?.time
-  const t = dep ?? arr
-  if (t == null) return Infinity
-  return typeof t === 'string' ? parseInt(t, 10) : t
-}
-
-function normStopId(s: string): string {
-  const u = s.toUpperCase()
-  const station = getStation(u) ?? getStation(u.slice(0, 4))
-  return station?.abbr ?? u
-}
-
-function routeIdToDestinationAbbr(routeId: string): string | null {
-  const r = String(routeId).toUpperCase()
-  const map: Record<string, string> = {
-    '1': 'DUBL', '2': 'MLBR', '3': 'RICH', '4': 'PITT', '5': 'WARM', '6': 'SFIA', '7': 'ANTC', '8': 'OAKL',
-    '11': 'DUBL', '12': 'MLBR', '19': 'DUBL', '91': 'DUBL', '92': 'MLBR', '93': 'RICH', '94': 'PITT',
-    '95': 'WARM', '96': 'SFIA', '97': 'ANTC', '98': 'OAKL',
-    B: 'DUBL', G: 'MLBR', O: 'RICH', Y: 'PITT', R: 'WARM', W: 'SFIA',
+  if (typeof value === 'object') {
+    const obj = value as { toNumber?: () => number; low?: number }
+    if (typeof obj.toNumber === 'function') return obj.toNumber()
+    if (typeof obj.low === 'number') return obj.low
   }
-  return map[r] ?? null
+  return Infinity
+}
+
+function pickTripUpdate(entity: Record<string, unknown>): Record<string, unknown> | null {
+  const tu = (entity.tripUpdate ?? entity.trip_update) as Record<string, unknown> | undefined
+  return tu ?? null
+}
+
+function pickTrip(tu: Record<string, unknown>): Record<string, unknown> | null {
+  return (tu.trip as Record<string, unknown> | undefined) ?? null
+}
+
+function pickStopUpdates(tu: Record<string, unknown>): Array<Record<string, unknown>> {
+  const raw = tu.stopTimeUpdate ?? tu.stop_time_update
+  return Array.isArray(raw) ? (raw as Array<Record<string, unknown>>) : []
+}
+
+function stopUpdateTime(stu: Record<string, unknown>): number {
+  const dep = (stu.departure as Record<string, unknown> | undefined)?.time
+  const arr = (stu.arrival as Record<string, unknown> | undefined)?.time
+  return toEpochSeconds(dep ?? arr)
+}
+
+function normStation(stopId: string): string {
+  return stationAbbrFromStopId(stopId) ?? String(stopId).toUpperCase()
+}
+
+/**
+ * Related termini that share a corridor / short-turn in GTFS-RT.
+ * ETD headsigns often name the full terminus while the feed ends one stop early
+ * (DUBL↔WDUB, DALY↔BALB). Do not alias MLBR↔SBRN — Millbrae is a spur.
+ */
+function relatedDestinations(abbr: string): string[] {
+  const a = normStation(abbr)
+  if (a === 'PITT' || a === 'ANTC' || a === 'PCTR') return ['PITT', 'ANTC', 'PCTR']
+  if (a === 'SFIA' || a === 'MLBR') return ['SFIA', 'MLBR']
+  if (a === 'DUBL' || a === 'WDUB') return ['DUBL', 'WDUB']
+  if (a === 'DALY' || a === 'BALB') return ['DALY', 'BALB']
+  return [a]
 }
 
 async function decodeTripUpdates(): Promise<TripPosition[]> {
   const mod = await import('gtfs-realtime-bindings')
-  const FeedMessage = mod.transit_realtime?.FeedMessage
-  if (!FeedMessage) return []
+  const root = (mod as { transit_realtime?: { FeedMessage?: { decode: (buf: Uint8Array) => { entity?: unknown[] } } } }).transit_realtime
+    ?? (mod as { default?: { transit_realtime?: { FeedMessage?: { decode: (buf: Uint8Array) => { entity?: unknown[] } } } } }).default?.transit_realtime
+  const FeedMessage = root?.FeedMessage
+  if (!FeedMessage) {
+    lastError = 'GTFS-RT decoder unavailable'
+    return []
+  }
 
   const res = await fetch(TRIP_UPDATE_URL)
-  if (!res.ok) return []
+  if (!res.ok) {
+    lastError = `GTFS-RT HTTP ${res.status}`
+    return []
+  }
   const buf = new Uint8Array(await res.arrayBuffer())
   const feed = FeedMessage.decode(buf)
   const now = Math.floor(Date.now() / 1000)
   const trips: TripPosition[] = []
 
   for (const entity of feed.entity || []) {
-    const tu = (entity as TripUpdateEntity).trip_update
-    if (!tu?.trip?.route_id || !tu.stop_time_update?.length) continue
+    const tu = pickTripUpdate(entity as Record<string, unknown>)
+    if (!tu) continue
+    const trip = pickTrip(tu)
+    const tripId = String(trip?.tripId ?? trip?.trip_id ?? '').trim()
+    const stopUpdates = pickStopUpdates(tu)
+      .filter((s) => (s.stopId ?? s.stop_id) != null && stopUpdateTime(s) !== Infinity)
+      .sort((a, b) => {
+        const seqA = Number(a.stopSequence ?? a.stop_sequence ?? 0)
+        const seqB = Number(b.stopSequence ?? b.stop_sequence ?? 0)
+        return seqA - seqB || stopUpdateTime(a) - stopUpdateTime(b)
+      })
 
-    const routeId = String(tu.trip.route_id)
-    const destinationAbbr = routeIdToDestinationAbbr(routeId)
-    if (!destinationAbbr) continue
+    if (!tripId || stopUpdates.length === 0) continue
 
-    const stopUpdates = [...tu.stop_time_update]
-      .filter((s) => s.stop_id != null && (s.arrival?.time != null || s.departure?.time != null))
-      .sort((a, b) => (a.stop_sequence ?? 0) - (b.stop_sequence ?? 0))
+    const stopTimes = stopUpdates.map((s) => {
+      const platformStopId = String(s.stopId ?? s.stop_id ?? '')
+      return {
+        platformStopId,
+        stopId: normStation(platformStopId),
+        departureTime: stopUpdateTime(s)
+      }
+    })
 
-    const stopTimes = stopUpdates.map((s) => ({
-      stopId: normStopId(String(s.stop_id)),
-      departureTime: getStopTime(s),
-    }))
+    const lastStopId = stopTimes[stopTimes.length - 1]?.stopId
+    if (!lastStopId) continue
 
-    const future = stopUpdates.find((s) => getStopTime(s) > now)
-    const currentStop = future ?? stopUpdates[stopUpdates.length - 1]
-    const stopId = normStopId(String(currentStop.stop_id ?? ''))
-    const station = getStation(stopId)
-    const destStation = getStation(destinationAbbr)
+    const future = stopTimes.find((s) => s.departureTime > now)
+    const current = future ?? stopTimes[stopTimes.length - 1]
+    const destStation = getStation(lastStopId)
+    const currentStation = getStation(current.stopId)
 
     trips.push({
-      destinationAbbr,
-      destinationName: destStation?.name ?? destinationAbbr,
-      currentStopId: stopId,
-      currentStationName: station?.name ?? stopId,
-      stopTimes,
+      tripId,
+      destinationAbbr: lastStopId,
+      destinationName: destStation?.name ?? lastStopId,
+      currentStopId: current.stopId,
+      currentStationName: currentStation?.name ?? current.stopId,
+      stopTimes
     })
   }
 
+  lastError = null
+  lastSuccessAt = Date.now()
   return trips
+}
+
+export function getTrainPositionError(): string | null {
+  return lastError
+}
+
+export function getTrainPositionsUpdatedAt(): number | null {
+  return lastSuccessAt
 }
 
 export async function fetchTrainPositions(): Promise<TripPosition[]> {
   if (cache && Date.now() - cache.at < CACHE_MS) return cache.trips
   try {
     const trips = await decodeTripUpdates()
-    cache = { at: Date.now(), trips }
-    return trips
+    if (trips.length > 0) {
+      cache = { at: Date.now(), trips }
+      return trips
+    }
+    return cache?.trips ?? []
   } catch {
+    lastError = 'GTFS-RT fetch failed'
     return cache?.trips ?? []
   }
 }
 
-/** Your next train to destination from origin: where is it right now? */
-export function getPositionForYourTrain(
+type ServingCandidate = {
+  trip: TripPosition
+  depAtOrigin: number
+  originIdx: number
+}
+
+function findServingCandidates(
   trips: TripPosition[],
   originAbbr: string,
   destinationAbbr: string
-): TrainPosition | undefined {
-  const origin = normStopId(originAbbr)
-  const dest = normStopId(destinationAbbr)
+): ServingCandidate[] {
+  const origin = normStation(originAbbr)
+  const dest = normStation(destinationAbbr)
+  const destSet = new Set(relatedDestinations(dest))
   const now = Math.floor(Date.now() / 1000)
+  const out: ServingCandidate[] = []
 
-  const candidates = trips.filter((t) => t.destinationAbbr === dest)
-  for (const t of candidates) {
-    const idx = t.stopTimes.findIndex((s) => s.stopId === origin)
-    if (idx === -1) continue
-    const depAtOrigin = t.stopTimes[idx].departureTime
+  for (const t of trips) {
+    const originIdx = t.stopTimes.findIndex((s) => s.stopId === origin)
+    if (originIdx === -1) continue
+
+    const destIdx = t.stopTimes.findIndex(
+      (s, i) => i > originIdx && (s.stopId === dest || destSet.has(s.stopId))
+    )
+    const terminusOk = destSet.has(t.destinationAbbr)
+    if (destIdx === -1 && !terminusOk) continue
+
+    const depAtOrigin = t.stopTimes[originIdx].departureTime
     if (depAtOrigin < now) continue
-    const currentIdx = t.stopTimes.findIndex((s) => s.stopId === t.currentStopId)
-    const stopsBeforeOrigin = currentIdx === -1 ? idx : Math.max(0, idx - currentIdx)
-    return {
-      destinationAbbr: t.destinationAbbr,
-      destinationName: t.destinationName,
-      currentStopId: t.currentStopId,
-      currentStationName: t.currentStationName,
-      stopsAway: stopsBeforeOrigin,
-    }
+    out.push({ trip: t, depAtOrigin, originIdx })
   }
-  return undefined
+
+  out.sort((a, b) => a.depAtOrigin - b.depAtOrigin)
+  return out
 }
 
-/** Fallback: any train on that destination line (no origin filter) */
-export function getPositionForDestination(
+/**
+ * Second-precision departure at origin for a train serving this OD.
+ * Prefer the trip closest to `nearEpochMs` when provided.
+ */
+export function getDepartureEpochAtOrigin(
   trips: TripPosition[],
-  destinationAbbr: string
+  originAbbr: string,
+  destinationAbbr: string,
+  nearEpochMs?: number
+): number | undefined {
+  return getMatchedServingTrip(trips, originAbbr, destinationAbbr, nearEpochMs)?.depAtOrigin
+}
+
+/** Full matched trip for unified countdown + position identity. */
+export function getMatchedServingTrip(
+  trips: TripPosition[],
+  originAbbr: string,
+  destinationAbbr: string,
+  nearEpochMs?: number
+): ServingCandidate | undefined {
+  const candidates = findServingCandidates(trips, originAbbr, destinationAbbr)
+  if (candidates.length === 0) return undefined
+
+  if (nearEpochMs == null) return candidates[0]
+
+  const nearSec = nearEpochMs / 1000
+  let best = candidates[0]
+  let bestDelta = Math.abs(best.depAtOrigin - nearSec)
+  for (const c of candidates) {
+    const delta = Math.abs(c.depAtOrigin - nearSec)
+    if (delta < bestDelta) {
+      best = c
+      bestDelta = delta
+    }
+  }
+  // Same window as preferGtfsDepartAtMs — never bind countdown/position to a different train.
+  if (bestDelta * 1000 > GTFS_MATCH_TOLERANCE_MS) return undefined
+  return best
+}
+
+export function getPositionForYourTrain(
+  trips: TripPosition[],
+  originAbbr: string,
+  destinationAbbr: string,
+  nearEpochMs?: number
 ): TrainPosition | undefined {
-  const dest = normStopId(destinationAbbr)
-  const t = trips.find((p) => p.destinationAbbr === dest)
-  if (!t) return undefined
+  const best = getMatchedServingTrip(trips, originAbbr, destinationAbbr, nearEpochMs)
+  if (!best) return undefined
+
+  const t = best.trip
+  const currentIdx = t.stopTimes.findIndex((s) => s.stopId === t.currentStopId)
+  const stopsBeforeOrigin = currentIdx === -1 ? best.originIdx : Math.max(0, best.originIdx - currentIdx)
   return {
+    tripId: t.tripId,
     destinationAbbr: t.destinationAbbr,
     destinationName: t.destinationName,
     currentStopId: t.currentStopId,
     currentStationName: t.currentStationName,
+    departAtOriginEpoch: best.depAtOrigin,
+    stopsAway: stopsBeforeOrigin
   }
 }
