@@ -1,7 +1,20 @@
 # BARTonic
 
 <p align="center">
-  <img src="public/icon-192.png" alt="BARTonic app icon" width="96" height="96" />
+  <img src="public/icon-192.png" alt="BARTonic app icon" width="88" height="88" />
+</p>
+
+<p align="center">
+  <strong>Your next BART train — in seconds.</strong><br />
+  Live countdown, platform, and where the train actually is.
+</p>
+
+<p align="center">
+  <a href="https://bartonic.arun0009.workers.dev"><strong>Open the live app →</strong></a>
+</p>
+
+<p align="center">
+  <img src="docs/screenshot-my-routes.gif" alt="BARTonic My Routes with live countdowns ticking down by the second" width="720" style="max-width:100%;height:auto;" />
 </p>
 
 <p align="center">
@@ -17,52 +30,37 @@
   </a>
 </p>
 
-<p align="center">
-  Live BART departures, saved commute routes, train-position hints, and a mobile-first map in a fast installable PWA.
-</p>
+Save your commute. Open the app. See if you should run.
 
-<p align="center">
-  <a href="https://bartonic.arun0009.workers.dev"><strong>Live App: bartonic.arun0009.workers.dev</strong></a>
-</p>
+- **Second-precision countdown** — not “3 min”, **3m 29s**
+- **Your train, not a headsign** — “Civic Center · 3 stops away”
+- **Platform, cars, fare, arrival** — glance and go
+- **Reverse trip** — check the other direction without retyping stations
+- **Installable PWA** — home screen on iPhone, Android, and desktop
 
----
+No account. No App Store. Free.
 
-## Install in 30 Seconds
+## Install in 30 seconds
 
 | Platform | Steps |
 | --- | --- |
-| **iPhone (Safari)** | Open the [Live App](https://bartonic.arun0009.workers.dev) → Tap **Share** → **Add to Home Screen** → **Add** |
-| **Android (Chrome)** | Open the [Live App](https://bartonic.arun0009.workers.dev) → Tap menu → **Install app** / **Add to Home Screen** → Confirm |
-| **Desktop (Chrome/Edge)** | Open the [Live App](https://bartonic.arun0009.workers.dev) → Click the install icon in the address bar → Confirm |
+| **iPhone (Safari)** | Open the [live app](https://bartonic.arun0009.workers.dev) → **Share** → **Add to Home Screen** |
+| **Android (Chrome)** | Open the [live app](https://bartonic.arun0009.workers.dev) → menu → **Install app** |
+| **Desktop (Chrome/Edge)** | Open the [live app](https://bartonic.arun0009.workers.dev) → install icon in the address bar |
 
 <details>
-  <summary><strong>If install does not update immediately</strong></summary>
+  <summary><strong>If the home-screen icon does not update</strong></summary>
 
-1. Remove any old app icon from the home screen.
+1. Remove the old icon.
 2. Open the site in the browser and refresh once.
-3. Install again from the browser menu or share sheet.
+3. Install again from the share sheet or browser menu.
 
 </details>
 
-## Why BARTonic
-
-BARTonic is designed for the everyday Bay Area rider: open the app, check your next train in seconds, and make better commute decisions in real time.
-
-## Features
-
-- **My Routes** - Save commute pairs and get live countdowns every 15 seconds.
-- **Add Route** - Create one-way or return routes with quick station search.
-- **Quick Lookup** - Check any origin to destination with transfer-aware departures.
-- **Train Position** - See where your train is right now using GTFS-Realtime hints.
-- **Other Direction** - Quickly check the reverse of a saved trip from the schedule view.
-- **Platform & delays** - Live platform, line color, and delay when BART reports them.
-- **System Map** - Pinch/zoom and drag the BART map with a clean mobile UI.
-- **Installable PWA** - Add to home screen on iOS/Android/desktop.
-
 <details>
-  <summary><strong>Developer Section</strong></summary>
+  <summary><strong>Developers</strong></summary>
 
-## Quick Start (Development)
+## Quick Start
 
 ```bash
 npm install
@@ -73,39 +71,38 @@ Open [http://localhost:5173](http://localhost:5173).
 
 ## Scripts
 
-- `npm run dev` - start local dev server
-- `npm run build` - production build to `dist/`
-- `npm run test` - deterministic fixture-based validation tests (CI-safe)
-- `npm run test:live` - live BART audit for one origin (defaults to `DUBL`)
-- `npm run test:live:all` - one-time live sweep across all origins
-- `npm run lint` - lint TypeScript/React code
-- `npm run icons` - regenerate favicon + PWA icon pack
+- `npm run dev` — local dev server
+- `npm run build` — production build to `dist/`
+- `npm run test` — fixture-based validation (CI-safe)
+- `npm run test:live` — live BART audit for one origin (defaults to `DUBL`)
+- `npm run test:live:all` — one-time live sweep across all origins
+- `npm run lint` — TypeScript/React lint
+- `npm run icons` — regenerate favicon + PWA icon pack
 
-### Live Audit Params
+### Live audit params
 
-- `ORIGIN=<ABBR> npm run test:live` - pick a single origin, e.g. `ORIGIN=12TH`
-- `LIMIT=<N> npm run test:live` - limit destination checks for faster runs
-- `LIMIT_ORIGINS=<N> LIMIT_DEST=<N> npm run test:live:all` - sample run across origins/destinations
-- Use `test:live` / `test:live:all` as manual pre-release checks (not required CI)
+- `ORIGIN=<ABBR> npm run test:live` — e.g. `ORIGIN=12TH`
+- `LIMIT=<N> npm run test:live` — fewer destination checks
+- `LIMIT_ORIGINS=<N> LIMIT_DEST=<N> npm run test:live:all` — sampled sweep
+- Use live audits as manual pre-release checks (not required CI)
 
 ## Stack
 
 - React 19 + TypeScript + Vite
 - PWA via `vite-plugin-pwa`
-- Data from [BART API](https://api.bart.gov/) and [BART GTFS-Realtime](https://www.bart.gov/schedules/developers/gtfs-realtime)
+- [BART API](https://api.bart.gov/) + [GTFS-Realtime](https://www.bart.gov/schedules/developers/gtfs-realtime)
 - Same-origin `/api/bart` proxy (Vite locally, Cloudflare Worker in prod) so GTFS-RT works in the browser
 
 ### Deploy (Cloudflare Workers)
 
-Dashboard / CI deploy command should be **`npx wrangler deploy`** (not `pages deploy`).  
-Build command: `npm run build` · output: `dist/` (configured in `wrangler.toml`).
+Use **`npx wrangler deploy`** (not Pages). Build: `npm run build` · output: `dist/` (`wrangler.toml`).
 
 ```bash
 npm run deploy
 # or: npm run build && npx wrangler deploy
 ```
 
-`worker.js` proxies `/api/bart/*` → `api.bart.gov`; the SPA is served from `dist` via Workers Static Assets.
+`worker.js` proxies `/api/bart/*` → `api.bart.gov`. The SPA is served from `dist` via Workers Static Assets.
 
 </details>
 
