@@ -471,14 +471,14 @@ function FavoriteCard({
         )}
         {route && !route.noEtd && route.routeFare != null && route.destTimeMin != null && (
           <div className={styles.fare}>
-            ${route.routeFare} · Arr {route.destTimeMin}
+            ${route.routeFare} Arr: {route.destTimeMin}
           </div>
         )}
         {route?.noEtd && route.origTimeMin != null && (
           <div className={styles.fare}>
             Dep {route.origTimeMin} (scheduled)
             {route.routeFare != null && ` · $${route.routeFare}`}
-            {route.destTimeMin != null && ` · Arr ${route.destTimeMin}`}
+            {route.destTimeMin != null && ` Arr: ${route.destTimeMin}`}
           </div>
         )}
       </button>
