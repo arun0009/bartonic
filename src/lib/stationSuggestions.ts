@@ -12,6 +12,10 @@ const POPULAR_DESTINATION_ABBRS = [
   'SFIA'
 ]
 
+export function suggestDowntownDestination(originAbbr: string): string {
+  return originAbbr.toUpperCase() === 'EMBR' ? 'MONT' : 'EMBR'
+}
+
 export function getPopularFirstDestinations(stations: Station[]): Station[] {
   const byAbbr = new Map(stations.map((s) => [s.abbr.toUpperCase(), s]))
   const popular = POPULAR_DESTINATION_ABBRS.map((abbr) => byAbbr.get(abbr)).filter(

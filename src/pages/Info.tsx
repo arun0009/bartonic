@@ -1,7 +1,9 @@
+import { useNavigate } from 'react-router-dom'
 import { useAdvisories } from '../hooks/useAdvisories'
 import styles from './Info.module.css'
 
 export default function Info() {
+  const navigate = useNavigate()
   const { advisories, loading, error } = useAdvisories()
   const fallback =
     error != null
@@ -12,17 +14,23 @@ export default function Info() {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
+        <button
+          type="button"
+          className={styles.back}
+          onClick={() => (window.history.length > 1 ? navigate(-1) : navigate('/routes'))}
+          aria-label="Back"
+        >
+          ← Back
+        </button>
         <h1 className={styles.title}>Advisories</h1>
-        <p className={styles.subtitle}>
-          BART service alerts
-        </p>
+        <p className={styles.subtitle}>BART service alerts</p>
       </header>
       {loading ? (
         <p className={styles.loading}>Loading…</p>
       ) : (
         <ul className={styles.list}>
           {list.map((a, i) => (
-            <li key={i} className={styles.card}>
+            <li key={i} className={advisories.length === 0 ? styles.cardQuiet : styles.card}>
               <h2 className={styles.cardTitle}>{a.title}</h2>
               <p className={styles.cardDesc}>{a.description}</p>
             </li>

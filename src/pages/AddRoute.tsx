@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useFavoritesActions } from '../hooks/useFavorites'
 import { useNearestStations } from '../hooks/useNearestStations'
 import { useRecentStations } from '../hooks/useRecentStations'
@@ -7,11 +7,18 @@ import { BART_STATIONS } from '../data/stations'
 import { getPopularFirstDestinations } from '../lib/stationSuggestions'
 import styles from './AddRoute.module.css'
 
+function stationFromQuery(abbr: string | null) {
+  if (!abbr) return null
+  const station = BART_STATIONS.find((item) => item.abbr.toUpperCase() === abbr.toUpperCase())
+  return station ? { abbr: station.abbr, name: station.name } : null
+}
+
 export default function AddRoute() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const { add } = useFavoritesActions()
-  const [origin, setOrigin] = useState<{ abbr: string; name: string } | null>(null)
-  const [destination, setDestination] = useState<{ abbr: string; name: string } | null>(null)
+  const [origin, setOrigin] = useState(() => stationFromQuery(searchParams.get('from')))
+  const [destination, setDestination] = useState(() => stationFromQuery(searchParams.get('to')))
   const [returnTrip, setReturnTrip] = useState(false)
   const [searchOrigin, setSearchOrigin] = useState('')
   const [searchDest, setSearchDest] = useState('')
@@ -80,7 +87,7 @@ export default function AddRoute() {
     <div className={styles.page}>
       <header className={styles.header}>
         <h1 className={styles.title}>Add route</h1>
-        <p className={styles.subtitle}>Save your frequent BART trips</p>
+        <p className={styles.subtitle}>Save a commute you open every day.</p>
       </header>
       <div className={styles.form}>
         <label className={styles.label}>From</label>

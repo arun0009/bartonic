@@ -111,7 +111,7 @@ export default function Map() {
     <div className={styles.page}>
       <header className={styles.header}>
         <h1 className={styles.title}>BART system map</h1>
-        <p className={styles.subtitle}>Pinch or use +/− to zoom, drag to pan. Tap Reset to fit.</p>
+        <p className={styles.subtitle}>Official system map</p>
       </header>
       <div className={styles.card}>
         <div className={styles.zoomBar}>

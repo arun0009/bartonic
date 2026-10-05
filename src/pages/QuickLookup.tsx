@@ -78,7 +78,7 @@ export default function QuickLookup() {
     <div className={styles.page}>
       <header className={styles.header}>
         <h1 className={styles.title}>Quick lookup</h1>
-        <p className={styles.subtitle}>See next departures for any trip</p>
+        <p className={styles.subtitle}>Any trip. No save.</p>
       </header>
       <div className={styles.form}>
         <label className={styles.label}>From</label>
@@ -111,8 +111,14 @@ export default function QuickLookup() {
           ))}
         </div>
         <div className={styles.swapRow}>
-          <button type="button" className={styles.swapBtn} onClick={swapStations} disabled={!origin && !destination}>
-            ⇄ Swap direction
+          <button
+            type="button"
+            className={styles.swapBtn}
+            onClick={swapStations}
+            disabled={!origin && !destination}
+            aria-label="Swap direction"
+          >
+            ⇄
           </button>
         </div>
         <label className={styles.label}>To</label>
@@ -180,7 +186,7 @@ export default function QuickLookup() {
               const key =
                 d.tripKey ?? `${d.origTimeMin ?? ''}-${d.trainHeadStation ?? ''}-${d.destination}`
               return (
-              <li key={key} className={styles.departureCard}>
+              <li key={key} className={i === 0 ? styles.departureCardHero : styles.departureCard}>
                 <div className={styles.departureRoute}>
                   {d.firstStationName && <span>{d.firstStationName}</span>}
                   {d.connectingStationName && (
@@ -204,9 +210,11 @@ export default function QuickLookup() {
                   hexcolor={d.hexcolor}
                   origTimeMin={d.origTimeMin}
                   className={styles.departureMeta}
-                  countdownClassName={styles.countdown}
-                  leavingClassName={styles.leaving}
+                  countdownClassName={i === 0 ? styles.countdownHero : styles.countdown}
+                  warnClassName={styles.warn}
+                  leavingClassName={i === 0 ? styles.leavingHero : styles.leaving}
                   mutedClassName={styles.cars}
+                  layout={i === 0 ? 'hero' : 'inline'}
                 />
                 <div className={styles.departureFare}>
                   {d.routeFare != null && `$${d.routeFare}`}

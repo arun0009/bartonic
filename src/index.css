@@ -1,20 +1,44 @@
 :root {
-  --bg: #0a0e17;
-  --surface: #111827;
-  --surface-elevated: #1a2234;
-  --surface-soft: #0f172a;
-  --border: #1e293b;
-  --text: #f1f5f9;
-  --text-muted: #94a3b8;
-  --accent: #38bdf8;
-  --accent-dim: #0ea5e9;
+  --bg: #061018;
+  --bg-wash:
+    linear-gradient(180deg, rgba(46, 200, 240, 0.05) 0%, transparent 26%),
+    radial-gradient(90% 42% at 50% -8%, #142033 0%, transparent 70%);
+  --surface: #0a1220;
+  --surface-elevated: #101a2c;
+  --surface-soft: #08101a;
+  --border: #1a2a40;
+  --border-strong: #2a3f5c;
+  --text: #e8eef6;
+  --text-muted: #7b8ba3;
+  --text-dim: #5a6b82;
+  --accent: #2ec8f0;
+  --accent-dim: #1494b8;
+  --accent-ink: #061018;
+  --accent-soft: rgba(46, 200, 240, 0.12);
   --success: #34d399;
-  --warn: #fbbf24;
-  --danger: #f87171;
-  --radius: 14px;
-  --radius-sm: 10px;
+  --warn: #f0b429;
+  --danger: #ff4b4b;
+  --urge-calm: #2ec8f0;
+  --urge-soon: #f0b429;
+  --urge-leave: #ff4b4b;
+  --urge-soon-soft: rgba(240, 180, 41, 0.12);
+  --urge-leave-soft: rgba(255, 75, 75, 0.12);
+  --radius: 10px;
+  --radius-sm: 6px;
+  --radius-pill: 999px;
   --font-sans: 'DM Sans', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --shadow-nav: 0 8px 28px rgba(2, 6, 23, 0.45);
+  --rail: 3px;
+  --content-max: 640px;
+  --page-pad-x: 20px;
+  --touch: 48px;
+}
+
+@media (min-width: 960px) {
+  :root {
+    --page-pad-x: 32px;
+  }
 }
 
 * {
@@ -29,7 +53,9 @@ html {
 body {
   margin: 0;
   min-height: 100dvh;
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image: var(--bg-wash);
+  background-attachment: fixed;
   color: var(--text);
   font-family: var(--font-sans);
   font-size: 16px;
@@ -61,7 +87,7 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 a:focus-visible {
-  outline: 2px solid rgba(56, 189, 248, 0.8);
+  outline: 2px solid rgba(46, 200, 240, 0.85);
   outline-offset: 2px;
 }
 
@@ -75,7 +101,6 @@ a:focus-visible {
   }
 }
 
-/* Safe area for notched devices */
 @supports (padding: env(safe-area-inset-bottom)) {
   .safe-bottom {
     padding-bottom: calc(env(safe-area-inset-bottom) + 0.5rem);

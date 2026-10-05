@@ -1,22 +1,25 @@
 .page {
-  padding: 1rem 1.25rem 1.5rem;
+  width: min(var(--content-max), 100%);
+  margin: 0 auto;
+  padding: 1rem var(--page-pad-x) 1.5rem;
 }
 
 .header {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .title {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.375rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   color: var(--text);
 }
 
 .subtitle {
   margin: 0.25rem 0 0;
-  font-size: 0.85rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
   color: var(--text-muted);
 }
 
@@ -27,11 +30,11 @@
 }
 
 .label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-muted);
+  font-size: 0.6875rem;
+  font-weight: 650;
+  color: var(--text-dim);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
 }
 
 .locationRow {
@@ -62,6 +65,7 @@
 
 .input {
   width: 100%;
+  min-height: var(--touch);
   padding: 0.75rem 1rem;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
@@ -102,7 +106,7 @@
 
 .stationActive {
   border-color: var(--accent);
-  background: rgba(56, 189, 248, 0.1);
+  background: var(--accent-soft);
   color: var(--accent);
 }
 
@@ -129,6 +133,8 @@
 }
 
 .cancel {
+  min-width: 120px;
+  min-height: var(--touch);
   padding: 0.75rem 1.25rem;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
@@ -144,21 +150,22 @@
 
 .submit {
   flex: 1;
+  min-height: var(--touch);
   padding: 0.75rem 1.25rem;
   border-radius: var(--radius-sm);
   border: none;
   background: var(--accent);
-  color: var(--bg);
+  color: var(--accent-ink);
   font-size: 0.95rem;
-  font-weight: 600;
-  transition: filter 0.15s;
+  font-weight: 650;
+  transition: background 0.15s ease;
 }
 
 .submit:hover:not(:disabled) {
-  filter: brightness(1.1);
+  background: #4ad4f5;
 }
 
 .submit:disabled {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
 }

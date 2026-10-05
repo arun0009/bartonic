@@ -1,10 +1,11 @@
 .page {
-  padding: 1rem 1.25rem 1.5rem;
+  width: min(var(--content-max), 100%);
+  margin: 0 auto;
+  padding: 1rem var(--page-pad-x) 1.5rem;
   display: flex;
   flex-direction: column;
   min-height: 0;
   height: 100%;
-  background: var(--bg);
 }
 
 .header {
@@ -13,15 +14,16 @@
 
 .title {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.375rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   color: var(--text);
 }
 
 .subtitle {
   margin: 0.25rem 0 0;
-  font-size: 0.85rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
   color: var(--text-muted);
 }
 
@@ -87,7 +89,7 @@
   min-height: 200px;
   touch-action: none;
   -webkit-overflow-scrolling: touch;
-  background: #0b1220;
+  background: var(--bg);
 }
 
 .canvas {
