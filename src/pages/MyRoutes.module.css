@@ -170,40 +170,12 @@
 
 .cardInner {
   width: 100%;
-  padding: 14px 88px 16px 18px;
+  padding: 12px 80px 12px 16px;
   text-align: left;
   background: none;
   border: none;
   color: inherit;
   cursor: inherit;
-}
-
-.cardCompact .cardInner {
-  padding: 10px 80px 10px 14px;
-}
-
-.cardCompact .route {
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.35rem;
-}
-
-.cardCompact .meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.15rem 0.5rem;
-  margin-top: 4px;
-}
-
-.cardCompact .meta > div:last-child {
-  margin-top: 0;
-}
-
-.cardCompact .trainAt,
-.cardCompact .fare {
-  margin-top: 4px;
 }
 
 .route {
@@ -226,20 +198,20 @@
 }
 
 .meta {
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .meta > div:last-child {
-  margin-top: 8px;
+  margin-top: 6px;
 }
 
 .countdown {
   display: block;
   font-family: var(--font-mono);
-  font-size: 2.625rem;
+  font-size: 1.75rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
   line-height: 1;
   color: var(--urge-calm);
   transition: color 0.2s ease;
@@ -252,28 +224,7 @@
 .leaving {
   display: block;
   font-family: var(--font-mono);
-  font-size: 2rem;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1;
-  color: var(--urge-leave);
-  transition: color 0.2s ease;
-}
-
-.countdownCompact {
-  font-family: var(--font-mono);
   font-size: 1.5rem;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.03em;
-  line-height: 1;
-  color: var(--urge-calm);
-  transition: color 0.2s ease;
-}
-
-.leavingCompact {
-  font-family: var(--font-mono);
-  font-size: 1.25rem;
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1;
@@ -347,9 +298,9 @@
 .ghostClock {
   margin: 0 0 8px;
   font-family: var(--font-mono);
-  font-size: 2.625rem;
+  font-size: 1.75rem;
   font-weight: 600;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
   line-height: 1;
   color: rgba(46, 200, 240, 0.22);
 }
@@ -394,9 +345,9 @@
 .ghostMeta {
   margin-top: 10px;
   font-family: var(--font-mono);
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: 600;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
   line-height: 1;
   color: rgba(46, 200, 240, 0.28);
 }
@@ -447,15 +398,15 @@
   }
 
   .countdown {
-    font-size: 3.125rem;
+    font-size: 2rem;
   }
 
   .leaving {
-    font-size: 2.25rem;
+    font-size: 1.75rem;
   }
 
   .ghostClock {
-    font-size: 3.125rem;
+    font-size: 2rem;
   }
 
   .emptyTitle {

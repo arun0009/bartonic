@@ -337,7 +337,7 @@ export default function MyRoutes() {
           ref={listRef}
           className={draggingId ? `${styles.list} ${styles.listDragging}` : styles.list}
         >
-          {visibleFavorites.map((fav, index) => {
+          {visibleFavorites.map((fav) => {
             const originAbbr = fav.originAbbr.toUpperCase()
             const destinationAbbr = fav.destinationAbbr.toUpperCase()
             const route = routeByPair.get(`${originAbbr}\0${destinationAbbr}`)
@@ -354,7 +354,6 @@ export default function MyRoutes() {
                 fav={fav}
                 route={route}
                 trainPos={trainPos}
-                hero={index === 0}
                 dragging={dragging}
                 onPointerDown={onCardPointerDown}
                 onPointerMove={onCardPointerMove}
@@ -387,7 +386,6 @@ function FavoriteCard({
   fav,
   route,
   trainPos,
-  hero,
   dragging,
   onPointerDown,
   onPointerMove,
@@ -399,7 +397,6 @@ function FavoriteCard({
   fav: FavoriteRoute
   route: ReturnType<typeof useEtdForFavorites>['routes'][number] | undefined
   trainPos: ReturnType<typeof getPositionForYourTrain>
-  hero: boolean
   dragging: boolean
   onPointerDown: (event: PointerEvent<HTMLLIElement>, id: string) => void
   onPointerMove: (event: PointerEvent<HTMLLIElement>) => void
@@ -422,7 +419,7 @@ function FavoriteCard({
   return (
     <li
       data-route-id={fav.id}
-      className={`${styles.card} ${hero ? '' : styles.cardCompact} ${rail} ${dragging ? styles.cardDragging : ''}`.trim()}
+      className={`${styles.card} ${rail} ${dragging ? styles.cardDragging : ''}`.trim()}
       onPointerDown={(event) => onPointerDown(event, fav.id)}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
@@ -449,11 +446,11 @@ function FavoriteCard({
             hexcolor={route.hexcolor}
             origTimeMin={route.origTimeMin}
             className={styles.meta}
-            countdownClassName={hero ? styles.countdown : styles.countdownCompact}
+            countdownClassName={styles.countdown}
             warnClassName={styles.warn}
-            leavingClassName={hero ? styles.leaving : styles.leavingCompact}
+            leavingClassName={styles.leaving}
             mutedClassName={styles.cars}
-            layout={hero ? 'hero' : 'inline'}
+            layout="hero"
             onUrgency={onUrgency}
           />
         ) : (
