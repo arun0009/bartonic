@@ -1,29 +1,96 @@
 .page {
-  padding: 1rem 1.25rem 1.5rem;
+  width: min(var(--content-max), 100%);
+  margin: 0 auto;
+  padding: 1rem var(--page-pad-x) 1.5rem;
 }
 
 .header {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 56px;
 }
 
 .title {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.375rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
   color: var(--text);
 }
 
 .subtitle {
-  margin: 0.25rem 0 0;
-  font-size: 0.85rem;
+  margin: 0.15rem 0 0;
+  font-size: 0.8125rem;
+  font-weight: 500;
   color: var(--text-muted);
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.iconWell,
+.addWell {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface-elevated);
+  color: var(--text-dim);
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.iconWell:hover {
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.addWell {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+.addWell:hover {
+  background: #4ad4f5;
+  border-color: #4ad4f5;
+}
+
+.alertBadge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 4px;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 0.625rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .loading {
   padding: 2rem;
   text-align: center;
   color: var(--text-muted);
+  font-size: 0.8125rem;
 }
 
 .list {
@@ -32,7 +99,7 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 12px;
 }
 
 .listDragging {
@@ -46,9 +113,36 @@
   background: var(--surface);
   border: 1px solid var(--border);
   overflow: hidden;
-  box-shadow: 0 2px 12px rgba(2, 6, 23, 0.18);
   cursor: grab;
   touch-action: pan-y;
+  transition: border-color 0.15s ease;
+}
+
+.card:hover {
+  border-color: var(--border-strong);
+}
+
+.railCalm {
+  border-left: var(--rail) solid var(--urge-calm);
+}
+
+.railSoon {
+  border-left: var(--rail) solid var(--urge-soon);
+}
+
+.railLeave {
+  border-left: var(--rail) solid var(--urge-leave);
+  animation: railPulse 600ms ease-in-out infinite;
+}
+
+@keyframes railPulse {
+  0%,
+  100% {
+    box-shadow: inset 3px 0 0 var(--urge-leave);
+  }
+  50% {
+    box-shadow: inset 3px 0 0 rgba(255, 75, 75, 0.45);
+  }
 }
 
 .cardDragging {
@@ -56,164 +150,251 @@
   cursor: grabbing;
   touch-action: none;
   border-color: var(--accent);
-  box-shadow: 0 12px 28px rgba(2, 6, 23, 0.4);
+  box-shadow: var(--shadow-nav);
 }
 
 .cardInner {
   width: 100%;
-  padding: 1rem 5.5rem 1rem 1rem;
+  padding: 14px 88px 16px 18px;
   text-align: left;
   background: none;
   border: none;
   color: inherit;
   cursor: inherit;
-  transition: background 0.15s, transform 0.15s;
-}
-
-.cardInner:hover {
-  background: var(--surface-elevated);
-  transform: translateY(-1px);
-}
-
-.cardDragging .cardInner:hover {
-  transform: none;
 }
 
 .route {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.15rem;
 }
 
 .routeOrigin {
-  font-size: 1.05rem;
+  font-size: 0.9375rem;
   font-weight: 600;
+  letter-spacing: -0.01em;
   color: var(--text);
 }
 
 .routeTo {
-  font-size: 0.9rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
   color: var(--text-muted);
 }
 
 .meta {
-  margin-top: 0.5rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem;
-  align-items: center;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--accent);
+  margin-top: 10px;
+}
+
+.meta > div:last-child {
+  margin-top: 8px;
 }
 
 .countdown {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 2.75rem;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--urge-calm);
+  transition: color 0.2s ease;
+}
+
+.warn {
+  color: var(--urge-soon);
 }
 
 .leaving {
-  color: var(--success);
-}
-
-.noService {
-  color: var(--text-muted);
-}
-
-.noEtd {
-  color: var(--text-muted);
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--urge-leave);
+  transition: color 0.2s ease;
 }
 
 .cars {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   color: var(--text-muted);
-  font-weight: 400;
 }
 
 .trainAt {
-  margin-top: 0.35rem;
-  font-size: 0.8rem;
+  margin-top: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
   color: var(--text-muted);
-}
-
-.meetHint {
-  color: var(--accent);
 }
 
 .fare {
-  margin-top: 0.35rem;
-  font-size: 0.8rem;
-  color: var(--text-muted);
+  margin-top: 6px;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--text-dim);
+}
+
+.reverseBtn,
+.deleteBtn {
+  position: absolute;
+  top: 12px;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface-elevated);
+  line-height: 1;
+  transition: color 0.15s ease, border-color 0.15s ease;
 }
 
 .reverseBtn {
-  position: absolute;
-  top: 50%;
-  right: 2.85rem;
-  transform: translateY(-50%);
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background: var(--surface-elevated);
+  right: 44px;
   color: var(--accent);
-  font-size: 0.95rem;
-  line-height: 1;
-  transition: color 0.15s, border-color 0.15s;
+  font-size: 0.85rem;
+}
+
+.deleteBtn {
+  right: 12px;
+  color: var(--text-dim);
+  font-size: 1.1rem;
 }
 
 .reverseBtn:hover {
   border-color: var(--accent);
 }
 
-.deleteBtn {
-  position: absolute;
-  top: 50%;
-  right: 0.75rem;
-  transform: translateY(-50%);
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background: var(--surface-elevated);
-  color: var(--text-muted);
-  font-size: 1.1rem;
-  line-height: 1;
-  transition: color 0.15s, border-color 0.15s;
-}
-
 .deleteBtn:hover {
-  color: var(--danger);
-  border-color: var(--danger);
+  color: var(--urge-leave);
+  border-color: var(--urge-leave);
 }
 
 .empty {
-  padding: 3rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.25rem 0 2rem;
   text-align: center;
+}
+
+.ghostClock {
+  margin: 0 0 8px;
+  font-family: var(--font-mono);
+  font-size: 2.75rem;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: rgba(46, 200, 240, 0.22);
 }
 
 .emptyTitle {
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
   color: var(--text);
 }
 
 .emptySub {
-  margin: 0.5rem 0 1.5rem;
-  font-size: 0.95rem;
+  margin: 8px 0 0;
+  max-width: 280px;
+  font-size: 0.9375rem;
+  font-weight: 500;
   color: var(--text-muted);
 }
 
-.primaryButton {
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--radius-sm);
-  border: none;
-  background: var(--accent);
-  color: var(--bg);
-  font-size: 0.95rem;
-  font-weight: 600;
-  transition: filter 0.15s;
+.ghostCard {
+  width: min(100%, 320px);
+  margin: 1.25rem 0 0;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  border-left: var(--rail) solid rgba(46, 200, 240, 0.35);
+  background: var(--surface);
+  text-align: left;
 }
 
-.primaryButton:hover {
-  filter: brightness(1.1);
+.exampleTag {
+  margin-top: 6px;
+  font-size: 0.6875rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.ghostMeta {
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: rgba(46, 200, 240, 0.28);
+}
+
+.primaryButton {
+  width: min(100%, 280px);
+  min-height: var(--touch);
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  border: none;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 0.9375rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  transition: background 0.15s ease;
+}
+
+.primaryButton:hover:not(:disabled) {
+  background: #4ad4f5;
+}
+
+.primaryButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.secondaryButton {
+  margin-top: 0.65rem;
+  padding: 0.45rem 0.75rem;
+  border: none;
+  background: none;
+  color: var(--accent);
+  font-size: 0.875rem;
+  font-weight: 650;
+}
+
+.locationError {
+  margin: 0.75rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+@media (min-width: 960px) {
+  .title {
+    font-size: 1.625rem;
+  }
+
+  .countdown {
+    font-size: 3.25rem;
+  }
+
+  .leaving {
+    font-size: 2.25rem;
+  }
+
+  .ghostClock {
+    font-size: 3.25rem;
+  }
+
+  .emptyTitle {
+    font-size: 1.75rem;
+  }
 }

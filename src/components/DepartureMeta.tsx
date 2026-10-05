@@ -1,5 +1,6 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { preferGtfsDepartAtMs } from '../lib/departureTime'
+import type { Urgency } from '../lib/urgency'
 import { useGtfsDepartAtMs } from '../hooks/useTrainPosition'
 import Countdown from './Countdown'
 
@@ -19,8 +20,11 @@ interface DepartureMetaProps {
   origTimeMin?: string
   className?: string
   countdownClassName?: string
+  warnClassName?: string
   leavingClassName?: string
   mutedClassName?: string
+  layout?: 'inline' | 'hero'
+  onUrgency?: (urgency: Urgency) => void
 }
 
 function delayLabel(delaySeconds: number | undefined): string | null {
@@ -45,8 +49,11 @@ export default function DepartureMeta({
   origTimeMin,
   className,
   countdownClassName,
+  warnClassName,
   leavingClassName,
-  mutedClassName
+  mutedClassName,
+  layout = 'inline',
+  onUrgency
 }: DepartureMetaProps) {
   const gtfsDepartAtMs = useGtfsDepartAtMs(
     useGtfsPrecision ? originAbbr : undefined,
@@ -60,54 +67,91 @@ export default function DepartureMeta({
     [departAtMs, gtfsDepartAtMs]
   )
 
+  const leavingNow = estDepartureSeconds === 'LEAVING_NOW'
   const canCountdown =
     effectiveDepartAtMs != null &&
     tripKey != null &&
     (typeof estDepartureSeconds === 'number' ||
-      estDepartureSeconds === 'LEAVING_NOW' ||
+      leavingNow ||
       (noEtd && effectiveDepartAtMs != null))
 
-  return (
-    <div className={className}>
+  const clock = canCountdown ? (
+    <Countdown
+      departAtMs={effectiveDepartAtMs}
+      tripKey={tripKey}
+      className={countdownClassName}
+      warnClassName={warnClassName}
+      leavingClassName={leavingClassName}
+      onUrgency={onUrgency}
+    />
+  ) : leavingNow ? (
+    <span className={leavingClassName}>Leaving</span>
+  ) : estDepartureSeconds == null ? (
+    <span className={mutedClassName}>
+      {noEtd
+        ? origTimeMin != null
+          ? `Scheduled departure at ${origTimeMin}`
+          : 'No live ETD'
+        : 'No service'}
+    </span>
+  ) : null
+
+  useEffect(() => {
+    if (canCountdown) return
+    onUrgency?.(leavingNow ? 'leave' : 'none')
+  }, [canCountdown, leavingNow, onUrgency])
+
+  const annotation = (
+    <>
+      {canCountdown && carLength != null && <span className={mutedClassName}>{carLength} car</span>}
+      {platform && (
+        <span className={mutedClassName}>
+          {canCountdown && carLength != null ? ' · ' : ''}
+          Plat {platform}
+        </span>
+      )}
+      {delay && (
+        <span className={mutedClassName}>
+          {(canCountdown && carLength != null) || platform ? ' · ' : ''}
+          {delay}
+        </span>
+      )}
+      {noEtd && canCountdown && <span className={mutedClassName}> · scheduled</span>}
       {hexcolor && (
         <span
           aria-hidden
           style={{
             display: 'inline-block',
-            width: '0.65rem',
-            height: '0.65rem',
+            width: '0.5rem',
+            height: '0.5rem',
             borderRadius: '999px',
             background: hexcolor,
-            marginRight: '0.4rem',
+            marginLeft: '0.45rem',
             verticalAlign: 'middle',
             boxShadow: '0 0 0 1px rgba(255,255,255,0.15)'
           }}
         />
       )}
-      {canCountdown ? (
-        <Countdown
-          departAtMs={effectiveDepartAtMs}
-          tripKey={tripKey}
-          className={countdownClassName}
-          leavingClassName={leavingClassName}
-        />
-      ) : estDepartureSeconds === 'LEAVING_NOW' ? (
-        <span className={leavingClassName}>
-          Leaving{carLength != null ? ` (${carLength} car)` : ''}
-        </span>
-      ) : estDepartureSeconds == null ? (
-        <span className={mutedClassName}>
-          {noEtd
-            ? origTimeMin != null
-              ? `Scheduled departure at ${origTimeMin}`
-              : 'No live ETD'
-            : 'No service'}
-        </span>
-      ) : null}
-      {canCountdown && carLength != null && <span className={mutedClassName}> ({carLength} car)</span>}
-      {platform && <span className={mutedClassName}> · Plat {platform}</span>}
-      {delay && <span className={mutedClassName}> · {delay}</span>}
-      {noEtd && canCountdown && <span className={mutedClassName}> · scheduled</span>}
+    </>
+  )
+
+  if (layout === 'hero') {
+    return (
+      <div className={className}>
+        <div>{clock}</div>
+        <div>{annotation}</div>
+      </div>
+    )
+  }
+
+  return (
+    <div className={className}>
+      {clock}
+      {canCountdown && annotation}
+      {!canCountdown && leavingNow && carLength != null && (
+        <span className={mutedClassName}> · {carLength} car</span>
+      )}
+      {!canCountdown && !leavingNow && annotation}
     </div>
   )
 }

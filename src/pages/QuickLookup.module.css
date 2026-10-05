@@ -1,5 +1,7 @@
 .page {
-  padding: 1rem 1.25rem 1.5rem;
+  width: min(var(--content-max), 100%);
+  margin: 0 auto;
+  padding: 1rem var(--page-pad-x) 1.5rem;
 }
 
 .header {
@@ -8,27 +10,24 @@
 
 .title {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.375rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   color: var(--text);
 }
 
 .subtitle {
   margin: 0.25rem 0 0;
-  font-size: 0.85rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
   color: var(--text-muted);
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 12px;
   margin-bottom: 1.5rem;
-  padding: 1rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background: var(--surface-soft);
 }
 
 .label {
@@ -104,7 +103,7 @@
 
 .stationActive {
   border-color: var(--accent);
-  background: rgba(56, 189, 248, 0.1);
+  background: var(--accent-soft);
   color: var(--accent);
 }
 
@@ -115,12 +114,14 @@
 }
 
 .swapBtn {
-  padding: 0.4rem 0.75rem;
-  border-radius: var(--radius-sm);
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 8px;
   border: 1px solid var(--border);
-  background: var(--surface);
+  background: var(--surface-elevated);
   color: var(--accent);
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   font-weight: 600;
 }
 
@@ -135,19 +136,20 @@
 
 .lookupBtn {
   width: 100%;
+  min-height: var(--touch);
   padding: 0.85rem;
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
   border-radius: var(--radius-sm);
   border: none;
   background: var(--accent);
-  color: var(--bg);
-  font-size: 1rem;
-  font-weight: 600;
-  transition: filter 0.15s;
+  color: var(--accent-ink);
+  font-size: 0.9375rem;
+  font-weight: 650;
+  transition: background 0.15s ease;
 }
 
 .lookupBtn:hover:not(:disabled) {
-  filter: brightness(1.1);
+  background: #4ad4f5;
 }
 
 .lookupBtn:disabled {
@@ -204,15 +206,20 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 10px;
 }
 
-.departureCard {
-  padding: 0.85rem 1rem;
-  border-radius: var(--radius-sm);
+.departureCard,
+.departureCardHero {
+  padding: 14px 16px;
+  border-radius: var(--radius);
   background: var(--surface);
   border: 1px solid var(--border);
-  box-shadow: 0 2px 12px rgba(2, 6, 23, 0.16);
+  border-left: var(--rail) solid var(--urge-calm);
+}
+
+.departureCardHero {
+  padding: 16px 18px;
 }
 
 .departureRoute {
@@ -231,12 +238,42 @@
   color: var(--accent);
 }
 
-.countdown {
+.countdown,
+.countdownHero {
+  font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--urge-calm);
 }
 
-.leaving {
-  color: var(--success);
+.countdown {
+  font-size: 1.375rem;
+}
+
+.countdownHero {
+  display: block;
+  font-size: 2.75rem;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.warn {
+  color: var(--urge-soon);
+}
+
+.leaving,
+.leavingHero {
+  color: var(--urge-leave);
+}
+
+.leavingHero {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
 }
 
 .cars {

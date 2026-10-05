@@ -51,15 +51,14 @@ export default function RouteSchedule() {
           ← Back
         </button>
         <div className={styles.titleRow}>
-          <h1 className={styles.title}>Departures</h1>
+          <h1 className={styles.title}>
+            {originName} → {destName}
+          </h1>
           <button type="button" className={styles.refresh} onClick={refreshAll}>
             Refresh
           </button>
         </div>
-        <p className={styles.subtitle}>
-          {originName} → {destName}
-          {stale ? ' · showing last known' : ''}
-        </p>
+        {stale && <p className={styles.subtitle}>Showing last known</p>}
         <button type="button" className={styles.reverseLink} onClick={goReverse}>
           ⇄ Other direction · {destName} → {originName}
         </button>
@@ -92,7 +91,7 @@ export default function RouteSchedule() {
             : `To ${tripDestName ?? 'destination'}`
           const key = fallbackTripKey(d)
           return (
-            <li key={key} className={styles.card}>
+            <li key={key} className={i === 0 ? styles.cardHero : styles.card}>
               <div className={styles.route}>{routeLabel}</div>
               <DepartureMeta
                 noEtd={d.noEtd}
@@ -108,9 +107,11 @@ export default function RouteSchedule() {
                 hexcolor={d.hexcolor}
                 origTimeMin={d.origTimeMin}
                 className={styles.meta}
-                countdownClassName={styles.countdown}
-                leavingClassName={styles.leaving}
+                countdownClassName={i === 0 ? styles.countdownHero : styles.countdown}
+                warnClassName={styles.warn}
+                leavingClassName={i === 0 ? styles.leavingHero : styles.leaving}
                 mutedClassName={styles.cars}
+                layout={i === 0 ? 'hero' : 'inline'}
               />
               <div className={styles.fare}>
                 {d.routeFare != null && `$${d.routeFare}`}
@@ -158,6 +159,7 @@ export default function RouteSchedule() {
                 origTimeMin={d.origTimeMin}
                 className={styles.meta}
                 countdownClassName={styles.countdown}
+                warnClassName={styles.warn}
                 leavingClassName={styles.leaving}
                 mutedClassName={styles.cars}
               />

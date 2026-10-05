@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { mergeDepartAtMs, secondsUntil } from '../lib/departureTime'
+import { urgencyFromSeconds, type Urgency } from '../lib/urgency'
 
 interface CountdownProps {
   /** Absolute epoch ms when this train should depart. */
@@ -7,7 +8,9 @@ interface CountdownProps {
   /** Stable identity for this trip; changing it resets the anchor. */
   tripKey: string
   className?: string
+  warnClassName?: string
   leavingClassName?: string
+  onUrgency?: (urgency: Urgency) => void
 }
 
 /**
@@ -19,7 +22,9 @@ export default function Countdown({
   departAtMs,
   tripKey,
   className,
-  leavingClassName
+  warnClassName,
+  leavingClassName,
+  onUrgency
 }: CountdownProps) {
   const anchorRef = useRef<{ tripKey: string; departAtMs: number }>({
     tripKey,
@@ -38,18 +43,26 @@ export default function Countdown({
       }
     }
 
-    const tick = () => setLeft(secondsUntil(anchorRef.current.departAtMs))
+    const tick = () => {
+      const next = secondsUntil(anchorRef.current.departAtMs)
+      setLeft(next)
+      onUrgency?.(urgencyFromSeconds(next))
+    }
     tick()
-    // Sub-second tick keeps the display honest near departure.
     const timer = window.setInterval(tick, 250)
     return () => window.clearInterval(timer)
-  }, [departAtMs, tripKey])
+  }, [departAtMs, tripKey, onUrgency])
 
   if (left <= 0) {
     return <span className={leavingClassName ?? className}>Leaving</span>
   }
 
+  const urgent = left <= 300
   const m = Math.floor(left / 60)
   const s = left % 60
-  return <span className={className}>{`${m}m ${s.toString().padStart(2, '0')}s`}</span>
+  return (
+    <span className={urgent && warnClassName ? `${className ?? ''} ${warnClassName}`.trim() : className}>
+      {`${m}m ${s.toString().padStart(2, '0')}s`}
+    </span>
+  )
 }

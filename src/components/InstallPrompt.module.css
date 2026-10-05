@@ -5,8 +5,8 @@
   bottom: calc(env(safe-area-inset-bottom) + 84px);
   z-index: 120;
   border: 1px solid var(--border);
-  border-radius: 14px;
-  background: rgba(15, 23, 42, 0.94);
+  border-radius: var(--radius);
+  background: rgba(10, 18, 32, 0.96);
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 28px rgba(2, 6, 23, 0.35);
   padding: 0.75rem;
@@ -41,10 +41,10 @@
 
 .install {
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   padding: 0.45rem 0.7rem;
   background: var(--accent);
-  color: #041423;
+  color: var(--accent-ink);
   font-size: 0.78rem;
   font-weight: 700;
 }

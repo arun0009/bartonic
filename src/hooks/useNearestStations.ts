@@ -24,28 +24,33 @@ export function useNearestStations(stations: Station[]) {
   const [locating, setLocating] = useState(false)
   const [locationError, setLocationError] = useState<string | null>(null)
 
-  const requestLocation = useCallback(() => {
+  const requestLocation = useCallback((): Promise<Coords | null> => {
     if (typeof navigator === 'undefined' || !navigator.geolocation) {
       setLocationError('Location is not available on this device.')
-      return
+      return Promise.resolve(null)
     }
     setLocating(true)
     setLocationError(null)
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude })
-        setLocating(false)
-      },
-      (err) => {
-        if (err.code === err.PERMISSION_DENIED) {
-          setLocationError('Location permission denied.')
-        } else {
-          setLocationError('Unable to detect your location right now.')
-        }
-        setLocating(false)
-      },
-      { enableHighAccuracy: false, timeout: 8000, maximumAge: 120000 }
-    )
+    return new Promise((resolve) => {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const next = { lat: pos.coords.latitude, lng: pos.coords.longitude }
+          setCoords(next)
+          setLocating(false)
+          resolve(next)
+        },
+        (err) => {
+          if (err.code === err.PERMISSION_DENIED) {
+            setLocationError('Location permission denied.')
+          } else {
+            setLocationError('Unable to detect your location right now.')
+          }
+          setLocating(false)
+          resolve(null)
+        },
+        { enableHighAccuracy: false, timeout: 8000, maximumAge: 120000 }
+      )
+    })
   }, [])
 
   useEffect(() => {
@@ -62,18 +67,29 @@ export function useNearestStations(stations: Station[]) {
 
   const nearestStations = useMemo(() => {
     if (!coords) return stations
-    return [...stations].sort((a, b) => {
-      const da = distanceMeters(coords, { lat: a.lat, lng: a.lng })
-      const db = distanceMeters(coords, { lat: b.lat, lng: b.lng })
-      return da - db
-    })
+    return [...stations].sort(
+      (a, b) =>
+        distanceMeters(coords, { lat: a.lat, lng: a.lng }) -
+        distanceMeters(coords, { lat: b.lat, lng: b.lng })
+    )
   }, [coords, stations])
+
+  const nearestFromCoords = useCallback(
+    (point: Coords) =>
+      [...stations].sort(
+        (a, b) =>
+          distanceMeters(point, { lat: a.lat, lng: a.lng }) -
+          distanceMeters(point, { lat: b.lat, lng: b.lng })
+      )[0] ?? null,
+    [stations]
+  )
 
   return {
     nearestStations,
     hasLocation: coords != null,
     locating,
     locationError,
-    requestLocation
+    requestLocation,
+    nearestFromCoords
   }
 }
