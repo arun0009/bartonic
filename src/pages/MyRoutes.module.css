@@ -99,7 +99,7 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .listDragging {
@@ -170,7 +170,7 @@
 
 .cardInner {
   width: 100%;
-  padding: 10px 84px 10px 14px;
+  padding: 14px 88px 14px 16px;
   text-align: left;
   background: none;
   border: none;
@@ -180,51 +180,37 @@
 
 .route {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: baseline;
-  gap: 0.35rem;
+  flex-direction: column;
+  gap: 0.2rem;
   min-width: 0;
 }
 
 .routeOrigin {
-  flex: 0 1 auto;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   font-size: 0.9375rem;
   font-weight: 600;
   letter-spacing: -0.01em;
+  line-height: 1.3;
   color: var(--text);
 }
 
 .routeTo {
-  flex: 1 1 auto;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   font-size: 0.8125rem;
   font-weight: 500;
+  line-height: 1.3;
   color: var(--text-muted);
 }
 
 .meta {
-  margin-top: 4px;
+  margin-top: 8px;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 0.15rem 0.5rem;
-}
-
-.meta > div:last-child {
-  margin-top: 0;
+  gap: 0.25rem 0.6rem;
 }
 
 .countdown {
   font-family: var(--font-mono);
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.03em;
@@ -239,7 +225,7 @@
 
 .leaving {
   font-family: var(--font-mono);
-  font-size: 1.375rem;
+  font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1;
@@ -256,13 +242,10 @@
 
 .trainAt,
 .fare {
-  margin-top: 2px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 0.6875rem;
+  margin-top: 6px;
+  font-size: 0.75rem;
   font-weight: 500;
-  line-height: 1.25;
+  line-height: 1.35;
 }
 
 .trainAt {
@@ -276,7 +259,7 @@
 .reverseBtn,
 .deleteBtn {
   position: absolute;
-  top: 8px;
+  top: 12px;
   width: 32px;
   height: 32px;
   border-radius: 6px;
@@ -418,7 +401,7 @@
   }
 
   .countdown {
-    font-size: 1.75rem;
+    font-size: 2rem;
   }
 
   .leaving {

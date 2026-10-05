@@ -1,6 +1,6 @@
 .layout {
   height: 100%;
-  max-height: 100%;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -8,13 +8,14 @@
 }
 
 .main {
-  flex: 1;
+  flex: 1 1 auto;
   min-height: 0;
   overflow: auto;
   padding: env(safe-area-inset-top) 0 0;
 }
 
 .nav {
+  margin-top: auto;
   flex-shrink: 0;
   display: flex;
   justify-content: center;
