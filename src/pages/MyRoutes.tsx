@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState, type PointerEvent } from 'react'
+import { useMemo, useRef, useState, type PointerEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useFavorites, useFavoritesActions } from '../hooks/useFavorites'
 import { useEtdForFavorites } from '../hooks/useEtd'
@@ -7,10 +7,10 @@ import { useAdvisories } from '../hooks/useAdvisories'
 import { useNearestStations } from '../hooks/useNearestStations'
 import { BART_STATIONS, getStation } from '../data/stations'
 import { suggestDowntownDestination } from '../lib/stationSuggestions'
-import { getActionableAdvisories, type Urgency } from '../lib/urgency'
+import { getActionableAdvisories } from '../lib/urgency'
 import DepartureMeta from '../components/DepartureMeta'
 import AdvisoryStrip from '../components/AdvisoryStrip'
-import { AlertIcon, PlusIcon } from '../components/Icons'
+import { AlertIcon, GripIcon, PlusIcon } from '../components/Icons'
 import type { FavoriteRoute } from '../types'
 import styles from './MyRoutes.module.css'
 
@@ -73,7 +73,7 @@ export default function MyRoutes() {
       })),
     [favorites]
   )
-  const { routes, loading, stale, updatedAt } = useEtdForFavorites(favoriteInput)
+  const { routes, loading, stale } = useEtdForFavorites(favoriteInput)
   const { trips: tripPositions } = useTrainPositions()
   const routeByPair = useMemo(() => {
     const m = new Map<string, (typeof routes)[0]>()
@@ -164,11 +164,19 @@ export default function MyRoutes() {
 
   function onCardPointerDown(event: PointerEvent<HTMLLIElement>, id: string) {
     if ((event.target as HTMLElement | null)?.closest('[data-no-drag]')) return
+    const fromHandle = Boolean((event.target as HTMLElement | null)?.closest('[data-drag-handle]'))
     dragRef.current = {
       id,
       pointerId: event.pointerId,
       startY: event.clientY,
-      dragging: false
+      dragging: fromHandle
+    }
+    if (fromHandle) {
+      suppressClickRef.current = true
+      draftIdsRef.current = currentIds()
+      setDraggingId(id)
+      event.currentTarget.setPointerCapture(event.pointerId)
+      event.preventDefault()
     }
   }
 
@@ -319,15 +327,11 @@ export default function MyRoutes() {
           <h1 className={styles.title}>My Routes</h1>
           <HeaderActions alertCount={alertCount} onAlerts={goAlerts} onAdd={goAdd} />
         </div>
-        <p className={styles.subtitle}>
-          {stale
-            ? 'Reconnecting…'
-            : updatedAt
-              ? favorites.length > 1
-                ? 'Live · drag to reorder'
-                : 'Live'
-              : 'Updating…'}
-        </p>
+        {stale && (
+          <p className={styles.subtitle} role="status">
+            Reconnecting…
+          </p>
+        )}
       </header>
       <AdvisoryStrip advisories={advisories} onOpen={goAlerts} />
       {loading && routes.length === 0 ? (
@@ -355,6 +359,7 @@ export default function MyRoutes() {
                 route={route}
                 trainPos={trainPos}
                 dragging={dragging}
+                showHandle={favorites.length > 1}
                 onPointerDown={onCardPointerDown}
                 onPointerMove={onCardPointerMove}
                 onPointerUp={endDrag}
@@ -387,6 +392,7 @@ function FavoriteCard({
   route,
   trainPos,
   dragging,
+  showHandle,
   onPointerDown,
   onPointerMove,
   onPointerUp,
@@ -398,6 +404,7 @@ function FavoriteCard({
   route: ReturnType<typeof useEtdForFavorites>['routes'][number] | undefined
   trainPos: ReturnType<typeof getPositionForYourTrain>
   dragging: boolean
+  showHandle: boolean
   onPointerDown: (event: PointerEvent<HTMLLIElement>, id: string) => void
   onPointerMove: (event: PointerEvent<HTMLLIElement>) => void
   onPointerUp: (event: PointerEvent<HTMLLIElement>) => void
@@ -405,28 +412,17 @@ function FavoriteCard({
   onReverse: () => void
   onRemove: () => void
 }) {
-  const [urgency, setUrgency] = useState<Urgency>('none')
-  const onUrgency = useCallback((next: Urgency) => setUrgency(next), [])
-  const rail =
-    urgency === 'leave'
-      ? styles.railLeave
-      : urgency === 'soon'
-        ? styles.railSoon
-        : urgency === 'calm'
-          ? styles.railCalm
-          : ''
-
   return (
     <li
       data-route-id={fav.id}
-      className={`${styles.card} ${rail} ${dragging ? styles.cardDragging : ''}`.trim()}
+      className={`${styles.card} ${dragging ? styles.cardDragging : ''}`.trim()}
       onPointerDown={(event) => onPointerDown(event, fav.id)}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerUp}
       onLostPointerCapture={onPointerUp}
     >
-      <button type="button" className={styles.cardInner} onClick={onOpen}>
+      <button type="button" className={showHandle ? `${styles.cardInner} ${styles.cardInnerWithGrip}` : styles.cardInner} onClick={onOpen}>
         <div className={styles.route}>
           <span className={styles.routeOrigin}>{route?.originName ?? fav.originName}</span>
           <span className={styles.routeTo}>→ {route?.destinationName ?? fav.destinationName}</span>
@@ -451,7 +447,6 @@ function FavoriteCard({
             leavingClassName={styles.leaving}
             mutedClassName={styles.cars}
             layout="inline"
-            onUrgency={onUrgency}
           />
         ) : (
           <div className={styles.meta}>
@@ -507,6 +502,17 @@ function FavoriteCard({
       >
         −
       </button>
+      {showHandle && (
+        <button
+          type="button"
+          className={styles.grip}
+          data-drag-handle
+          aria-label="Drag to reorder"
+          title="Drag to reorder"
+        >
+          <GripIcon size={16} />
+        </button>
+      )}
     </li>
   )
 }

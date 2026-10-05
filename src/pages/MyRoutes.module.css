@@ -5,7 +5,7 @@
 }
 
 .header {
-  margin-bottom: 0.65rem;
+  margin-bottom: 0.5rem;
 }
 
 .titleRow {
@@ -115,7 +115,7 @@
   overflow: hidden;
   cursor: grab;
   touch-action: pan-y;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .card:has(.cardInner:focus-visible) {
@@ -131,41 +131,13 @@
   border-color: var(--border-strong);
 }
 
-.railCalm {
-  border-left: var(--rail) solid var(--urge-calm);
-}
-
-.railSoon {
-  border-left: var(--rail) solid var(--urge-soon);
-}
-
-.railLeave {
-  border-left: var(--rail) solid var(--urge-leave);
-  animation: railPulse 600ms ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .railLeave {
-    animation: none;
-  }
-}
-
-@keyframes railPulse {
-  0%,
-  100% {
-    box-shadow: inset 3px 0 0 var(--urge-leave);
-  }
-  50% {
-    box-shadow: inset 3px 0 0 rgba(255, 75, 75, 0.45);
-  }
-}
-
 .cardDragging {
   z-index: 2;
   cursor: grabbing;
   touch-action: none;
   border-color: var(--accent);
   box-shadow: var(--shadow-nav);
+  transform: translateY(-4px);
 }
 
 .cardInner {
@@ -176,6 +148,10 @@
   border: none;
   color: inherit;
   cursor: inherit;
+}
+
+.cardInnerWithGrip {
+  padding-right: 124px;
 }
 
 .route {
@@ -257,16 +233,21 @@
 }
 
 .reverseBtn,
-.deleteBtn {
+.deleteBtn,
+.grip {
   position: absolute;
   top: 12px;
   width: 32px;
   height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
   border-radius: 6px;
   border: 1px solid var(--border);
   background: var(--surface-elevated);
   line-height: 1;
-  transition: color 0.15s ease, border-color 0.15s ease;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
 }
 
 .reverseBtn {
@@ -281,6 +262,13 @@
   font-size: 1.1rem;
 }
 
+.grip {
+  right: 84px;
+  color: var(--text-dim);
+  cursor: grab;
+  touch-action: none;
+}
+
 .reverseBtn:hover {
   border-color: var(--accent);
 }
@@ -288,6 +276,16 @@
 .deleteBtn:hover {
   color: var(--urge-leave);
   border-color: var(--urge-leave);
+}
+
+.grip:hover,
+.cardDragging .grip {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.cardDragging .grip {
+  cursor: grabbing;
 }
 
 .empty {
