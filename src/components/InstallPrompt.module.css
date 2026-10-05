@@ -2,7 +2,7 @@
   position: fixed;
   left: 0.75rem;
   right: 0.75rem;
-  bottom: calc(env(safe-area-inset-bottom) + 84px);
+  bottom: calc(env(safe-area-inset-bottom) + var(--nav-dock) + 12px);
   z-index: 120;
   border: 1px solid var(--border);
   border-radius: var(--radius);

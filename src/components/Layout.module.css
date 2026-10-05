@@ -1,33 +1,31 @@
 .layout {
-  min-height: 100dvh;
+  height: 100dvh;
+  max-height: 100dvh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   background-color: transparent;
 }
 
 .main {
   flex: 1;
+  min-height: 0;
   overflow: auto;
-  padding: env(safe-area-inset-top) 0 calc(env(safe-area-inset-bottom) + 88px);
+  padding: env(safe-area-inset-top) 0 1rem;
 }
 
 .nav {
-  position: fixed;
-  bottom: max(8px, env(safe-area-inset-bottom));
-  left: 0;
-  right: 0;
+  flex-shrink: 0;
   display: flex;
   justify-content: center;
   align-items: stretch;
-  width: min(400px, calc(100vw - 16px));
-  height: 64px;
-  margin: 0 auto;
-  padding: 6px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: rgba(10, 18, 32, 0.96);
-  backdrop-filter: blur(16px);
-  box-shadow: var(--shadow-nav);
+  width: 100%;
+  margin: 0;
+  padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+  border: none;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--bg);
   z-index: 100;
 }
 
@@ -60,7 +58,8 @@
 .linkActive::after {
   content: '';
   position: absolute;
-  top: 28px;
+  top: auto;
+  bottom: 4px;
   width: 16px;
   height: 2px;
   border-radius: 1px;
