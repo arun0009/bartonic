@@ -1,7 +1,7 @@
 .page {
   width: min(var(--content-max), 100%);
   margin: 0 auto;
-  padding: 1rem var(--page-pad-x) 1.5rem;
+  padding: 0.75rem var(--page-pad-x) 0.5rem;
   display: flex;
   flex-direction: column;
   min-height: 0;

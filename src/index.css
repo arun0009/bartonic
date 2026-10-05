@@ -31,9 +31,15 @@
   --shadow-nav: 0 8px 28px rgba(2, 6, 23, 0.45);
   --rail: 3px;
   --content-max: 640px;
-  --page-pad-x: 20px;
+  --page-pad-x: 16px;
   --touch: 48px;
-  --nav-dock: 44px;
+  --nav-dock: 48px;
+}
+
+@media (min-width: 400px) {
+  :root {
+    --page-pad-x: 20px;
+  }
 }
 
 @media (min-width: 960px) {
@@ -50,6 +56,7 @@ html {
   -webkit-tap-highlight-color: transparent;
   color-scheme: dark;
   height: 100%;
+  height: -webkit-fill-available;
   height: 100dvh;
   max-height: 100%;
   overflow: hidden;
@@ -58,6 +65,7 @@ html {
 body {
   margin: 0;
   height: 100%;
+  height: -webkit-fill-available;
   max-height: 100%;
   overflow: hidden;
   background-color: var(--bg);
