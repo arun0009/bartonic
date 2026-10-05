@@ -33,7 +33,7 @@
   --content-max: 640px;
   --page-pad-x: 16px;
   --touch: 48px;
-  --nav-dock: 48px;
+  --nav-dock: 52px;
 }
 
 @media (min-width: 400px) {
