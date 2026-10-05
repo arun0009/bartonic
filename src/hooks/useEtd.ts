@@ -382,9 +382,22 @@ export function useEtdForFavorites(input: FavoriteInput[]) {
       })),
     [input]
   )
+  const normalizedRef = useRef(normalized)
+  useEffect(() => {
+    normalizedRef.current = normalized
+  }, [normalized])
+  // Reorder-only index changes must not restart the 15s poll / refetch.
+  const pairKey = useMemo(
+    () =>
+      [...normalized]
+        .map((x) => `${x.originAbbr}\0${x.destinationAbbr}`)
+        .sort()
+        .join('|'),
+    [normalized]
+  )
 
   useEffect(() => {
-    if (normalized.length === 0) {
+    if (normalizedRef.current.length === 0) {
       lastGoodRef.current = []
       return
     }
@@ -398,7 +411,8 @@ export function useEtdForFavorites(input: FavoriteInput[]) {
       if (lastGoodRef.current.length === 0) setLoading(true)
       try {
         const fetchOpts = forceNetwork ? { bypassCache: true } : undefined
-        const originList = [...new Set(normalized.map((x) => x.originAbbr))]
+        const items = normalizedRef.current
+        const originList = [...new Set(items.map((x) => x.originAbbr))]
         const etdPairs = await Promise.all(
           originList.map(
             async (origin) => [origin, await fetchEtd(origin, fetchOpts).catch(() => null)] as const
@@ -407,7 +421,7 @@ export function useEtdForFavorites(input: FavoriteInput[]) {
         const etdByOrigin = new Map(etdPairs)
 
         const schedules = await Promise.all(
-          normalized.map(async (item) => {
+          items.map(async (item) => {
             return await fetchSchedule(
               item.originAbbr,
               item.destinationAbbr,
@@ -422,7 +436,7 @@ export function useEtdForFavorites(input: FavoriteInput[]) {
         const anySource =
           etdPairs.some(([, root]) => root != null) || schedules.some((root) => root != null)
 
-        const next = normalized.map((item, index) => {
+        const next = items.map((item, index) => {
           const scheduleRoot = schedules[index]
           const etdRoot = etdByOrigin.get(item.originAbbr) ?? null
           return buildFavoriteRoute(item, scheduleRoot, etdRoot)
@@ -462,7 +476,7 @@ export function useEtdForFavorites(input: FavoriteInput[]) {
       window.clearInterval(timer)
       unsub()
     }
-  }, [normalized])
+  }, [pairKey])
 
   if (normalized.length === 0) {
     return {

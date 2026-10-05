@@ -35,6 +35,11 @@
   gap: 0.75rem;
 }
 
+.listDragging {
+  touch-action: none;
+  user-select: none;
+}
+
 .card {
   position: relative;
   border-radius: var(--radius);
@@ -42,6 +47,16 @@
   border: 1px solid var(--border);
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(2, 6, 23, 0.18);
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.cardDragging {
+  z-index: 2;
+  cursor: grabbing;
+  touch-action: none;
+  border-color: var(--accent);
+  box-shadow: 0 12px 28px rgba(2, 6, 23, 0.4);
 }
 
 .cardInner {
@@ -51,13 +66,17 @@
   background: none;
   border: none;
   color: inherit;
-  cursor: pointer;
+  cursor: inherit;
   transition: background 0.15s, transform 0.15s;
 }
 
 .cardInner:hover {
   background: var(--surface-elevated);
   transform: translateY(-1px);
+}
+
+.cardDragging .cardInner:hover {
+  transform: none;
 }
 
 .route {

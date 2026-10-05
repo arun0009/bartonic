@@ -68,6 +68,23 @@ function writeFavorites(next: FavoriteRoute[]) {
   window.dispatchEvent(new Event(STORAGE_EVENT))
 }
 
+/** Persist a new visual order. Unknown ids are ignored; omitted favorites stay at the end. */
+export function applyFavoriteOrder(current: FavoriteRoute[], orderedIds: string[]): FavoriteRoute[] {
+  const byId = new Map(current.map((item) => [item.id, item]))
+  const seen = new Set<string>()
+  const next: FavoriteRoute[] = []
+  for (const id of orderedIds) {
+    const item = byId.get(id)
+    if (!item || seen.has(id)) continue
+    seen.add(id)
+    next.push(item)
+  }
+  for (const item of current) {
+    if (!seen.has(item.id)) next.push(item)
+  }
+  return next.map((item, i) => ({ ...item, index: i }))
+}
+
 function subscribe(callback: () => void) {
   if (typeof window === 'undefined') return () => {}
   const onStorage = (event: StorageEvent) => {
@@ -129,5 +146,14 @@ export function useFavoritesActions() {
     writeFavorites([])
   }, [])
 
-  return useMemo(() => ({ add, remove, clear }), [add, remove, clear])
+  const reorder = useCallback((orderedIds: string[]) => {
+    const current = readFavorites()
+    const next = applyFavoriteOrder(current, orderedIds)
+    const unchanged =
+      next.length === current.length && next.every((item, i) => item.id === current[i]?.id)
+    if (unchanged) return
+    writeFavorites(next)
+  }, [])
+
+  return useMemo(() => ({ add, remove, clear, reorder }), [add, remove, clear, reorder])
 }
