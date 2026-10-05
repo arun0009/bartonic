@@ -214,7 +214,7 @@ export default function QuickLookup() {
                   warnClassName={styles.warn}
                   leavingClassName={styles.leaving}
                   mutedClassName={styles.cars}
-                  layout="hero"
+                  layout="inline"
                 />
                 <div className={styles.departureFare}>
                   {d.routeFare != null && `$${d.routeFare}`}

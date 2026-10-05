@@ -11,7 +11,7 @@
   flex: 1;
   min-height: 0;
   overflow: auto;
-  padding: env(safe-area-inset-top) 0 0.5rem;
+  padding: env(safe-area-inset-top) 0 0;
 }
 
 .nav {
@@ -21,12 +21,12 @@
   align-items: stretch;
   width: 100%;
   margin: 0;
-  padding: 2px 4px 0;
+  padding: 4px max(4px, env(safe-area-inset-right, 0px)) 0 max(4px, env(safe-area-inset-left, 0px));
   padding-bottom: env(safe-area-inset-bottom, 0px);
   border: none;
   border-top: 1px solid var(--border);
   border-radius: 0;
-  background: var(--bg);
+  background: var(--surface);
   z-index: 100;
 }
 
@@ -39,7 +39,7 @@
   align-items: center;
   gap: 2px;
   min-width: 0;
-  min-height: 40px;
+  min-height: 44px;
   flex: 1;
   padding: 6px 4px 4px;
   border-radius: var(--radius-sm);
@@ -78,6 +78,7 @@
   font-size: 0.625rem;
   font-weight: 650;
   letter-spacing: 0.08em;
+  line-height: 1;
   text-transform: uppercase;
   white-space: nowrap;
 }

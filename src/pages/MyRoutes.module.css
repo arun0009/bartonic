@@ -1,11 +1,11 @@
 .page {
   width: min(var(--content-max), 100%);
   margin: 0 auto;
-  padding: 1rem var(--page-pad-x) 1.5rem;
+  padding: 0.75rem var(--page-pad-x) 0.5rem;
 }
 
 .header {
-  margin-bottom: 1rem;
+  margin-bottom: 0.65rem;
 }
 
 .titleRow {
@@ -13,7 +13,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  min-height: 56px;
+  min-height: 44px;
 }
 
 .title {
@@ -99,7 +99,7 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .listDragging {
@@ -170,7 +170,7 @@
 
 .cardInner {
   width: 100%;
-  padding: 12px 80px 12px 16px;
+  padding: 10px 84px 10px 14px;
   text-align: left;
   background: none;
   border: none;
@@ -180,11 +180,19 @@
 
 .route {
   display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  gap: 0.35rem;
+  min-width: 0;
 }
 
 .routeOrigin {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-size: 0.9375rem;
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -192,23 +200,31 @@
 }
 
 .routeTo {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-size: 0.8125rem;
   font-weight: 500;
   color: var(--text-muted);
 }
 
 .meta {
-  margin-top: 8px;
+  margin-top: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.15rem 0.5rem;
 }
 
 .meta > div:last-child {
-  margin-top: 6px;
+  margin-top: 0;
 }
 
 .countdown {
-  display: block;
   font-family: var(--font-mono);
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.03em;
@@ -222,9 +238,8 @@
 }
 
 .leaving {
-  display: block;
   font-family: var(--font-mono);
-  font-size: 1.5rem;
+  font-size: 1.375rem;
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1;
@@ -239,26 +254,31 @@
   color: var(--text-muted);
 }
 
-.trainAt {
-  margin-top: 6px;
-  font-size: 0.75rem;
+.trainAt,
+.fare {
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.6875rem;
   font-weight: 500;
+  line-height: 1.25;
+}
+
+.trainAt {
   color: var(--text-muted);
 }
 
 .fare {
-  margin-top: 6px;
-  font-size: 0.6875rem;
-  font-weight: 500;
   color: var(--text-dim);
 }
 
 .reverseBtn,
 .deleteBtn {
   position: absolute;
-  top: 10px;
-  width: 28px;
-  height: 28px;
+  top: 8px;
+  width: 32px;
+  height: 32px;
   border-radius: 6px;
   border: 1px solid var(--border);
   background: var(--surface-elevated);
@@ -267,7 +287,7 @@
 }
 
 .reverseBtn {
-  right: 44px;
+  right: 48px;
   color: var(--accent);
   font-size: 0.85rem;
 }
@@ -298,7 +318,7 @@
 .ghostClock {
   margin: 0 0 8px;
   font-family: var(--font-mono);
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1;
@@ -343,9 +363,9 @@
 }
 
 .ghostMeta {
-  margin-top: 10px;
+  margin-top: 6px;
   font-family: var(--font-mono);
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1;
@@ -398,15 +418,15 @@
   }
 
   .countdown {
-    font-size: 2rem;
-  }
-
-  .leaving {
     font-size: 1.75rem;
   }
 
+  .leaving {
+    font-size: 1.5rem;
+  }
+
   .ghostClock {
-    font-size: 2rem;
+    font-size: 1.75rem;
   }
 
   .emptyTitle {

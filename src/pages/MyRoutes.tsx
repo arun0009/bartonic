@@ -450,7 +450,7 @@ function FavoriteCard({
             warnClassName={styles.warn}
             leavingClassName={styles.leaving}
             mutedClassName={styles.cars}
-            layout="hero"
+            layout="inline"
             onUrgency={onUrgency}
           />
         ) : (

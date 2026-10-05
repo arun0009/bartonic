@@ -111,7 +111,7 @@ export default function RouteSchedule() {
                 warnClassName={styles.warn}
                 leavingClassName={styles.leaving}
                 mutedClassName={styles.cars}
-                layout="hero"
+                layout="inline"
               />
               <div className={styles.fare}>
                 {d.routeFare != null && `$${d.routeFare}`}
@@ -162,7 +162,7 @@ export default function RouteSchedule() {
                 warnClassName={styles.warn}
                 leavingClassName={styles.leaving}
                 mutedClassName={styles.cars}
-                layout="hero"
+                layout="inline"
               />
               <div className={styles.fare}>
                 {d.origTimeMin != null && `Dep ${d.origTimeMin}`}
