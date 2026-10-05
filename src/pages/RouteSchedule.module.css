@@ -119,17 +119,12 @@
   gap: 0.75rem;
 }
 
-.card,
-.cardHero {
+.card {
   padding: 14px 16px;
   border-radius: var(--radius);
   background: var(--surface);
   border: 1px solid var(--border);
   border-left: var(--rail) solid var(--urge-calm);
-}
-
-.cardHero {
-  padding: 16px 18px;
 }
 
 .route {
@@ -145,55 +140,36 @@
 .meta {
   margin-top: 0.5rem;
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.15rem 0.5rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
   font-weight: 500;
   color: var(--accent);
 }
 
-.cardHero .meta {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.35rem;
-}
-
-.countdown,
-.countdownHero {
+.countdown {
+  display: block;
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
   font-weight: 600;
-  color: var(--urge-calm);
-}
-
-.countdown {
-  font-size: 1.375rem;
+  font-size: 1.75rem;
   letter-spacing: -0.03em;
-}
-
-.countdownHero {
-  display: block;
-  font-size: 2.625rem;
-  letter-spacing: -0.04em;
   line-height: 1;
+  color: var(--urge-calm);
 }
 
 .warn {
   color: var(--urge-soon);
 }
 
-.leaving,
-.leavingHero {
-  color: var(--urge-leave);
-}
-
-.leavingHero {
+.leaving {
   display: block;
   font-family: var(--font-mono);
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1;
+  color: var(--urge-leave);
 }
 
 .noEtd {

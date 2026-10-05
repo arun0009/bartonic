@@ -186,7 +186,7 @@ export default function QuickLookup() {
               const key =
                 d.tripKey ?? `${d.origTimeMin ?? ''}-${d.trainHeadStation ?? ''}-${d.destination}`
               return (
-              <li key={key} className={i === 0 ? styles.departureCardHero : styles.departureCard}>
+              <li key={key} className={styles.departureCard}>
                 <div className={styles.departureRoute}>
                   {d.firstStationName && <span>{d.firstStationName}</span>}
                   {d.connectingStationName && (
@@ -210,11 +210,11 @@ export default function QuickLookup() {
                   hexcolor={d.hexcolor}
                   origTimeMin={d.origTimeMin}
                   className={styles.departureMeta}
-                  countdownClassName={i === 0 ? styles.countdownHero : styles.countdown}
+                  countdownClassName={styles.countdown}
                   warnClassName={styles.warn}
-                  leavingClassName={i === 0 ? styles.leavingHero : styles.leaving}
+                  leavingClassName={styles.leaving}
                   mutedClassName={styles.cars}
-                  layout={i === 0 ? 'hero' : 'inline'}
+                  layout="hero"
                 />
                 <div className={styles.departureFare}>
                   {d.routeFare != null && `$${d.routeFare}`}

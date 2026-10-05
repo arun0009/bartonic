@@ -91,7 +91,7 @@ export default function RouteSchedule() {
             : `To ${tripDestName ?? 'destination'}`
           const key = fallbackTripKey(d)
           return (
-            <li key={key} className={i === 0 ? styles.cardHero : styles.card}>
+            <li key={key} className={styles.card}>
               <div className={styles.route}>{routeLabel}</div>
               <DepartureMeta
                 noEtd={d.noEtd}
@@ -107,11 +107,11 @@ export default function RouteSchedule() {
                 hexcolor={d.hexcolor}
                 origTimeMin={d.origTimeMin}
                 className={styles.meta}
-                countdownClassName={i === 0 ? styles.countdownHero : styles.countdown}
+                countdownClassName={styles.countdown}
                 warnClassName={styles.warn}
-                leavingClassName={i === 0 ? styles.leavingHero : styles.leaving}
+                leavingClassName={styles.leaving}
                 mutedClassName={styles.cars}
-                layout={i === 0 ? 'hero' : 'inline'}
+                layout="hero"
               />
               <div className={styles.fare}>
                 {d.routeFare != null && `$${d.routeFare}`}
@@ -162,6 +162,7 @@ export default function RouteSchedule() {
                 warnClassName={styles.warn}
                 leavingClassName={styles.leaving}
                 mutedClassName={styles.cars}
+                layout="hero"
               />
               <div className={styles.fare}>
                 {d.origTimeMin != null && `Dep ${d.origTimeMin}`}
