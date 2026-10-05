@@ -234,8 +234,18 @@
 
 .departureMeta {
   margin-top: 0.35rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.15rem 0.5rem;
   font-weight: 500;
   color: var(--accent);
+}
+
+.departureCardHero .departureMeta {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
 }
 
 .countdown,
@@ -253,7 +263,7 @@
 
 .countdownHero {
   display: block;
-  font-size: 2.75rem;
+  font-size: 2.625rem;
   letter-spacing: -0.04em;
   line-height: 1;
 }

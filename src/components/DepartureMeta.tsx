@@ -147,7 +147,7 @@ export default function DepartureMeta({
   return (
     <div className={className}>
       {clock}
-      {canCountdown && annotation}
+      {canCountdown && <span>{annotation}</span>}
       {!canCountdown && leavingNow && carLength != null && (
         <span className={mutedClassName}> · {carLength} car</span>
       )}

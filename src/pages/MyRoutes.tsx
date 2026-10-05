@@ -191,17 +191,24 @@ export default function MyRoutes() {
   function endDrag(event: PointerEvent<HTMLLIElement>) {
     const drag = dragRef.current
     if (!drag || event.pointerId !== drag.pointerId) return
-    if (drag.dragging) {
-      const next = draftIdsRef.current
-      if (next) reorder(next)
-      if (event.currentTarget.hasPointerCapture(event.pointerId)) {
-        event.currentTarget.releasePointerCapture(event.pointerId)
-      }
-    }
+    const wasDragging = drag.dragging
+    const next = wasDragging ? draftIdsRef.current : null
+    const target = event.currentTarget
+    const pointerId = event.pointerId
     dragRef.current = null
     draftIdsRef.current = null
     setDraggingId(null)
     setDraftIds(null)
+    if (wasDragging) {
+      if (next) reorder(next)
+      if (target.hasPointerCapture(pointerId)) {
+        target.releasePointerCapture(pointerId)
+      }
+      suppressClickRef.current = true
+      window.setTimeout(() => {
+        suppressClickRef.current = false
+      }, 400)
+    }
   }
 
   const goAdd = () => {
@@ -330,7 +337,7 @@ export default function MyRoutes() {
           ref={listRef}
           className={draggingId ? `${styles.list} ${styles.listDragging}` : styles.list}
         >
-          {visibleFavorites.map((fav) => {
+          {visibleFavorites.map((fav, index) => {
             const originAbbr = fav.originAbbr.toUpperCase()
             const destinationAbbr = fav.destinationAbbr.toUpperCase()
             const route = routeByPair.get(`${originAbbr}\0${destinationAbbr}`)
@@ -347,6 +354,7 @@ export default function MyRoutes() {
                 fav={fav}
                 route={route}
                 trainPos={trainPos}
+                hero={index === 0}
                 dragging={dragging}
                 onPointerDown={onCardPointerDown}
                 onPointerMove={onCardPointerMove}
@@ -379,6 +387,7 @@ function FavoriteCard({
   fav,
   route,
   trainPos,
+  hero,
   dragging,
   onPointerDown,
   onPointerMove,
@@ -390,6 +399,7 @@ function FavoriteCard({
   fav: FavoriteRoute
   route: ReturnType<typeof useEtdForFavorites>['routes'][number] | undefined
   trainPos: ReturnType<typeof getPositionForYourTrain>
+  hero: boolean
   dragging: boolean
   onPointerDown: (event: PointerEvent<HTMLLIElement>, id: string) => void
   onPointerMove: (event: PointerEvent<HTMLLIElement>) => void
@@ -412,11 +422,12 @@ function FavoriteCard({
   return (
     <li
       data-route-id={fav.id}
-      className={`${styles.card} ${rail} ${dragging ? styles.cardDragging : ''}`.trim()}
+      className={`${styles.card} ${hero ? '' : styles.cardCompact} ${rail} ${dragging ? styles.cardDragging : ''}`.trim()}
       onPointerDown={(event) => onPointerDown(event, fav.id)}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerUp}
+      onLostPointerCapture={onPointerUp}
     >
       <button type="button" className={styles.cardInner} onClick={onOpen}>
         <div className={styles.route}>
@@ -438,11 +449,11 @@ function FavoriteCard({
             hexcolor={route.hexcolor}
             origTimeMin={route.origTimeMin}
             className={styles.meta}
-            countdownClassName={styles.countdown}
+            countdownClassName={hero ? styles.countdown : styles.countdownCompact}
             warnClassName={styles.warn}
-            leavingClassName={styles.leaving}
+            leavingClassName={hero ? styles.leaving : styles.leavingCompact}
             mutedClassName={styles.cars}
-            layout="hero"
+            layout={hero ? 'hero' : 'inline'}
             onUrgency={onUrgency}
           />
         ) : (
